@@ -1,0 +1,25 @@
+﻿@using PearAdmin.AbpTemplate.Admin.Views.Shared.Components.RightNavbarLanguageSwitch
+@model RightNavbarLanguageSwitchViewModel
+
+<li class="layui-nav-item" lay-unselect="">
+    <a href="javascript:void(0);">
+        <i class="@Model.CurrentLanguage.Icon" title="@Model.CurrentLanguage.DisplayName"></i>
+        <span class="d-none d-md-inline-block">@Model.CurrentLanguage.DisplayName</span>
+    </a>
+    <dl class="layui-nav-child">
+        @foreach (var languageInfo in Model.Languages)
+        {
+            if (languageInfo.Name != Model.CurrentLanguage.Name)
+            {
+                <dd>
+                    <a href="@Url.Action("ChangeCulture", "AbpLocalization", new {
+                            cultureName = languageInfo.Name,
+                            returnUrl = Context.Request.Path + Context.Request.QueryString
+                        })">
+                        <i class="mr-2 @languageInfo.Icon"></i>@languageInfo.DisplayName
+                    </a>
+                </dd>
+            }
+        }
+    </dl>
+</li>

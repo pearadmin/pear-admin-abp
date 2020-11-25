@@ -1,0 +1,123 @@
+﻿@using Abp.Json
+@using PearAdmin.AbpTemplate.MultiTenancy.Tenants.Dto
+@model TenantDto
+
+@section styles{
+    <style type="text/css">
+        #edition-content {
+            width: 100% !important;
+            height: 300px;
+        }
+    </style>
+}
+
+<div class="layui-card" id="edition-content">
+    <div class="layui-card-body">
+        <table id="edition-table" lay-filter="edition-table"></table>
+    </div>
+</div>
+
+@await Html.PartialAsync("_LastModificationTime")
+
+@section scripts{
+    <script type="text/javascript">
+        layui.use(['jquery', 'form','table'], function () {
+            var $ = layui.$,
+                form = layui.form,
+                table = layui.table;
+
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.iframeAuto(index);
+
+            var editionList = @Html.Raw(JsonExtensions.ToJsonString(ViewBag.EditionList, true, false));
+
+            table.render({
+		        elem: '#edition-table',
+		        data: editionList,
+                limit: editionList.length,
+		        cols: [
+		            [
+		                {type:'radio'},
+		                {title: '版本名称', field: 'displayName', align:'center'},
+		                {title: '最后修改时间', field: 'lastModificationTime', align:'center',templet:'#lastModificationTime'},
+		                {title: '操作', toolbar: '#edition-bar', align:'center', width:130}
+		            ]
+                ],
+                height: 'full',
+		        skin: 'line',
+                done: function (res, curr, count) {
+                    for (var i = 0; i < res.data.length; i++) {
+                        //数据id和要勾选的id相同时radio选中
+                        if (res.data[i].id == "@Model.EditionId") {
+                            //这里才是真正的有效勾选
+                            res.data[i]["LAY_CHECKED"] = 'true';
+                            //找到对应数据改变勾选样式，呈现出选中效果
+                            var index = res.data[i]['LAY_TABLE_INDEX'];
+                            $('.layui-table tr[data-index=' + index + '] input[type="radio"]').prop('checked', true);
+                            $('.layui-table tr[data-index=' + index + '] input[type="radio"]').next().addClass('layui-form-radioed');
+
+                            form.val();
+                            break;
+                        }
+                    }
+                }
+		    });
+
+            table.on("row(edition-table)", function (obj) {
+                obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');//选中行样式
+                obj.tr.find('input[lay-type="layTableRadio"]').prop("checked", true);
+                var index = obj.tr.data('index')
+                var thisData = table.cache["edition-table"];
+                
+                //重置数据单选属性
+                layui.each(thisData, function (i, item) {
+                    if (index === i) {
+                        item.LAY_CHECKED = true;
+                    } else {
+                        delete item.LAY_CHECKED;
+                    }
+                });
+                form.render('radio');
+            });
+
+            //触发表单提交
+            window.submitForm = function () {
+                var checkData = table.checkStatus('edition-table').data;
+                if (checkData.length == 0) {
+                    parent.layer.msg("请选择版本");
+                    return;
+                }
+
+                if (checkData[0].id == '@Model.EditionId') {
+                    parent.layer.msg("版本未变更，无需更换");
+                    return;
+                }
+
+                var field = {
+                    id: '@Model.Id',
+                    sourceEditionId: '@Model.EditionId',
+                    targetEditionId: checkData[0].id
+                };
+
+                var waitIndex = parent.layer.load(2);
+                abp.ajax({
+                    url: "@Url.Action("ChangeTenantEdition", "Tenants")",
+                    data: JSON.stringify(field),
+                    abpHandleError: false
+                }).done(function (data) {
+                    if (data.code == 200) {
+                        data.index = index;
+                        let parentWindow = parent.selectedWindow().window;
+                        parentWindow.saveCallback(data);
+                    }
+                }).fail(function (jqXHR) {
+                    parent.layer.msg(jqXHR.message, { icon: 5 });
+                }).always(function () {
+                    parent.layer.close(waitIndex);
+                });
+
+                return false;
+            };
+        });
+    </script>
+}

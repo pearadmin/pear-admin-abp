@@ -1,0 +1,214 @@
+﻿@using PearAdmin.AbpTemplate.Admin.ViewResources
+@using PearAdmin.AbpTemplate.Admin.Views.Shared.Components.RightNavbarLanguageSwitch
+@using PearAdmin.AbpTemplate.Admin.Views.Shared.Components.RightNavbarUserArea
+@using PearAdmin.AbpTemplate.Admin.Views.Shared.Components.SideBarMenu
+@using Abp.Notifications
+@{
+    ViewBag.Title = L("HomePage");
+    ViewBag.CurrentPageName = PageNames.HomePage;
+}
+
+@section styles{
+    <link href="~/libs-ext/famfamfam-flags/dist/sprite/famfamfam-flags.min.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<!-- 布局框架 -->
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <ul class="layui-nav layui-layout-left">
+            <li class="collaspe layui-nav-item layui-hide-xs"><a href="#" class="layui-icon layui-icon-shrink-right"></a></li>
+            <li class="refresh layui-nav-item"><a href="#" class="layui-icon layui-icon-refresh-1"></a></li>
+        </ul>
+        <div id="control" class="layui-layout-control"></div>
+        <ul class="layui-nav layui-layout-right">
+            @*@await Component.InvokeAsync(typeof(RightNavbarLanguageSwitchViewComponent))*@
+            <li class="layui-nav-item layui-hide-xs"><a href="#" class="fullScreen layui-icon layui-icon-screen-full"></a></li>
+            <li class="layui-nav-item layui-hide-xs"><a href="https://gitee.com/530521314/PearAdmin.AbpTemplate" class="layui-icon layui-icon-website"></a></li>
+            <li class="layui-nav-item layui-hide-xs" id="headerNotice"></li>
+            @await Component.InvokeAsync(typeof(RightNavbarUserAreaViewComponent))
+            <li class="setting layui-nav-item"><a href="#" class="layui-icon layui-icon-more-vertical"></a></li>
+        </ul>
+    </div>
+    <div class="layui-side layui-bg-black">
+        <div class="layui-logo">
+            <img class="logo" src="" />
+            <span class="title"></span>
+        </div>
+        @await Component.InvokeAsync(typeof(SideBarMenuViewComponent))
+    </div>
+    <div class="layui-body">
+        <div id="content"></div>
+    </div>
+</div>
+
+<!-- 移动端 遮盖层 -->
+<div class="pear-cover"></div>
+
+<!-- 初始加载 动画-->
+<div class="loader-main">
+    <div class="loader"></div>
+</div>
+
+<!-- 聊天组件 -->
+<div id="social">
+    <div class="pear-social-entrance layui-icon layui-icon-dialogue" pear-id="social"></div>
+</div>
+
+<!-- 移动端 的 收缩适配 -->
+<div class="collaspe pe-collaspe layui-hide-sm">
+    <i class="layui-icon layui-icon-shrink-right"></i>
+</div>
+
+@section scripts{
+    <script src="~/js/chat.js" asp-append-version="true"></script>
+    <script src="~/js/chat.signalr.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        layui.use(['admin', 'jquery', 'layer', 'hash'], function () {
+            var admin = layui.admin;
+            var $ = layui.jquery;
+            var layer = layui.layer;
+            var hash = layui.hash;
+            var interval = "";
+            var chatPanelIndex = "";
+
+            var config = {
+                logo: {
+                    title: "PearAdmin AbpTemplate", // 网站标题
+                    image: "/images/logo.png" // 网站Logo
+                },
+                menu: {
+                    control: false, // 是 否 开 启 多 系 统 菜 单 true 开启 false 关闭
+                    accordion: true,
+                    async: false,
+                    select: hash.md5("@Url.Action(!AbpSession.TenantId.HasValue ? "HostConsole": "TenantConsole","WorkSpace")").toUpperCase(), // 默 认 选 中 菜 单 项
+                },
+                tab: {
+                    muiltTab: true, // 是 否 开 启 多 标 签 页 true 开启 false 关闭
+                    keepState: true,
+                    tabMax: 20,
+                    index: {
+                        id: hash.md5("@Url.Action(!AbpSession.TenantId.HasValue ? "HostConsole": "TenantConsole","WorkSpace")").toUpperCase(),
+                        href: '@Url.Action("TenantConsole","WorkSpace")', // 默 认 加 载 主 页
+                        title: "@Html.Raw(L(!AbpSession.TenantId.HasValue ? "HostConsole": "TenantConsole"))"
+                    }
+                },
+                theme: {
+                    defaultMenu: "dark-theme", // 默 认 主 题 样 式 dark-theme 默认主题 light-theme 亮主题
+                    allowCustom: true,
+                    defaultColor:3
+                },
+                colors: [
+                    {
+			            id: "1",
+			            color: "#FF5722"
+		            },
+		            {
+			            id: "2",
+			            color: "#5FB878"
+		            },
+		            {
+			            id: "3",
+			            color: "#1E9FFF"
+                    },
+                    {
+			            id: "4",
+			            color: "#FFB800"
+                    },
+                    {
+			            id: "5",
+			            color: "darkgray"
+		            }
+                ],
+                links: [
+                    {
+			            icon: "layui-icon layui-icon-website",
+			            title: "官方网站",
+			            href: "http://www.pearadmin.com"
+		            },
+		            {
+			            icon: "layui-icon layui-icon-read",
+			            title: "开发文档",
+			            href: "http://www.pearadmin.com/doc/"
+		            },
+		            {
+			            icon: "layui-icon layui-icon-fonts-code",
+			            title: "开源地址",
+			            href: "https://gitee.com/Jmysy/Pear-Admin-Layui"
+		            },
+		            {
+			            icon: "layui-icon layui-icon-survey",
+			            title: "问答社区",
+			            href: "http://forum.pearadmin.com/"
+		            }
+                ],
+                other: {
+                    keepLoad: 500, // 主 页 加 载 过 度 时 长 可 为 false
+                }
+            };
+            admin.render(config);
+
+            // 获取当前选中的tab
+			window.selectedWindow = function () {
+				return $(".layui-body .layui-tab-content .layui-show")[0].children[0].contentWindow;
+            }
+
+            window.openChatPanel = function () {
+				chatPanelIndex = layer.open({
+                    type: 2,
+                    title: "飞鸽传书",
+                    content: "@Url.Action("Index", "Chat")",
+                    area: ["1000px","643px"],
+                    shade: 0.3,
+                    shadeClose: true,
+                    resize:false,
+                    end:function(){
+                        chatPanelIndex = "";
+                    }
+                });
+            }
+
+            var loadIsExistUnreadMessage = function () {
+                abp.ajax({
+                    url: "@Url.Action("GetIsExistUnreadMessage", "Chat")",
+                    type: "Get",
+                    abpHandleError: false
+                }).done(function (data) {
+                    if (data.code == 200 && data.data) {
+                        messageReceived();
+                    }
+                }).fail(function (jqXHR) {
+                    layer.msg(jqXHR.message, { icon: 5 });
+                });
+            }
+            loadIsExistUnreadMessage();
+
+            $("body").on("click", ".pear-social-entrance", function () {
+                openChatPanel();
+                clearInterval(interval);
+                interval = "";
+            });
+
+            //abp.event.on('abp.notifications.received', function (userNotification) {
+            //    abp.notifications.showUiNotifyForUserNotification(userNotification);
+
+            //    $("#headerNotice").addClass("layui-badge-dot");
+            //});
+
+            abp.event.on('app.chat.messageReceived', function (message) {
+                messageReceived();
+            });
+
+            var messageReceived = function() {
+                if (interval == "" && chatPanelIndex == "") {
+                    interval = window.setInterval(function(){
+                        if ($(".pear-social-entrance").css("display") == "none") {
+                            $(".pear-social-entrance").css("display", "");
+                        } else {
+                            $(".pear-social-entrance").css("display", "none");
+                        }
+                    }, 500);
+                }
+            }
+        });
+    </script>
+}

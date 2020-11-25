@@ -1,0 +1,94 @@
+﻿@using System.Text
+@using Abp.Collections.Extensions
+@using PearAdmin.AbpTemplate.Admin.Views
+@using PearAdmin.AbpTemplate.Admin.Views.Shared.Components.SideBarMenu
+@using System.Security.Cryptography
+@model SideBarMenuViewModel
+@{
+    var calculateMenuUrl = new Func<string, string>((url) =>
+    {
+        if (string.IsNullOrEmpty(url))
+        {
+            return ApplicationPath;
+        }
+
+        if (UrlChecker.IsRooted(url))
+        {
+            return url;
+        }
+
+        return ApplicationPath + url;
+    });
+
+    var calculateMenuId = new Func<string, string, string>((Name, Url) =>
+    {
+        using (var md5 = MD5.Create())
+        {
+            var hashTarget = string.IsNullOrEmpty(Url) ? Name : Url;
+            var md5ComputeHash = md5.ComputeHash(Encoding.UTF8.GetBytes(hashTarget));
+            var bitConverterResult = BitConverter.ToString(md5ComputeHash);
+            var replaceResult = bitConverterResult.Replace("-", "");
+            return replaceResult;
+        }
+    });
+
+    var orderedMenuItems = Model.MainMenu.Items.Where(x => x.IsVisible).ToList();
+}
+
+<div class="layui-side-scroll">
+    <div id="sideMenu">
+        <ul lay-filter="sideMenu" class="layui-nav arrow pear-menu layui-nav-tree pear-nav-tree">
+            @foreach (var menuItem in orderedMenuItems)
+            {
+                <li class="layui-nav-item">
+                    @if (menuItem.Items.IsNullOrEmpty())
+                    {
+                        <a menu-url="@calculateMenuUrl(menuItem.Url)" class="site-demo-active" menu-type="1" menu-id="@calculateMenuId(menuItem.Name,menuItem.Url)" menu-title="@menuItem.DisplayName">
+                            <i class="layui-icon @Html.Raw(menuItem.Icon)"></i>
+                            <span>@menuItem.DisplayName</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="javascript:;" menu-type="0" menu-id="@calculateMenuId(menuItem.Name,menuItem.Url)">
+                            <i class="layui-icon @Html.Raw(menuItem.Icon)"></i>
+                            <span>@menuItem.DisplayName</span>
+                        </a>
+                        <dl class="layui-nav-child">
+                            @foreach (var subMenuItem in menuItem.Items)
+                            {
+                                <dd>
+                                    @if (subMenuItem.Items.IsNullOrEmpty())
+                                    {
+                                        <a menu-url="@calculateMenuUrl(subMenuItem.Url)" class="site-demo-active" menu-type="1" menu-id="@calculateMenuId(subMenuItem.Name,subMenuItem.Url)" menu-title="@subMenuItem.DisplayName">
+                                            <i class="layui-icon @Html.Raw(subMenuItem.Icon)"></i>
+                                            <span>@subMenuItem.DisplayName</span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="javascript:;" menu-type="0" menu-id="@calculateMenuId(subMenuItem.Name,subMenuItem.Url)">
+                                            <i class="iconfont">@Html.Raw(subMenuItem.Icon)</i>
+                                            <span>@subMenuItem.DisplayName</span>
+                                        </a>
+                                        <dl class="layui-nav-child">
+                                            @foreach (var subSubMenuItem in subMenuItem.Items)
+                                            {
+                                                <dd>
+                                                    <a menu-url="@calculateMenuUrl(subSubMenuItem.Url)" class="site-demo-active" menu-type="1" menu-id="@calculateMenuId(subSubMenuItem.Name,subSubMenuItem.Url)" menu-title="@subSubMenuItem.DisplayName">
+                                                        <i class="layui-icon @Html.Raw(subSubMenuItem.Icon)"></i>
+                                                        <span>@subSubMenuItem.DisplayName</span>
+                                                    </a>
+                                                </dd>
+                                            }
+                                        </dl>
+                                    }
+                                </dd>
+                            }
+                        </dl>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+</div>
