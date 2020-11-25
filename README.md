@@ -59,7 +59,7 @@ Pear Admin:https://gitee.com/Jmysy/Pear-Admin-Layui
 
 说明：Admin为UI层，Application和Core为应用层和领域层，EntityFrameworkCore和Gateway及ABP自身提供的辅助设施组合为基础设施层。  
 
-![输入图片说明](https://images.gitee.com/uploads/images/2020/1121/171553_bb9520e7_890387.png "屏幕截图.png")
+<img  width="92%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="https://images.gitee.com/uploads/images/2020/1125/224921_f574357b_890387.png" />
 
 #### 代码模型
 从DDD的角度考虑，抛弃UI层，以应用层，领域层，基础设施层去出发，按照文件夹隔离出限界上下文边界，内部代码模型如下
