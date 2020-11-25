@@ -1,0 +1,111 @@
+﻿@using Abp.Json
+@using PearAdmin.Abp.Authorization
+@using PearAdmin.Abp.MultiTenancy.TenantSetting.Dto
+@model TenantSettingsEditDto
+
+@section styles{
+    <style type="text/css">
+        .layui-col-label {
+            line-height: 35px;
+            width: 180px;
+        }
+    </style>
+}
+
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-btn-container">
+            @if (await PermissionChecker.IsGrantedAsync(AppPermissionNames.Pages_SystemManagement_TenantSettings))
+            {
+                <button class="pear-btn pear-btn-primary pear-btn-md tenantsetting" data-type="saveAllSettings">保存更改</button>
+            }
+        </div>
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">公司设置</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <form class="layui-form" lay-filter="companySettings" id="companySettings">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">公司名称</label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" name="companyName" autocomplete="off" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">公司地址</label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" name="companyAddress" autocomplete="off" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        layui.use(['jquery', 'form', 'element'], function () {
+            var $ = layui.$,
+                form = layui.form;
+
+            //初始化公司设置
+            form.val("companySettings",@Html.Raw(JsonExtensions.ToJsonString(Model.CompanySettings,true,false)));
+            form.render();
+
+            //将表单序列化
+            $.fn.serializeObject = function () {
+                var o = {};
+                var a = this.serializeArray();
+                $.each(a, function () {
+                    if (o[this.name] !== undefined) {
+                        if (!o[this.name].push) {
+                            o[this.name] = [o[this.name]];
+                        }
+                        o[this.name].push(this.value || '');
+                    } else {
+                        o[this.name] = this.value || '';
+                    }
+                });
+                return o;
+            }
+
+            //监听页面主按钮操作
+            var active = {
+                saveAllSettings: function () {
+                    var field = {
+                        companySettings: $("#companySettings").serializeObject(),
+                    };
+
+                    var waitIndex = parent.layer.load(2);
+                    abp.ajax({
+                        url: "@Url.Action("UpdateAllSettings", "TenantSettings")",
+                        data: JSON.stringify(field),
+                        abpHandleError: false
+                    }).done(function (data) {
+                        if (data.code == 200) {
+                            parent.layer.msg(data.msg);
+                        }
+                    }).fail(function (jqXHR) {
+                        layer.alert(jqXHR.details, {
+                            title: jqXHR.message,
+                            icon: 5
+                        });
+                    }).always(function () {
+                        parent.layer.close(waitIndex);
+                    });
+                }
+            };
+
+            //点击事件转发器
+            $('.pear-btn.tenantsetting').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        });
+    </script>
+}
+

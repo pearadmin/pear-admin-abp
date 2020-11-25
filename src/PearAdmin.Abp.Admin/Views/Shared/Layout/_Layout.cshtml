@@ -1,0 +1,32 @@
+﻿@using Abp.Configuration.Startup
+@using Abp.Web.Mvc.Alerts
+@using Abp.Web.Security.AntiForgery
+@using PearAdmin.Abp.Admin.Resources
+@inject IAbpAntiForgeryManager AbpAntiForgeryManager
+@inject IMultiTenancyConfig MultiTenancyConfig
+@inject IWebResourceManager WebResourceManager
+@inject IAlertManager AlertManager
+@inject ILanguageManager LanguageManager
+@{
+    AbpAntiForgeryManager.SetCookie(Context);
+}
+
+<!DOCTYPE html>
+<html lang="@LanguageManager.CurrentLanguage.Name">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    @await Html.PartialAsync("_Styles.cshtml")
+    @RenderSection("styles", required: false)
+</head>
+<body class="pear-container">
+
+    @RenderBody()
+
+    @await Html.PartialAsync("_Scripts.cshtml")
+    @RenderSection("scripts", required: false)
+    @WebResourceManager.RenderScripts()
+</body>
+</html>
+

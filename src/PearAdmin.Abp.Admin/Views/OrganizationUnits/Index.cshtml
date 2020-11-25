@@ -1,0 +1,267 @@
+﻿@using PearAdmin.Abp.Authorization
+@using PearAdmin.Abp.Admin.ViewResources
+@{
+    ViewBag.CurrentPageName = PageNames.OrganizationUnits;
+}
+
+@section styles{
+    <style type="text/css">
+        #organization-tree {
+            width: 100% !important;
+            height: -webkit-calc(100vh - 130px);
+            height: -moz-calc(100vh - 130px);
+            height: calc(100vh - 130px);
+        }
+    </style>
+}
+
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">机构名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="displayName" placeholder="" class="layui-input">
+                </div>
+                <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="organization-query">
+                    <i class="layui-icon layui-icon-search"></i>
+                    查询
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="layui-row layui-col-space15">
+    <div class="layui-col-md3">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div style="overflow: auto">
+                    <ul id="organization-tree" class="dtree"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md9">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <table id="organization-table" lay-filter="organization-table"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="organization-toolbar">
+    @if (await PermissionChecker.IsGrantedAsync(AppPermissionNames.Pages_SystemManagement_OrganizationUnits_Create))
+    {
+        <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
+            <i class="layui-icon layui-icon-add-1"></i>新增
+        </button>
+    }
+    @if (await PermissionChecker.IsGrantedAsync(AppPermissionNames.Pages_SystemManagement_OrganizationUnits_Delete))
+    {
+        <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
+            <i class="layui-icon layui-icon-delete"></i>删除
+        </button>
+    }
+</script>
+
+<script type="text/html" id="organization-bar">
+    @if (await PermissionChecker.IsGrantedAsync(AppPermissionNames.Pages_SystemManagement_OrganizationUnits_Update))
+    {
+        <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit">
+            <i class="layui-icon layui-icon-edit"></i>
+        </button>
+    }
+    @if (await PermissionChecker.IsGrantedAsync(AppPermissionNames.Pages_SystemManagement_OrganizationUnits_Delete))
+    {
+        <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove">
+            <i class="layui-icon layui-icon-delete"></i>
+        </button>
+    }
+</script>
+
+@section scripts{
+    <script type="text/javascript">
+        layui.use(['form', 'table', 'dtree'], function () {
+            var form = layui.form,
+                table = layui.table,
+                dtree = layui.dtree;
+
+            dtree.render({
+				elem: "#organization-tree",
+                initLevel: "10",
+                line: true,
+				ficon: ["1", "-1"],
+				icon: ["0", "2"],
+				method: 'get',
+                url: "@Url.Action("GetOrganizationUnitList", "OrganizationUnits")",
+                response: {
+                    message: "msg",
+                    statusCode: 200,
+                    title: "displayName"
+                },
+                dataStyle: "layuiStyle",
+                dataFormat: "list"
+            });
+
+			dtree.on("node(organization-tree)", function (obj) {
+                table.reload('organization-table', {
+                    where: { "id": obj.param.nodeId },
+					page: {
+                        curr: 1
+                    }
+                })
+			});
+
+            table.render({
+				elem: "#organization-table",
+				url: "@Url.Action("GetPagedOrganizationUnit", "OrganizationUnits")",
+				height: 'full-150',
+				page: true,
+				cols: [
+				    [{
+						    type: 'checkbox'
+					    },
+					    {
+						    title: '机构名称',
+						    field: 'displayName',
+						    align: 'center'
+					    },
+					    {
+						    title: '成员数量',
+						    field: 'memberCount',
+						    align: 'center'
+					    },
+					    {
+						    title: '',
+						    toolbar: '#organization-bar',
+						    align: 'center',
+						    width: 130
+					    }
+				    ]
+                ],
+                parseData: function (res) {
+                    return {
+                        "code": res.result.code, //解析接口状态
+                        "msg": res.result.msg, //解析提示文本
+                        "count": res.result.count, //解析数据长度
+                        "data": res.result.data //解析数据列表
+                    };
+                },
+                response: {
+                    statusCode: 200 //规定成功的状态码，默认：0
+                },
+				skin: 'line',
+				toolbar: '#organization-toolbar',
+                defaultToolbar: [{
+					layEvent: 'refresh',
+					icon: 'layui-icon-refresh',
+				}, 'filter', 'print', 'exports']
+			});
+
+            table.on('tool(organization-table)', function (obj) {
+                var data = obj.data;
+				if (obj.event === 'remove') {
+					window.remove([{ "id": data.id }]);
+				} else if (obj.event === 'edit') {
+					window.edit(data);
+				}
+			});
+
+			table.on('toolbar(organization-table)', function (obj) {
+				if (obj.event === 'add') {
+					window.add();
+				} else if (obj.event === 'refresh') {
+					window.refresh();
+                } else if (obj.event === 'batchRemove') {
+                    let checkData = table.checkStatus(obj.config.id).data;
+				    if (checkData.length === 0) {
+					    parent.layer.msg("未选中数据", {
+						    icon: 3,
+						    time: 1000
+					    });
+					    return false;
+                    }
+                    var ids = checkData.map(function (d) { return { "id": d.id }; });
+					window.remove(ids);
+				}
+			});
+
+			form.on('submit(organization-query)', function (data) {
+				table.reload('organization-table', {
+                    where: data.field,
+					page: {
+                        curr: 1
+                    }
+				})
+				return false;
+			});
+
+            window.saveCallback = function (data) {
+                parent.layer.close(data.index);
+                abp.notify.success(data.msg);
+                table.reload("organization-table");
+                dtree.reload("organization-tree");
+			}
+
+            window.add = function () {
+                let currentNode = dtree.getNowParam("organization-tree");
+				parent.layer.open({
+                    type: 2,
+                    title: currentNode.nodeId == undefined ? '添加根组织' : '添加子节点',
+                    content: "@Url.Action("CreateOrUpdateOrganizationUnit", "OrganizationUnits")" + abp.utils.formatString("?parentId={0}", currentNode.nodeId == undefined ? "" : currentNode.nodeId),
+                    area: ['450px', '219px'],
+                    shade: 0.1,
+                    btn: ['确定', '取消'],
+                    yes: function (index, layero) {
+                        parent.window['layui-layer-iframe'+ index].submitForm();
+                    }
+                });
+            }
+
+			window.edit = function (data) {
+				parent.layer.open({
+                    type: 2,
+                    title: '编辑机构信息',
+                    content: "@Url.Action("CreateOrUpdateOrganizationUnit", "OrganizationUnits")" + abp.utils.formatString("?id={0}", data.id),
+                    area: ['450px', '219px'],
+                    shade: 0.1,
+                    btn: ['确定', '取消'],
+                    yes: function(index){
+                        parent.window['layui-layer-iframe'+ index].submitForm();
+                    }
+                });
+			}
+
+			window.remove = function (data) {
+				parent.layer.confirm('确定删除吗?',{
+					icon: 3,
+					title: '提示'
+                }, function (index) {
+                    parent.layer.close(index);
+					let waitIndex = parent.layer.load(2);
+                    abp.ajax({
+                        url: "@Url.Action("DeleteOrganizationUnit", "OrganizationUnits")",
+                        data: JSON.stringify(data),
+						abpHandleError: false
+                    }).done(function (data) {
+                        if (data.code == 200) {
+                            abp.notify.success(data.msg);
+                            table.reload('organization-table');
+                            dtree.reload("organization-tree");
+                        }
+                    }).fail(function (jqXHR) {
+                        parent.layer.msg(jqXHR.message, { icon: 5 });
+                    }).always(function () {
+                        parent.layer.close(waitIndex);
+                    });
+                });
+			}
+
+			window.refresh = function () {
+				table.reload('organization-table');
+			}
+        });
+    </script>
+}

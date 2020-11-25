@@ -1,0 +1,94 @@
+﻿@using Abp.Json
+@using PearAdmin.Abp.Notifications.Dto
+@model GetNotificationSettingsOutput
+@{
+    var notificationNames = Model.Notifications.Select(n => n.Name);
+}
+
+@section styles{
+    <style type="text/css">
+        .layui-card {
+            width: 100% !important;
+            height: -webkit-calc(100vh - 25px);
+            height: -moz-calc(100vh - 25px);
+            height: calc(100vh - 25px);
+        }
+
+        .layui-form .layui-form-label {
+            width: 80px;
+        }
+
+        .layui-form .layui-input-block {
+            margin-left: 90px;
+        }
+    </style>
+}
+
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h5>消息设置</h5>
+    </div>
+    <div class="layui-card-body layui-form layui-row">
+        <form class="layui-form" lay-filter="notification-form">
+            @foreach (var notification in Model.Notifications)
+            {
+                <div class="layui-form-item">
+                    <label class="layui-form-label">@notification.DisplayName</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" id="@notification.Name" name="@notification.Name" lay-skin="switch" lay-text="开|关" @(notification.IsSubscribed ? "checked=\"checked\"" : "") @(!Model.ReceiveNotifications ? "disabled" : "")>
+                    </div>
+                    @*<label class="layui-form-label">@notification.Description</label>*@
+                </div>
+            }
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="pear-btn pear-btn-primary" lay-submit lay-filter="notification_submit">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        layui.use(['jquery', 'element', 'form'], function () {
+            var $ = layui.$,
+                form = layui.form,
+                element = layui.element;
+
+            form.on('submit(notification_submit)', function (data) {
+                var notifications = [];
+                var notificationNamesArray = @Html.Raw(JsonExtensions.ToJsonString(notificationNames, true, false));
+                for (var i = 0; i < notificationNamesArray.length; i++) {
+                    var isSubscribed = data.field[notificationNamesArray[i]] == "on";//switch默认值是on
+                    notifications.push({
+                        "name": notificationNamesArray[i],
+                        "isSubscribed": isSubscribed
+                    });
+                }
+
+                var field = {
+                    "receiveNotifications": true,
+                    "notifications": notifications
+                };
+
+                var waitIndex = parent.layer.load(2);
+                abp.ajax({
+                    url: "@Url.Action("UpdateNotificationSetting", "Users")",
+                    data: JSON.stringify(field),
+                    abpHandleError: false
+                }).done(function (data) {
+                    if (data.code == 200) {
+                        abp.notify.success(data.msg);
+                    }
+                }).fail(function (jqXHR) {
+                    parent.layer.msg(jqXHR.message, { icon: 5 });
+                }).always(function () {
+                    parent.layer.close(waitIndex);
+                });
+
+                return false;
+            });
+        });
+    </script>
+}

@@ -1,0 +1,93 @@
+﻿@using Abp.Json
+@using PearAdmin.Abp.TaskCenter.DailyTasks.Dto
+@model DailyTaskDto
+
+<form class="layui-form" lay-filter="dailyTask-form" style="padding: 15px 0 0 0;">
+    <input type="hidden" name="id" />
+    <div class="layui-form-item">
+        <label class="layui-form-label">名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <input type="text" name="remark" placeholder="请输入备注" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">日期范围</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" id="dateRange" placeholder=" - ">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-hide" lay-submit lay-filter="dailyTask-submit" id="dailyTask-submit">提交</button>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+    <script type="text/javascript">
+        layui.use(['jquery', 'form', 'laydate'], function () {
+            var $ = layui.$,
+                form = layui.form,
+                laydate = layui.laydate;
+
+            laydate.render({
+                elem: '#dateRange',
+                range: true,
+                value: '@string.Format("{0} - {1}",Model.StartTime.ToString("yyyy-MM-dd"),Model.EndTime.ToString("yyyy-MM-dd"))',
+            });
+
+            function getDateRange() {
+                let dateRangeString = $("#dateRange").val();
+                if (dateRangeString == undefined || dateRangeString == "") {
+                    parent.layer.msg("获取日期范围错误！");
+                    return null;
+                }
+                let dateRangeArray = dateRangeString.split(" - ");
+                return {
+                    "startTime": dateRangeArray[0],
+                    "endTime": dateRangeArray[1]
+                }
+            }
+
+            var index = parent.layer.getFrameIndex(window.name);
+            //parent.layer.iframeAuto(index);
+
+            form.val("dailyTask-form",@Html.Raw(JsonExtensions.ToJsonString(Model, true,false)));
+            form.render();
+
+            window.submitForm = function(){
+                $("#dailyTask-submit").click();
+            }
+
+            form.on('submit(dailyTask-submit)', function (data) {
+                let dateRange = getDateRange();
+                data.field.startTime = dateRange.startTime;
+                data.field.endTime = dateRange.endTime;
+                var waitIndex = parent.layer.load(2);
+                abp.ajax({
+                    url: "@Url.Action(Model.Id !=Guid.Empty ? "UpdateDailyTask":"CreateDailyTask", "DailyTask", new { area="TaskCenter" })",
+                    data: JSON.stringify(data.field),
+                    abpHandleError: false
+                }).done(function (data) {
+                    if (data.code == 200) {
+                        data.index = index;
+                        let parentWindow = parent.selectedWindow().window;
+                        parentWindow.saveCallback(data);
+                    }
+                }).fail(function (jqXHR) {
+                    parent.layer.msg(jqXHR.message, { icon: 5 });
+                }).always(function () {
+                    parent.layer.close(waitIndex);
+                });
+
+                return false;
+            });
+        });
+    </script>
+}

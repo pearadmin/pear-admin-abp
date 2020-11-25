@@ -1,0 +1,212 @@
+﻿@using PearAdmin.Abp.Authorization
+@using PearAdmin.Abp.Notifications
+
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table id="notification-table" lay-filter="notification-table"></table>
+    </div>
+</div>
+
+<script type="text/html" id="notification-toolbar">
+    @if (await PermissionChecker.IsGrantedAsync(AppPermissionNames.Pages_SystemManagement_Users_Delete))
+    {
+        <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
+            <i class="layui-icon layui-icon-delete"></i>删除
+        </button>
+    }
+    @if (await PermissionChecker.IsGrantedAsync(AppPermissionNames.Pages_SystemManagement_Users_Create))
+    {
+        <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="read">
+            <i class="layui-icon layui-icon-add-1"></i>已读
+        </button>
+    }
+    @if (await PermissionChecker.IsGrantedAsync(AppPermissionNames.Pages_SystemManagement_Users_Create))
+    {
+        <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="allRead">
+            <i class="layui-icon layui-icon-add-1"></i>全部已读
+        </button>
+    }
+</script>
+
+<script type="text/html" id="notification-contentTpl">
+    {{d.notification.notificationName}}
+</script>
+
+<script type="text/html" id="notification-typeTpl">
+    {{# var formattedRecord = format(d,false); }}
+    {{# var rowClass = formattedRecord.state === 'READ' ? '' : 'font-weight:bold'; }}
+    {{# if (formattedRecord.url && formattedRecord.url !== '#'){ }}
+    <a title="{{ formattedRecord.text }}" style="{{rowClass}}" href="{{ formattedRecord.url }}">{{ formattedRecord.text }}</a>
+    {{# } else { }}
+    <span title="{{ formattedRecord.text }}" style="{{rowClass}}">{{ formattedRecord.text }}</span>
+    {{# } }}
+</script>
+
+<script type="text/html" id="notification-creationTimeTpl">
+    <label>{{  layui.util.timeAgo(d.notification.creationTime)}}</label>
+</script>
+
+@section scripts{
+    <script type="text/javascript">
+        layui.use(['element','table'], function () {
+            var table = layui.table,
+                element = layui.element;
+
+            table.render({
+		        elem: '#notification-table',
+                url: '@Url.Action("GetUserNotificationList", "Notifications")',
+                height: 'full-150',
+                page: true,
+                parseData: function (res) {
+                    return {
+                        "code": res.result.code, //解析接口状态
+                        "msg": res.result.msg, //解析提示文本
+                        "count": res.result.count, //解析数据长度
+                        "data": res.result.data //解析数据列表
+                    };
+                },
+                response: {
+                    statusCode: 200 //规定成功的状态码，默认：0
+                },
+		        cols: [
+		            [
+                        { type: 'checkbox' },
+                        { title: '消息内容', field: 'notification', align: 'center', templet: '#notification-typeTpl' },
+                        { title: '消息类型', field: 'notificationName', align: 'center', templet: '#notification-contentTpl' },
+                        { title: '创建时间', field: 'creationTime', align: 'center', templet: '#notification-creationTimeTpl' }
+		            ]
+		        ],
+		        skin: 'line',
+		        toolbar: '#notification-toolbar',
+		        defaultToolbar: [{
+		            layEvent: 'refresh',
+		            icon: 'layui-icon-refresh',
+		        }, 'filter', 'print', 'exports']
+            });
+
+            table.on('toolbar(notification-table)', function(obj){
+                if (obj.event === 'read') {
+                    let checkData = table.checkStatus(obj.config.id).data;
+				    if (checkData.length === 0) {
+					    parent.layer.msg("未选中数据", {
+						    icon: 3,
+						    time: 1000
+					    });
+					    return false;
+                    }
+                    var ids = checkData.map(function (d) { return { "id": d.id }; });
+		            window.read(ids);
+		        } else if(obj.event === 'allRead'){
+		            window.allRead();
+		        } else if(obj.event === 'refresh'){
+		            window.refresh();
+                } else if (obj.event === 'batchRemove') {
+                    let checkData = table.checkStatus(obj.config.id).data;
+				    if (checkData.length === 0) {
+					    parent.layer.msg("未选中数据", {
+						    icon: 3,
+						    time: 1000
+					    });
+					    return false;
+                    }
+                    var ids = checkData.map(function (d) { return { "id": d.id }; });
+                    window.remove(ids);
+		        }
+            });
+
+            window.read = function (data) {
+                let waitIndex = parent.layer.load(2);
+                abp.ajax({
+                    url: "@Url.Action("SetNotificationsAsRead", "Notifications")",
+                    data: JSON.stringify(data),
+                    abpHandleError: false
+                }).done(function (data) {
+                    if (data.code == 200) {
+                        abp.notify.success(data.msg);
+                        table.reload('notification-table');
+                    }
+                }).fail(function (jqXHR) {
+                    parent.layer.msg(jqXHR.message, { icon: 5 });
+                }).always(function () {
+                    parent.layer.close(waitIndex);
+                });
+            }
+
+            window.allRead = function () {
+                let waitIndex = parent.layer.load(2);
+		        abp.ajax({
+                    url: "@Url.Action("SetAllNotificationsAsRead", "Notifications")",
+                    abpHandleError: false
+                }).done(function (data) {
+                    if (data.code == 200) {
+                        abp.notify.success(data.msg);
+                        table.reload('notification-table');
+                    }
+                }).fail(function (jqXHR) {
+                    parent.layer.msg(jqXHR.message, { icon: 5 });
+                }).always(function () {
+                    parent.layer.close(waitIndex);
+                });
+		    }
+
+            window.remove = function (data) {
+                parent.layer.confirm('确定删除吗?', {
+					icon: 3,
+					title: '提示'
+                }, function (index) {
+                    parent.layer.close(index);
+                    let waitIndex = parent.layer.load(2);
+                    abp.ajax({
+                        url: "@Url.Action("DeleteNotification", "Notifications")",
+                        data: JSON.stringify(data),
+						abpHandleError: false
+                    }).done(function (data) {
+                        if (data.code == 200) {
+                            abp.notify.success(data.msg);
+                            table.reload('notification-table');
+                        }
+                    }).fail(function (jqXHR) {
+                        parent.layer.msg(jqXHR.message, { icon: 5 });
+                    }).always(function () {
+                        parent.layer.close(waitIndex);
+                    });
+                });
+		    }
+
+		    window.refresh = function(param){
+		        table.reload('notification-table');
+            }
+
+            window.getUrl = function(userNotification) {
+                switch (userNotification.notification.notificationName) {
+                    case '@AppNotificationNames.GdprDataPrepared':
+                        return '@Url.Action("DownloadBinaryFile", "File")' + abp.utils.formatString("?id={0}&&contentType=application/zip&fileName=collectedData.zip", userNotification.notification.data.properties.binaryObjectId);
+                    case '@AppNotificationNames.DownloadInvalidImportExcel':
+                        return '@Url.Action("DownloadTempFile", "File")' + abp.utils.formatString("?fileToken={0}&fileType={1}&fileName={2}", userNotification.notification.data.properties.fileToken, userNotification.notification.data.properties.fileType,userNotification.notification.data.properties.fileName);
+                }
+
+                return '#';
+            };
+
+            window.format = function (userNotification, truncateText) {
+                var formatted = {
+                    userNotificationId: userNotification.id,
+                    text: abp.notifications.getFormattedMessageFromUserNotification(userNotification),
+                    //time: moment(userNotification.notification.creationTime).format("YYYY-MM-DD HH:mm:ss"),
+                    //icon: app.notification.getUiIconBySeverity(userNotification.notification.severity),
+                    state: abp.notifications.getUserNotificationStateAsString(userNotification.state),
+                    data: userNotification.notification.data,
+                    url: getUrl(userNotification),
+                    isUnread: userNotification.state === abp.notifications.userNotificationState.UNREAD,
+                    //timeAgo: moment(userNotification.notification.creationTime).fromNow()
+                };
+
+                if (truncateText || truncateText === undefined) {
+                    formatted.text = abp.utils.truncateStringWithPostfix(formatted.text, 100);
+                }
+
+                return formatted;
+            };
+        });
+    </script>
+}

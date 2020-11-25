@@ -1,0 +1,65 @@
+﻿@using Abp.Json
+@using PearAdmin.Abp.Resource.DataDictionaries.Dto
+@model DataDictionaryItemDto
+
+<form class="layui-form" lay-filter="dataDictionaryItem-form" style="padding: 15px 0 0 0;">
+    <input type="hidden" name="id" />
+    <input type="hidden" name="dataDictionaryId" />
+    <div class="layui-form-item">
+        <label class="layui-form-label">代码</label>
+        <div class="layui-input-block">
+            <input type="text" name="code" lay-verify="required" placeholder="请输入代码" autocomplete="off" class="layui-input @(Model.Id >0 ? "layui-disabled" : "")" @(Model.Id > 0 ? "readonly" : "")>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" placeholder="请输入名称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-hide" lay-submit lay-filter="dataDictionaryItem-submit" id="dataDictionaryItem-submit">提交</button>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+    <script type="text/javascript">
+        layui.use(['jquery', 'form'], function () {
+            var $ = layui.$,
+                form = layui.form;
+
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.iframeAuto(index);
+
+            form.val("dataDictionaryItem-form",@Html.Raw(JsonExtensions.ToJsonString(Model, true,false)));
+            form.render();
+
+            window.submitForm = function(){
+                $("#dataDictionaryItem-submit").click();
+            }
+
+            form.on('submit(dataDictionaryItem-submit)', function (data) {
+                var waitIndex = parent.layer.load(2);
+                abp.ajax({
+                    url: "@Url.Action(Model.Id>0 ? "UpdateDataDictionaryItem":"CreateDataDictionaryItem", "DataDictionary", new { area="Resource" })",
+                    data: JSON.stringify(data.field),
+                    abpHandleError: false
+                }).done(function (data) {
+                    if (data.code == 200) {
+                        data.index = index;
+                        let parentWindow = parent.selectedWindow().window;
+                        parentWindow.saveCallback(data);
+                    }
+                }).fail(function (jqXHR) {
+                    parent.layer.msg(jqXHR.message, { icon: 5 });
+                }).always(function () {
+                    parent.layer.close(waitIndex);
+                });
+
+                return false;
+            });
+        });
+    </script>
+}

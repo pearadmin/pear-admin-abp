@@ -1,0 +1,26 @@
+﻿@using System.Text
+@using System.Security.Cryptography
+@model PearAdmin.Abp.Admin.Views.Shared.Components.RightNavbarUserArea.RightNavbarUserAreaViewModel
+@{
+    var calculateNavId = new Func<string, string>((hashTarget) =>
+    {
+        using (var md5 = MD5.Create())
+        {
+            var md5ComputeHash = md5.ComputeHash(Encoding.UTF8.GetBytes(hashTarget));
+            var bitConverterResult = BitConverter.ToString(md5ComputeHash);
+            var replaceResult = bitConverterResult.Replace("-", "");
+            return replaceResult;
+        }
+    });
+}
+
+<li class="layui-nav-item" lay-unselect="">
+    <a href="javascript:;"><img src="@Url.Action("GetProfilePicture","Users")" class="layui-nav-img">@Html.Raw(Model.GetShownLoginName())</a>
+    <dl class="layui-nav-child">
+        <dd><a user-menu-url="@Url.Action("UserProfile","Users")" user-menu-id="@calculateNavId(Url.Action("UserProfile","Users"))" user-menu-title="@L("UserProfile")">@L("UserProfile")</a></dd>
+        <dd><a user-menu-url="@Url.Action("NotificationSetting","Users")" user-menu-id="@calculateNavId(Url.Action("NotificationSetting","Users"))" user-menu-title="@L("NotificationSetting")">@L("NotificationSetting")</a></dd>
+        <dd><a user-menu-url="@Url.Action("ChangePassword","Users")" user-menu-id="@calculateNavId(Url.Action("ChangePassword","Users"))" user-menu-title="@L("UpdatePassword")">@L("UpdatePassword")</a></dd>
+        <dd><a href="@Url.Action("Logout","Account")">@L("Logout")</a></dd>
+    </dl>
+</li>
+

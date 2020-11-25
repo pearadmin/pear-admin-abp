@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <VersionPrefix>1.0.0.0</VersionPrefix>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <AssemblyName>PearAdmin.Abp.Application</AssemblyName>
+    <PackageId>PearAdmin.Abp.Application</PackageId>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <RootNamespace>PearAdmin.Abp</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Resource\DataDictionaries\Dto - Copy\**" />
+    <EmbeddedResource Remove="Resource\DataDictionaries\Dto - Copy\**" />
+    <None Remove="Resource\DataDictionaries\Dto - Copy\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Resource\DataDictionaries\DataDictionaryAppService - Copy.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PearAdmin.Abp.Core\PearAdmin.Abp.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="5.2.0" />
+  </ItemGroup>
+</Project>
