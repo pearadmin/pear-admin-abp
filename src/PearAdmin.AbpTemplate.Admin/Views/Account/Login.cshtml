@@ -34,11 +34,12 @@
 
 @section scripts{
     <script type="text/javascript">
-        layui.use(['form', 'element', 'jquery'], function () {
+        layui.use(['abp', 'form', 'element', 'jquery'], function () {
             var $ = layui.jquery;
+            var abp = layui.abp;
             var form = layui.form;
             var element = layui.element;
-
+            
             abp.multiTenancy.setTenantIdCookie(@ViewBag.TenantId);
             form.render();
 

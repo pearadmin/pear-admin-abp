@@ -1,4 +1,5 @@
-﻿using Stateless;
+﻿using System.Collections.Generic;
+using Stateless;
 using Stateless.Graph;
 
 namespace PearAdmin.AbpTemplate.TaskCenter.DailyTasks
@@ -12,9 +13,10 @@ namespace PearAdmin.AbpTemplate.TaskCenter.DailyTasks
         /// </summary>
         private void StateMachineConfigure()
         {
-            _stateMachine = new StateMachine<TaskStateType, TaskOperateTrigger>(TaskState.TaskStateType);
+            _stateMachine = new StateMachine<TaskStateType, TaskOperateTrigger>(() => TaskState, s => TaskState = s);
 
             _stateMachine.Configure(TaskStateType.ToDo)
+                .OnEntry(() => ToDotGraph())
                 .Permit(TaskOperateTrigger.Progress, TaskStateType.Progressing)
                 .Permit(TaskOperateTrigger.Pend, TaskStateType.Pending)
                 .Permit(TaskOperateTrigger.Close, TaskStateType.Close);
@@ -34,6 +36,12 @@ namespace PearAdmin.AbpTemplate.TaskCenter.DailyTasks
 
             _stateMachine.Configure(TaskStateType.Pending)
                 .Permit(TaskOperateTrigger.Close, TaskStateType.Close);
+        }
+
+        public IEnumerable<TaskOperateTrigger> GetPermittedTriggers()
+        {
+            var triggers = _stateMachine.GetPermittedTriggers();
+            return triggers;
         }
 
         public string ToDotGraph()

@@ -15,9 +15,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
-using PearAdmin.AbpTemplate.Admin.Chat.SignalR;
 using PearAdmin.AbpTemplate.Admin.Configuration;
 using PearAdmin.AbpTemplate.Admin.Resources;
+using PearAdmin.AbpTemplate.Admin.SignalR;
 using PearAdmin.AbpTemplate.Identity;
 
 namespace PearAdmin.AbpTemplate.Admin
@@ -33,7 +33,6 @@ namespace PearAdmin.AbpTemplate.Admin
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            // MVC
             services.AddControllersWithViews(
                     options =>
                     {

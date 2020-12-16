@@ -21,10 +21,11 @@
 
 @section scripts{
     <script type="text/javascript">
-        layui.use(['jquery', 'form','table'], function () {
-            var $ = layui.$,
-                form = layui.form,
-                table = layui.table;
+        layui.use(['abp', 'form','table'], function () {
+            var $ = layui.jquery;
+            var abp = layui.abp;
+            var form = layui.form,
+            var table = layui.table;
 
             var index = parent.layer.getFrameIndex(window.name);
             parent.layer.iframeAuto(index);

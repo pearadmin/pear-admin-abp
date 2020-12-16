@@ -34,9 +34,10 @@
 
 @section scripts{
     <script type="text/javascript">
-        layui.use(['jquery', 'table'], function () {
+        layui.use(['abp', 'table'], function () {
             var $ = layui.$,
-                table = layui.table;
+            var abp = layui.abp;
+            var table = layui.table;
 
 		    table.render({
 		        elem: '#edition-table',

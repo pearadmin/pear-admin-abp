@@ -58,13 +58,15 @@
 </script>
 
 @section scripts{
-    <script src="~/js/chat.js" asp-append-version="true"></script>
-    <script src="~/js/chat.signalr.js" asp-append-version="true"></script>
+    <script src="~/libs/signalr/signalr.js"></script>
     <script type="text/javascript">
-        layui.use(['table', 'jquery', 'element', 'laytpl'], function () {
-            var $ = layui.$,
-                element = layui.element,
-                laytpl = layui.laytpl;
+        layui.use(['abp','table', 'element', 'laytpl','abpsignalrclient','abpsignalrchat'], function () {
+            var $ = layui.$;
+            var abp = layui.abp;
+            var element = layui.element;
+            var laytpl = layui.laytpl;
+            var app = layui.abpsignalrchat;
+
             var userList = {};
 
             //加载userList

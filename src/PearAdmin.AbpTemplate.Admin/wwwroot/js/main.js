@@ -1,20 +1,4 @@
 ﻿(function ($) {
-    //Notification handler
-    abp.event.on('abp.notifications.received', function (userNotification) {
-        abp.notifications.showUiNotifyForUserNotification(userNotification);
-
-        //Desktop notification
-        Push.create("AbpTemplate", {
-            body: userNotification.notification.data.message,
-            icon: abp.appPath + 'img/logo.png',
-            timeout: 6000,
-            onClick: function () {
-                window.focus();
-                this.close();
-            }
-        });
-    });
-
     //serializeFormToObject plugin for jQuery
     $.fn.serializeFormToObject = function (camelCased = false) {
         //serialize to array
@@ -35,30 +19,6 @@
 
         return obj;
     };
-
-    //Configure blockUI
-    if ($.blockUI) {
-        $.blockUI.defaults.baseZ = 2000;
-    }
-
-    //Configure validator
-    $.validator.setDefaults({
-        highlight: (el) => {
-            $(el).addClass('is-invalid');
-        },
-        unhighlight: (el) => {
-            $(el).removeClass('is-invalid');
-        },
-        errorElement: 'p',
-        errorClass: 'text-danger',
-        errorPlacement: (error, element) => {
-            if (element.parent('.input-group').length) {
-                error.insertAfter(element.parent());
-            } else {
-                error.insertAfter(element);
-            }
-        }
-    });
 
     function convertToCamelCasedObject(obj) {
         var newObj, origKey, newKey, value;
@@ -88,38 +48,6 @@
             }
         }
         return newObj;
-    }
-
-    function initAdvSearch() {
-        $('.abp-advanced-search').each((i, obj) => {
-            var $advSearch = $(obj);
-            setAdvSearchDropdownMenuWidth($advSearch);
-            setAdvSearchStopingPropagations($advSearch);
-        });
-    }
-
-    initAdvSearch();
-
-    $(window).resize(() => {
-        clearTimeout(window.resizingFinished);
-        window.resizingFinished = setTimeout(() => {
-            initAdvSearch();
-        }, 500);
-    });
-
-    function setAdvSearchDropdownMenuWidth($advSearch) {
-        var advSearchWidth = 0;
-        $advSearch.each((i, obj) => {
-            advSearchWidth += parseInt($(obj).width(), 10);
-        });
-        $advSearch.find('.dropdown-menu').width(advSearchWidth)
-    }
-
-    function setAdvSearchStopingPropagations($advSearch) {
-        $advSearch.find('.dd-menu, .btn-search, .txt-search')
-            .on('click', (e) => {
-                e.stopPropagation();
-            });
     }
 
     $.fn.clearForm = function () {

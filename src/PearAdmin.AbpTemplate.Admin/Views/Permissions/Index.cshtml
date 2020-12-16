@@ -33,10 +33,11 @@
 
 @section scripts{
     <script type="text/javascript">
-        layui.use(['jquery', 'form', 'table'], function () {
-            var $ = layui.jquery,
-                table = layui.table,
-                form = layui.form;
+        layui.use(['abp', 'form', 'table'], function () {
+            var $ = layui.jquery;
+            var abp = layui.abp;
+            var table = layui.table;
+            var form = layui.form;
 
             form.on('submit(permission-query)', function (data) {
 				table.reload('permission-table', {

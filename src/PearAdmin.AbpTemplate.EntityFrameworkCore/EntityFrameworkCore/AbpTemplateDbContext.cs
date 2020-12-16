@@ -8,7 +8,7 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore
 {
     public class AbpTemplateDbContext : AbpZeroDbContext<Tenant, Role, User, AbpTemplateDbContext>
     {
-        public virtual DbSet<Storage.BinaryObject> BinaryObject { get; set; }
+        public virtual DbSet<BinaryObjects.BinaryObject> BinaryObject { get; set; }
         public virtual DbSet<Social.Chat.ChatMessage> ChatMessage { get; set; }
         public virtual DbSet<Social.Friendships.Friendship> Friendship { get; set; }
         public virtual DbSet<Resource.DataDictionaries.DataDictionaryItem> DataDictionaryItem { get; set; }
@@ -26,8 +26,8 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore
             modelBuilder.Entity<TaskCenter.DailyTasks.DailyTask>()
                 .OwnsOne(a => a.TaskState, vo =>
                 {
-                    vo.Property(p => p.TaskStateType).HasColumnName("TaskStateType");
-                    vo.Ignore(p => p.TaskStateTypeName);
+                    vo.Property(p => p.Id).HasColumnName("TaskStateType");
+                    vo.Ignore(p => p.Name);
                 });
 
             modelBuilder.Entity<TaskCenter.DailyTasks.DailyTask>()

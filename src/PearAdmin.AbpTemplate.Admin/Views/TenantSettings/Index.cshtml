@@ -48,9 +48,10 @@
 
 @section scripts{
     <script type="text/javascript">
-        layui.use(['jquery', 'form', 'element'], function () {
-            var $ = layui.$,
-                form = layui.form;
+        layui.use(['abp', 'form', 'element'], function () {
+            var $ = layui.$;
+            var abp = layui.abp;
+            var form = layui.form;
 
             //初始化公司设置
             form.val("companySettings",@Html.Raw(JsonExtensions.ToJsonString(Model.CompanySettings,true,false)));

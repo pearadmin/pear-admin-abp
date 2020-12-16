@@ -34,6 +34,16 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
         }
 
         /// <summary>
+        /// 获取未读通知数量
+        /// </summary>
+        /// <returns></returns>
+        public async Task<JsonResult> GetUnreadNotificationCount()
+        {
+            var unreadNotificationCount = await _notificationAppService.UnreadMessageCount();
+            return Json(new ResponseParamSingleViewModel<int>(unreadNotificationCount));
+        }
+
+        /// <summary>
         /// 根据分页条件获取消息列表
         /// </summary>
         /// <param name="viewModel"></param>

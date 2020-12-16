@@ -1,6 +1,6 @@
 ﻿/**
  * 树形表格 1.x
- * date:2018-07-22   License By https://easyweb.vip
+ * date:2018-07-22 License By https://easyweb.vip
  */
 layui.define(['layer', 'table'], function (exports) {
     var $ = layui.jquery;
@@ -19,7 +19,7 @@ layui.define(['layer', 'table'], function (exports) {
                 treetable.init(param, param.data);
             } else {
                 $.getJSON(param.url, param.where, function (res) {
-                    if(param.parseData){
+                    if (param.parseData) {
                         res.data = param.parseData(res);
                         param.data = res.data;
                     }
@@ -37,14 +37,14 @@ layui.define(['layer', 'table'], function (exports) {
                 var tt = tNodes[i];
                 if (!tt.id) {
                     if (!param.treeIdName) {
-                        layer.msg('参数treeIdName不能为空', {icon: 5});
+                        layer.msg('参数treeIdName不能为空', { icon: 5 });
                         return;
                     }
                     tt.id = tt[param.treeIdName];
                 }
                 if (!tt.pid) {
                     if (!param.treePidName) {
-                        layer.msg('参数treePidName不能为空', {icon: 5});
+                        layer.msg('参数treePidName不能为空', { icon: 5 });
                         return;
                     }
                     tt.pid = tt[param.treePidName];
@@ -164,12 +164,12 @@ layui.define(['layer', 'table'], function (exports) {
         // 检查参数
         checkParam: function (param) {
             if (!param.treeSpid && param.treeSpid != 0) {
-                layer.msg('参数treeSpid不能为空', {icon: 5});
+                layer.msg('参数treeSpid不能为空', { icon: 5 });
                 return false;
             }
 
             if (!param.treeColIndex && param.treeColIndex != 0) {
-                layer.msg('参数treeColIndex不能为空', {icon: 5});
+                layer.msg('参数treeColIndex不能为空', { icon: 5 });
                 return false;
             }
             return true;
@@ -197,8 +197,6 @@ layui.define(['layer', 'table'], function (exports) {
             });
         }
     };
-
-
 
     // 给图标列绑定事件
     $('body').on('click', '.treeTable .treeTable-icon', function () {

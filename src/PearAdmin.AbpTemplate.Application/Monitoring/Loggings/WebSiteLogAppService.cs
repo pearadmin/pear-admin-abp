@@ -1,13 +1,13 @@
-﻿using PearAdmin.AbpTemplate.CommonDto;
-using PearAdmin.AbpTemplate.IO;
-using PearAdmin.AbpTemplate.Loggings.Dto;
-using PearAdmin.AbpTemplate.Net.MimeTypes;
-using PearAdmin.AbpTemplate.Storage;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using PearAdmin.AbpTemplate.CommonDto;
+using PearAdmin.AbpTemplate.IO;
+using PearAdmin.AbpTemplate.Loggings.Dto;
+using PearAdmin.AbpTemplate.Net.MimeTypes;
+using PearAdmin.AbpTemplate.TempFileCaches;
 
 namespace PearAdmin.AbpTemplate.Loggings
 {

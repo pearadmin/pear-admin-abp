@@ -52,6 +52,41 @@ namespace PearAdmin.AbpTemplate.TaskCenter.DailyTasks
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
+        Task ProgressDailyTask(EntityDto<Guid> input);
+
+        /// <summary>
+        /// 重新解决日常任务
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task ResolveDailyTask(EntityDto<Guid> input);
+
+        /// <summary>
+        /// 重新打开日常任务
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         Task ReopenDailyTask(EntityDto<Guid> input);
+
+        /// <summary>
+        /// 日常任务
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task QualifyDailyTask(EntityDto<Guid> input);
+
+        /// <summary>
+        /// 推迟日常任务
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task PendDailyTask(EntityDto<Guid> input);
+
+        /// <summary>
+        /// 关闭日常任务
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task CloseDailyTask(EntityDto<Guid> input);
     }
 }

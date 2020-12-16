@@ -11,6 +11,10 @@ namespace PearAdmin.AbpTemplate.Shared
 
         public int Id { get; private set; }
 
+        protected Enumeration()
+        {
+        }
+
         protected Enumeration(int id, string name)
         {
             Id = id;

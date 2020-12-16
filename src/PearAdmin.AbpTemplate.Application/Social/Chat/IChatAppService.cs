@@ -11,7 +11,7 @@ namespace PearAdmin.AbpTemplate.Social.Chat
 
         Task<ListResultDto<ChatMessageDto>> GetUserChatMessages(GetUserChatMessagesInput input);
 
-        Task<bool> IsExistUnreadMessage();
+        Task<int> UnreadMessageCount();
 
         Task MarkAllUnreadMessagesOfUserAsRead(MarkAllUnreadMessagesOfUserAsReadInput input);
     }

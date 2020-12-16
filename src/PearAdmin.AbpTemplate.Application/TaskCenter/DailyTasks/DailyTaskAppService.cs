@@ -7,6 +7,7 @@ using PearAdmin.AbpTemplate.Notifications;
 using PearAdmin.AbpTemplate.TaskCenter.DailyTasks.Dto;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PearAdmin.AbpTemplate.TaskCenter.DailyTasks
@@ -52,13 +53,6 @@ namespace PearAdmin.AbpTemplate.TaskCenter.DailyTasks
             }
         }
 
-        public async Task ReopenDailyTask(EntityDto<Guid> input)
-        {
-            var dailyTask = await _dailyTaskRepository.GetAsync(input.Id);
-            dailyTask.Reopen();
-            await _dailyTaskRepository.UpdateAsync(dailyTask);
-        }
-
         public async Task<PagedResultDto<DailyTaskDto>> GetPagedDailyTask(GetPagedDailyTaskInput input)
         {
             var query = _dailyTaskRepository.GetAll()
@@ -69,9 +63,14 @@ namespace PearAdmin.AbpTemplate.TaskCenter.DailyTasks
             var totalCount = await query.CountAsync();
             var items = await query.PageBy(input).ToListAsync();
 
-            var dailyTaskDtos = ObjectMapper.Map<List<DailyTaskDto>>(items);
-
-            return new PagedResultDto<DailyTaskDto>(totalCount, dailyTaskDtos);
+            return new PagedResultDto<DailyTaskDto>(totalCount,
+                items.Select(item =>
+                {
+                    var dto = ObjectMapper.Map<DailyTaskDto>(item);
+                    dto.Triggers = item.GetPermittedTriggers().ToList();
+                    return dto;
+                })
+                .ToList());
         }
 
         public async Task<DailyTaskDto> GetDailyTaskForEdit(NullableIdDto<Guid> input)
@@ -86,6 +85,48 @@ namespace PearAdmin.AbpTemplate.TaskCenter.DailyTasks
             {
                 return new DailyTaskDto();
             }
+        }
+
+        public async Task ProgressDailyTask(EntityDto<Guid> input)
+        {
+            var dailyTask = await _dailyTaskRepository.GetAsync(input.Id);
+            dailyTask.Progress();
+            await _dailyTaskRepository.UpdateAsync(dailyTask);
+        }
+
+        public async Task ReopenDailyTask(EntityDto<Guid> input)
+        {
+            var dailyTask = await _dailyTaskRepository.GetAsync(input.Id);
+            dailyTask.Reopen();
+            await _dailyTaskRepository.UpdateAsync(dailyTask);
+        }
+
+        public async Task ResolveDailyTask(EntityDto<Guid> input)
+        {
+            var dailyTask = await _dailyTaskRepository.GetAsync(input.Id);
+            dailyTask.Resolve();
+            await _dailyTaskRepository.UpdateAsync(dailyTask);
+        }
+
+        public async Task QualifyDailyTask(EntityDto<Guid> input)
+        {
+            var dailyTask = await _dailyTaskRepository.GetAsync(input.Id);
+            dailyTask.Qualify();
+            await _dailyTaskRepository.UpdateAsync(dailyTask);
+        }
+
+        public async Task PendDailyTask(EntityDto<Guid> input)
+        {
+            var dailyTask = await _dailyTaskRepository.GetAsync(input.Id);
+            dailyTask.Pend();
+            await _dailyTaskRepository.UpdateAsync(dailyTask);
+        }
+
+        public async Task CloseDailyTask(EntityDto<Guid> input)
+        {
+            var dailyTask = await _dailyTaskRepository.GetAsync(input.Id);
+            dailyTask.Close();
+            await _dailyTaskRepository.UpdateAsync(dailyTask);
         }
     }
 }

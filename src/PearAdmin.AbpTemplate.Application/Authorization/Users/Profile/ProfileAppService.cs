@@ -1,15 +1,14 @@
-﻿using Abp;
+﻿using System;
+using System.Drawing;
+using System.IO;
+using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Auditing;
 using Abp.Authorization;
 using Abp.Runtime.Session;
 using Abp.UI;
 using PearAdmin.AbpTemplate.Authorization.Users.Profile.Dto;
-using PearAdmin.AbpTemplate.Storage;
-using System;
-using System.Drawing;
-using System.IO;
-using System.Threading.Tasks;
+using PearAdmin.AbpTemplate.BinaryObjects;
 
 namespace PearAdmin.AbpTemplate.Authorization.Users.Profile
 {
@@ -18,14 +17,10 @@ namespace PearAdmin.AbpTemplate.Authorization.Users.Profile
     {
         private const int MaxProfilPictureBytes = 5242880; //5MB
         private readonly IBinaryObjectManager _binaryObjectManager;
-        private readonly ITempFileCacheManager _tempFileCacheManager;
 
-        public ProfileAppService(
-            IBinaryObjectManager binaryObjectManager,
-            ITempFileCacheManager tempFileCacheManager)
+        public ProfileAppService(IBinaryObjectManager binaryObjectManager)
         {
             _binaryObjectManager = binaryObjectManager;
-            _tempFileCacheManager = tempFileCacheManager;
         }
 
         public async Task ChangePassword(ChangePasswordDto input)

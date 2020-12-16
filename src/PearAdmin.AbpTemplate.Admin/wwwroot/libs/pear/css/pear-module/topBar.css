@@ -1,5 +1,19 @@
-.layui-fixbar li{
-				border-radius: 4px;
-				background-color: #5FB878;
-				color: white;
-			}
+.layui-fixbar {
+    position: fixed;
+    bottom: 6.00rem;
+    right: 2.15rem;
+    z-index: 9999;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    border-radius: 50px;
+    font-size: 23px;
+    overflow: hidden;
+}
+
+    .layui-fixbar li {
+        border-radius: 4px;
+        background-color: #5FB878;
+        color: white;
+    }

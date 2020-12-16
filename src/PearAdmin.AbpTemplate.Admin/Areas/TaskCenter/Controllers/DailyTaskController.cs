@@ -96,5 +96,53 @@ namespace PearAdmin.AbpTemplate.Admin.Areas.TaskCenter.Controllers
 
             return Json(new ResponseParamViewModel(L("DeleteDailyTaskSuccessful")));
         }
+
+        [HttpPost]
+        public async Task<JsonResult> ProgressDailyTask([FromBody]EntityDto<Guid> input)
+        {
+            await _dailyTaskAppService.ProgressDailyTask(input);
+
+            return Json(new ResponseParamViewModel(L("ProgressDailyTaskSuccessful")));
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ResolveDailyTask([FromBody]EntityDto<Guid> input)
+        {
+            await _dailyTaskAppService.ResolveDailyTask(input);
+
+            return Json(new ResponseParamViewModel(L("ResolveDailyTaskSuccessful")));
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ReopenDailyTask([FromBody]EntityDto<Guid> input)
+        {
+            await _dailyTaskAppService.ReopenDailyTask(input);
+
+            return Json(new ResponseParamViewModel(L("ReopenDailyTaskSuccessful")));
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> QualifyDailyTask([FromBody]EntityDto<Guid> input)
+        {
+            await _dailyTaskAppService.QualifyDailyTask(input);
+
+            return Json(new ResponseParamViewModel(L("QualifyDailyTaskSuccessful")));
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> PendDailyTask([FromBody]EntityDto<Guid> input)
+        {
+            await _dailyTaskAppService.PendDailyTask(input);
+
+            return Json(new ResponseParamViewModel(L("PendDailyTaskSuccessful")));
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> CloseDailyTask([FromBody]EntityDto<Guid> input)
+        {
+            await _dailyTaskAppService.CloseDailyTask(input);
+
+            return Json(new ResponseParamViewModel(L("CloseDailyTaskSuccessful")));
+        }
     }
 }
