@@ -250,6 +250,5 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
-/src/Partner.Surround.Web.Mvc/App_Data/Logs
-/src/Partner.Surround.Admin/App_Data/Logs
 /.vs
+/src/PearAdmin.AbpTemplate.Admin/App_Data/Logs
