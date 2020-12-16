@@ -83,10 +83,11 @@
 
 @section scripts{
     <script type="text/javascript">
-        layui.use(['form', 'table', 'dtree'], function () {
-            var form = layui.form,
-                table = layui.table,
-                dtree = layui.dtree;
+        layui.use(['abp', 'form', 'table', 'dtree'], function () {
+            var abp = layui.abp;
+            var form = layui.form;
+            var table = layui.table;
+            var dtree = layui.dtree;
 
             dtree.render({
 				elem: "#organization-tree",

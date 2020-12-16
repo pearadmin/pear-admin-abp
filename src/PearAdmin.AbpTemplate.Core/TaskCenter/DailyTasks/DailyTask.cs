@@ -17,14 +17,13 @@ namespace PearAdmin.AbpTemplate.TaskCenter.DailyTasks
 
         private DailyTask()
         {
-            //For EFCore
+            StateMachineConfigure();
         }
 
-        private DailyTask(string name)
+        private DailyTask(string name) : this()
         {
-            TaskState = new TaskState();
+            TaskState = TaskStateType.ToDo;
             SetName(name);
-            StateMachineConfigure();
         }
 
         public static DailyTask Create(string name)
@@ -39,7 +38,7 @@ namespace PearAdmin.AbpTemplate.TaskCenter.DailyTasks
         public string Remark { get; private set; }
 
         public DateRange DateRange { get; private set; }
-        public TaskState TaskState { get; private set; }
+        public TaskStateType TaskState { get; private set; }
 
         public DailyTask SetName(string name)
         {
@@ -65,6 +64,18 @@ namespace PearAdmin.AbpTemplate.TaskCenter.DailyTasks
             return this;
         }
 
+        public DailyTask Progress()
+        {
+            _stateMachine.Fire(TaskOperateTrigger.Progress);
+            return this;
+        }
+
+        public DailyTask Resolve()
+        {
+            _stateMachine.Fire(TaskOperateTrigger.Resolve);
+            return this;
+        }
+
         public DailyTask Reopen()
         {
             _stateMachine.Fire(TaskOperateTrigger.Reopen);
@@ -74,6 +85,18 @@ namespace PearAdmin.AbpTemplate.TaskCenter.DailyTasks
         public DailyTask Qualify()
         {
             _stateMachine.Fire(TaskOperateTrigger.Qualify);
+            return this;
+        }
+
+        public DailyTask Pend()
+        {
+            _stateMachine.Fire(TaskOperateTrigger.Pend);
+            return this;
+        }
+
+        public DailyTask Close()
+        {
+            _stateMachine.Fire(TaskOperateTrigger.Close);
             return this;
         }
     }

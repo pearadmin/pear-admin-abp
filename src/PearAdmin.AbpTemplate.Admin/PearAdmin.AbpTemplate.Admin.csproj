@@ -15,32 +15,6 @@
     <PreserveCompilationReferences>true</PreserveCompilationReferences>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="wwwroot\libs\admin-lte\**" />
-    <Compile Remove="wwwroot\libs\bootstrap\**" />
-    <Compile Remove="wwwroot\libs\chartjs\**" />
-    <Compile Remove="wwwroot\libs\datatables\**" />
-    <Compile Remove="wwwroot\libs\font-awesome\**" />
-    <Compile Remove="wwwroot\libs\icheck-bootstrap\**" />
-    <Content Remove="wwwroot\libs\admin-lte\**" />
-    <Content Remove="wwwroot\libs\bootstrap\**" />
-    <Content Remove="wwwroot\libs\chartjs\**" />
-    <Content Remove="wwwroot\libs\datatables\**" />
-    <Content Remove="wwwroot\libs\font-awesome\**" />
-    <Content Remove="wwwroot\libs\icheck-bootstrap\**" />
-    <EmbeddedResource Remove="wwwroot\libs\admin-lte\**" />
-    <EmbeddedResource Remove="wwwroot\libs\bootstrap\**" />
-    <EmbeddedResource Remove="wwwroot\libs\chartjs\**" />
-    <EmbeddedResource Remove="wwwroot\libs\datatables\**" />
-    <EmbeddedResource Remove="wwwroot\libs\font-awesome\**" />
-    <EmbeddedResource Remove="wwwroot\libs\icheck-bootstrap\**" />
-    <None Remove="wwwroot\libs\admin-lte\**" />
-    <None Remove="wwwroot\libs\bootstrap\**" />
-    <None Remove="wwwroot\libs\chartjs\**" />
-    <None Remove="wwwroot\libs\datatables\**" />
-    <None Remove="wwwroot\libs\font-awesome\**" />
-    <None Remove="wwwroot\libs\icheck-bootstrap\**" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="wwwroot\libs\layui\font\iconfont.svg" />
     <None Include="wwwroot\libs\layui\font\iconfont.woff2" />
     <None Include="wwwroot\libs\layui\lay\modules\carousel.js" />
@@ -88,7 +62,6 @@
     <PackageReference Include="Abp.AspNetCore" Version="5.9.0" />
     <PackageReference Include="Abp.AspNetCore.SignalR" Version="5.10.1" />
     <PackageReference Include="Abp.ZeroCore" Version="5.9.0" />
-    <PackageReference Include="BuildBundlerMinifier" Version="3.2.447" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.4">

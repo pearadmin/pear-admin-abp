@@ -1,53 +1,51 @@
-﻿namespace PearAdmin.AbpTemplate.TaskCenter.DailyTasks
+﻿using PearAdmin.AbpTemplate.Shared;
+
+namespace PearAdmin.AbpTemplate.TaskCenter.DailyTasks
 {
     /// <summary>
     /// 任务状态类型
     /// </summary>
-    public enum TaskStateType
+    public class TaskStateType : Enumeration
     {
-        //待定
-        ToDo = 0,
+        public static TaskStateType ToDo = new TaskStateType(0, nameof(ToDo));
+        public static TaskStateType Progressing = new TaskStateType(3, nameof(Progressing));
+        public static TaskStateType Resolved = new TaskStateType(6, nameof(Resolved));
+        public static TaskStateType Done = new TaskStateType(9, nameof(Done));
+        public static TaskStateType Reopen = new TaskStateType(12, nameof(Reopen));
+        public static TaskStateType Pending = new TaskStateType(15, nameof(Pending));
+        public static TaskStateType Close = new TaskStateType(18, nameof(Close));
 
-        //进行中
-        Progressing = 3,
+        private TaskStateType() : base()
+        {
 
-        //已解决
-        Resolved = 6,
+        }
 
-        //已完成
-        Done = 9,
+        public TaskStateType(int id, string name) : base(id, name)
+        {
 
-        //重新打开
-        Reopen = 12,
-
-        //搁置
-        Pending = 15,
-
-        //关闭
-        Close = 18
+        }
     }
 
     /// <summary>
     /// 任务操作
     /// </summary>
-    public enum TaskOperateTrigger
+    public class TaskOperateTrigger : Enumeration
     {
-        //执行
-        Progress = 0,
+        public static TaskOperateTrigger Progress = new TaskOperateTrigger(0, nameof(Progress));
+        public static TaskOperateTrigger Resolve = new TaskOperateTrigger(3, nameof(Resolve));
+        public static TaskOperateTrigger Reopen = new TaskOperateTrigger(6, nameof(Reopen));
+        public static TaskOperateTrigger Qualify = new TaskOperateTrigger(9, nameof(Qualify));
+        public static TaskOperateTrigger Pend = new TaskOperateTrigger(12, nameof(Pend));
+        public static TaskOperateTrigger Close = new TaskOperateTrigger(15, nameof(Close));
 
-        //解决
-        Resolve = 3,
+        private TaskOperateTrigger() : base()
+        {
 
-        //未解决
-        Reopen = 6,
+        }
 
-        //合格
-        Qualify = 9,
+        public TaskOperateTrigger(int id, string name) : base(id, name)
+        {
 
-        //搁置
-        Pend = 12,
-
-        //关闭
-        Close = 15,
+        }
     }
 }

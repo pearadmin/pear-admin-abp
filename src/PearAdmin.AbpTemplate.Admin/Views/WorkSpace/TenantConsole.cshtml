@@ -202,11 +202,11 @@
 
 @section scripts{
     <script type="text/javascript">
-        layui.use(['layer', 'echarts', 'element'], function () {
-            var $ = layui.jquery,
-                layer = layui.layer,
-                element = layui.element,
-                echarts = layui.echarts;
+        layui.use(['layer', 'echarts', 'element', 'topBar'], function () {
+            var $ = layui.jquery;
+            var layer = layui.layer;
+            var element = layui.element;
+            var echarts = layui.echarts;
 
             var echartsRecords = echarts.init(document.getElementById('echarts-records'), 'walden');
 

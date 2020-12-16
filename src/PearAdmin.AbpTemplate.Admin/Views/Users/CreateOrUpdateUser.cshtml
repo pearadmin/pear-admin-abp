@@ -74,11 +74,12 @@
 
 @section scripts{
     <script type="text/javascript">
-        layui.use(['jquery', 'element', 'form', 'dtree'], function () {
-            var $ = layui.$,
-                element = layui.element,
-                form = layui.form,
-                dtree = layui.dtree;
+        layui.use(['abp', 'element', 'form', 'dtree'], function () {
+            var $ = layui.jquery;
+            var abp = layui.abp;
+            var element = layui.element;
+            var form = layui.form;
+            var dtree = layui.dtree;
 
             var index = parent.layer.getFrameIndex(window.name);
             parent.layer.iframeAuto(index);

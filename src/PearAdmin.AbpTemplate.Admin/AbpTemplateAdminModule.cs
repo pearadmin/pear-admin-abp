@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using Abp.AspNetCore;
-using Abp.AspNetCore.Configuration;
 using Abp.AspNetCore.SignalR;
 using Abp.Modules;
 using Abp.Reflection.Extensions;

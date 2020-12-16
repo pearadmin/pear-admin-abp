@@ -7,6 +7,14 @@ layui.config({
 	base: rootPath + "module/",
 	version: true
 }).extend({
+	abp: "abp",
+	abpcore: "abpcore",
+	abpjquery: "abpjquery",
+	abpnotice: "abpnotice",
+	abpmessage: "abpmessage",
+	abpsignalr: "abpsignalr",
+	abpsignalrclient: "abpsignalrclient",
+	abpsignalrchat: "abpsignalrchat",
 	admin: "admin",
 	menu: "menu",
 	frame: "frame",
@@ -16,7 +24,7 @@ layui.config({
 	hash: "hash",
 	select: "select",
 	drawer: "drawer",
-	notice: "notice",
+	social: "social",
 	step: "step",
 	tag: "tag",
 	popup: "popup",

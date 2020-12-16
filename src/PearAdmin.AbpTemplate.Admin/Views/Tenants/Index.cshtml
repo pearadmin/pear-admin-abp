@@ -19,9 +19,10 @@
 
 @section scripts{
     <script type="text/javascript">
-        layui.use(['jquery', 'table'], function () {
-            var $ = layui.$,
-                table = layui.table;
+        layui.use(['abp', 'table'], function () {
+            var $ = layui.jquery;
+            var abp = layui.abp;
+            var table = layui.table;
 
 		    table.render({
 		        elem: '#tenant-table',

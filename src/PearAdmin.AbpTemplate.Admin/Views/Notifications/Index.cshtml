@@ -48,14 +48,15 @@
 
 @section scripts{
     <script type="text/javascript">
-        layui.use(['element','table'], function () {
-            var table = layui.table,
-                element = layui.element;
+        layui.use(['abp', 'element', 'table'], function () {
+            var abp = layui.abp;
+            var table = layui.table;
+            var element = layui.element;
 
             table.render({
 		        elem: '#notification-table',
                 url: '@Url.Action("GetUserNotificationList", "Notifications")',
-                height: 'full-150',
+                height: 'full-70',
                 page: true,
                 parseData: function (res) {
                     return {

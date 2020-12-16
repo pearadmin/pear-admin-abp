@@ -1,5 +1,6 @@
 ﻿@using PearAdmin.AbpTemplate.Admin.ViewResources
 @using PearAdmin.AbpTemplate.Authorization
+@using PearAdmin.AbpTemplate.TaskCenter.DailyTasks
 @{
     ViewBag.CurrentPageName = PageNames.DailyTask;
 }
@@ -49,12 +50,19 @@
 <script type="text/html" id="dailyTask-bar">
     @if (await PermissionChecker.IsGrantedAsync(AppPermissionNames.Pages_TaskCenter_DailyTasks_Update))
     {
-        <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
+        <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit">
+            <i class="layui-icon layui-icon-edit"></i>
+        </button>
     }
     @if (await PermissionChecker.IsGrantedAsync(AppPermissionNames.Pages_TaskCenter_DailyTasks_Delete))
     {
-        <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+        <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove">
+            <i class="layui-icon layui-icon-delete"></i>
+        </button>
     }
+    <button class="pear-btn pear-btn-primary pear-btn-sm" id="more{{d.id}}">
+        <i class="layui-icon layui-icon-triangle-d"></i>
+    </button>
 </script>
 
 <!--时间段-->
@@ -69,12 +77,40 @@
     </div>
 </script>
 
+<!--更多操作-->
+<script id="moreTool" type="text/plain">
+    [
+    {{#  layui.each(d.triggers, function(index, item){ }}
+    {{# if(item.id == @TaskOperateTrigger.Progress.Id){ }}
+    [{txt: "@TaskOperateTrigger.Progress.Name", event: "@TaskOperateTrigger.Progress.Name.ToLower()"}]
+    {{#  }  }}
+    {{# if(item.id == @TaskOperateTrigger.Resolve.Id){ }}
+    [{txt: "@TaskOperateTrigger.Resolve.Name", event: "@TaskOperateTrigger.Resolve.Name.ToLower()"}]
+    {{#  }  }}
+    {{# if(item.id == @TaskOperateTrigger.Reopen.Id){ }}
+    [{txt: "@TaskOperateTrigger.Reopen.Name", event: "@TaskOperateTrigger.Reopen.Name.ToLower()"}]
+    {{#  }  }}
+    {{# if(item.id == @TaskOperateTrigger.Qualify.Id){ }}
+    [{txt: "@TaskOperateTrigger.Qualify.Name", event: "@TaskOperateTrigger.Qualify.Name.ToLower()"}]
+    {{#  }  }}
+    {{# if(item.id == @TaskOperateTrigger.Pend.Id){ }}
+    [{txt: "@TaskOperateTrigger.Pend.Name", event: "@TaskOperateTrigger.Pend.Name.ToLower()"}]
+    {{#  }  }}
+    {{# if(item.id == @TaskOperateTrigger.Close.Id){ }}
+    [{txt: "@TaskOperateTrigger.Close.Name", event: "@TaskOperateTrigger.Close.Name.ToLower()"}]
+    {{#  }  }}
+    {{#  });  }}
+    ]
+</script>
+
 @section scripts{
     <script type="text/javascript">
-        layui.use(['jquery', 'form', 'table'], function () {
-            var $ = layui.$,
-                form = layui.form,
-                table = layui.table;
+        layui.use(['abp', 'form', 'table', 'dropdown'], function () {
+            var $ = layui.$;
+            var abp = layui.abp;
+            var form = layui.form;
+            var table = layui.table;
+            var dropdown = layui.dropdown;
 
 		    table.render({
 		        elem: '#dailyTask-table',
@@ -95,11 +131,11 @@
 		        cols: [
 		            [
                         { type: 'checkbox' },
-                        { title: '任务名', field: 'name', align: 'left', width: 290 },
-                        { title: '备注', field: 'remark', align: 'left', width: 280 },
+                        { title: '任务名', field: 'name', align: 'left', width: 270 },
+                        { title: '备注', field: 'remark', align: 'left', width: 260 },
                         { title: '时间段', field: 'dateRange', align: 'left',  templet: '#dailyTask-dateRange' },
                         { title: '状态', field: 'taskStateTypeName', align: 'center', width: 100 },
-                        { title: '操作', toolbar: '#dailyTask-bar', align: 'center', width: 180 }
+                        { title: '操作', toolbar: '#dailyTask-bar', align: 'left' }
 		            ]
 		        ],
 		        skin: 'line',
@@ -107,7 +143,21 @@
 		        defaultToolbar: [{
 		            layEvent: 'refresh',
 		            icon: 'layui-icon-refresh',
-		        }, 'filter', 'print', 'exports']
+                }, 'filter', 'print', 'exports'],
+                done: function (res) {
+                    for (var i = 0; i < res.data.length; i++) {
+                        if (res.data[i].triggers.length == 0) {
+                            $("#more" + res.data[i].id).hide();
+                            continue;
+                        }
+
+                        dropdown.suite("#more" + res.data[i].id, {
+                            align:'left',
+                            data: res.data[i],
+                            templateMenu: "moreTool",
+                        });
+                    }
+                }
 		    });
 
             table.on('tool(dailyTask-table)', function (obj) {
@@ -116,7 +166,37 @@
                     window.remove([{ "id": data.id }]);
 		        } else if(obj.event === 'edit'){
 		            window.edit(data);
-		        }
+		        } else if (obj.event === "@TaskOperateTrigger.Progress.Name.ToLower()") {
+                    window.trigger({
+                        "id": data.id,
+                        "url": "@Url.Action("ProgressDailyTask", "DailyTask", new { area= "TaskCenter" })"
+                    });
+                } else if (obj.event === "@TaskOperateTrigger.Resolve.Name.ToLower()") {
+                    window.trigger({
+                        "id": data.id,
+                        "url": "@Url.Action("ResolveDailyTask", "DailyTask", new { area= "TaskCenter" })"
+                    });
+                } else if (obj.event === "@TaskOperateTrigger.Reopen.Name.ToLower()") {
+                    window.trigger({
+                        "id": data.id,
+                        "url": "@Url.Action("ReopenDailyTask", "DailyTask", new { area= "TaskCenter" })"
+                    });
+                } else if (obj.event === "@TaskOperateTrigger.Qualify.Name.ToLower()") {
+                    window.trigger({
+                        "id": data.id,
+                        "url": "@Url.Action("QualifyDailyTask", "DailyTask", new { area= "TaskCenter" })"
+                    });
+                } else if (obj.event === "@TaskOperateTrigger.Pend.Name.ToLower()") {
+                    window.trigger({
+                        "id": data.id,
+                        "url": "@Url.Action("PendDailyTask", "DailyTask", new { area= "TaskCenter" })"
+                    });
+                } else if (obj.event === "@TaskOperateTrigger.Close.Name.ToLower()") {
+                    window.trigger({
+                        "id": data.id,
+                        "url": "@Url.Action("CloseDailyTask", "DailyTask", new { area= "TaskCenter" })"
+                    });
+                }
 		    });
 
 		    table.on('toolbar(dailyTask-table)', function(obj){
@@ -182,13 +262,31 @@
                 });
 		    }
 
+            window.trigger = function (data) {
+                let waitIndex = parent.layer.load(2);
+                abp.ajax({
+                    url: data.url,
+                    data: JSON.stringify({ "id": data.id }),
+					abpHandleError: false
+                }).done(function (data) {
+                    if (data.code == 200) {
+                        abp.notify.success(data.msg);
+                        table.reload('dailyTask-table');
+                    }
+                }).fail(function (jqXHR) {
+                    parent.layer.msg(jqXHR.message, { icon: 5 });
+                }).always(function () {
+                    parent.layer.close(waitIndex);
+                });
+            }
+
             window.remove = function (data) {
                 parent.layer.confirm('确定删除吗?', {
 					icon: 3,
 					title: '提示'
                 }, function (index) {
                     parent.layer.close(index);
-					let waitIndex = parent.layer.load(2);
+                    let waitIndex = parent.layer.load(2);
                     abp.ajax({
                         url: "@Url.Action("DeleteDailyTask", "DailyTask", new { area= "TaskCenter" })",
                         data: JSON.stringify(data),

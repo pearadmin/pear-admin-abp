@@ -8,23 +8,24 @@
     ViewBag.CurrentPageName = PageNames.HomePage;
 }
 
-@section styles{
-    <link href="~/libs-ext/famfamfam-flags/dist/sprite/famfamfam-flags.min.css" rel="stylesheet" asp-append-version="true" />
-}
-
 <!-- 布局框架 -->
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
         <ul class="layui-nav layui-layout-left">
-            <li class="collaspe layui-nav-item layui-hide-xs"><a href="#" class="layui-icon layui-icon-shrink-right"></a></li>
-            <li class="refresh layui-nav-item"><a href="#" class="layui-icon layui-icon-refresh-1"></a></li>
+            <li class="collaspe layui-nav-item"><a href="#" class="layui-icon layui-icon-shrink-right"></a></li>
+            <li class="refresh layui-nav-item"><a href="#" class="layui-icon layui-icon-refresh-1" loading=600></a></li>
         </ul>
         <div id="control" class="layui-layout-control"></div>
         <ul class="layui-nav layui-layout-right">
             @*@await Component.InvokeAsync(typeof(RightNavbarLanguageSwitchViewComponent))*@
             <li class="layui-nav-item layui-hide-xs"><a href="#" class="fullScreen layui-icon layui-icon-screen-full"></a></li>
             <li class="layui-nav-item layui-hide-xs"><a href="https://gitee.com/530521314/PearAdmin.AbpTemplate" class="layui-icon layui-icon-website"></a></li>
-            <li class="layui-nav-item layui-hide-xs" id="headerNotice"></li>
+            <li class="layui-nav-item layui-hide-xs">
+                <a class="notice">
+                    <i class="layui-icon layui-icon-notice"></i>
+                    <span id="headerNotice"></span>
+                </a>
+            </li>
             @await Component.InvokeAsync(typeof(RightNavbarUserAreaViewComponent))
             <li class="setting layui-nav-item"><a href="#" class="layui-icon layui-icon-more-vertical"></a></li>
         </ul>
@@ -60,14 +61,14 @@
 </div>
 
 @section scripts{
-    <script src="~/js/chat.js" asp-append-version="true"></script>
-    <script src="~/js/chat.signalr.js" asp-append-version="true"></script>
+    <script src="~/libs/signalr/signalr.js"></script>
     <script type="text/javascript">
-        layui.use(['admin', 'jquery', 'layer', 'hash'], function () {
+        layui.use(['admin', 'layer', 'hash', 'abp', 'abpsignalrclient','abpsignalrchat'], function () {
             var admin = layui.admin;
             var $ = layui.jquery;
             var layer = layui.layer;
             var hash = layui.hash;
+            var abp = layui.abp;
             var interval = "";
             var chatPanelIndex = "";
 
@@ -117,28 +118,27 @@
                     {
 			            id: "5",
 			            color: "darkgray"
+                    },
+                    {
+			            id: "6",
+			            color: "#f7cfea"
 		            }
                 ],
                 links: [
                     {
 			            icon: "layui-icon layui-icon-website",
-			            title: "官方网站",
+			            title: "Pear Admin网站",
 			            href: "http://www.pearadmin.com"
 		            },
 		            {
 			            icon: "layui-icon layui-icon-read",
-			            title: "开发文档",
-			            href: "http://www.pearadmin.com/doc/"
+			            title: "Abp网站",
+			            href: "https://aspnetboilerplate.com/"
 		            },
 		            {
 			            icon: "layui-icon layui-icon-fonts-code",
-			            title: "开源地址",
-			            href: "https://gitee.com/Jmysy/Pear-Admin-Layui"
-		            },
-		            {
-			            icon: "layui-icon layui-icon-survey",
-			            title: "问答社区",
-			            href: "http://forum.pearadmin.com/"
+			            title: "Gitee地址",
+			            href: "https://gitee.com/530521314/PearAdmin.AbpTemplate.git"
 		            }
                 ],
                 other: {
@@ -147,7 +147,6 @@
             };
             admin.render(config);
 
-            // 获取当前选中的tab
 			window.selectedWindow = function () {
 				return $(".layui-body .layui-tab-content .layui-show")[0].children[0].contentWindow;
             }
@@ -167,20 +166,33 @@
                 });
             }
 
-            var loadIsExistUnreadMessage = function () {
+            function loadUnreadNotificationCount() {
                 abp.ajax({
-                    url: "@Url.Action("GetIsExistUnreadMessage", "Chat")",
+                    url: "@Url.Action("GetUnreadNotificationCount", "Notifications")",
                     type: "Get",
                     abpHandleError: false
                 }).done(function (data) {
-                    if (data.code == 200 && data.data) {
+                    if (data.code == 200 && data.data > 0) {
+                        notificationUnread();
+                    }
+                }).fail(function (jqXHR) {
+                    layer.msg(jqXHR.message, { icon: 5 });
+                });
+            }
+
+            function loadUnreadMessageCount() {
+                abp.ajax({
+                    url: "@Url.Action("GetUnreadMessageCount", "Chat")",
+                    type: "Get",
+                    abpHandleError: false
+                }).done(function (data) {
+                    if (data.code == 200 && data.data > 0) {
                         messageReceived();
                     }
                 }).fail(function (jqXHR) {
                     layer.msg(jqXHR.message, { icon: 5 });
                 });
             }
-            loadIsExistUnreadMessage();
 
             $("body").on("click", ".pear-social-entrance", function () {
                 openChatPanel();
@@ -188,17 +200,30 @@
                 interval = "";
             });
 
-            //abp.event.on('abp.notifications.received', function (userNotification) {
-            //    abp.notifications.showUiNotifyForUserNotification(userNotification);
-
-            //    $("#headerNotice").addClass("layui-badge-dot");
-            //});
+            $(".notice").click(function () {
+                layer.open({
+                    type: 2,
+                    title: "消息通知",
+                    content: "@Url.Action("Index", "Notifications")",
+                    area: ["800px","600px"],
+                    shade: 0.1
+                });
+            });
 
             abp.event.on('app.chat.messageReceived', function (message) {
                 messageReceived();
             });
 
-            var messageReceived = function() {
+            abp.event.on('abp.notifications.received', function (userNotification) {
+                abp.notifications.showUiNotifyForUserNotification(userNotification);
+                notificationUnread();
+            });
+
+            function notificationUnread() {
+                $("#headerNotice").addClass("layui-badge-dot");
+            }
+
+            function messageReceived() {
                 if (interval == "" && chatPanelIndex == "") {
                     interval = window.setInterval(function(){
                         if ($(".pear-social-entrance").css("display") == "none") {
@@ -209,6 +234,12 @@
                     }, 500);
                 }
             }
+
+            var init = function () {
+                loadUnreadNotificationCount();
+                loadUnreadMessageCount();
+            };
+            init();
         });
     </script>
 }

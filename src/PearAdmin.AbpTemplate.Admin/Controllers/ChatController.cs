@@ -28,10 +28,10 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
             return Json(new ResponseParamListViewModel<ChatUserDto>(chatUserDtos.Items));
         }
 
-        public async Task<JsonResult> GetIsExistUnreadMessage()
+        public async Task<JsonResult> GetUnreadMessageCount()
         {
-            var isExistUnreadMessage = await _chatAppService.IsExistUnreadMessage();
-            return Json(new ResponseParamSingleViewModel<bool>(isExistUnreadMessage));
+            var unreadMessageCount = await _chatAppService.UnreadMessageCount();
+            return Json(new ResponseParamSingleViewModel<int>(unreadMessageCount));
         }
 
         public async Task<JsonResult> GetUserChatMessageList(long userId)

@@ -26,9 +26,10 @@
 
 @section scripts{
     <script type="text/javascript">
-        layui.use(['jquery', 'form'], function () {
-            var $ = layui.$,
-                form = layui.form;
+        layui.use(['abp', 'form'], function () {
+            var $ = layui.$;
+            var abp = layui.abp;
+            var form = layui.form;
 
             var index = parent.layer.getFrameIndex(window.name);
             parent.layer.iframeAuto(index);

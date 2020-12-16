@@ -91,14 +91,14 @@ namespace PearAdmin.AbpTemplate.Social.Chat
             return new ListResultDto<ChatMessageDto>(ObjectMapper.Map<List<ChatMessageDto>>(messages));
         }
 
-        public async Task<bool> IsExistUnreadMessage()
+        public async Task<int> UnreadMessageCount()
         {
             var userId = AbpSession.GetUserId();
-            var isExistUnreadMessage = await _chatMessageRepository.GetAll()
+            var unreadMessageCount = await _chatMessageRepository.GetAll()
                     .Where(m => m.UserId == userId && m.ReadState == ChatMessageReadState.Unread)
-                    .AnyAsync();
+                    .CountAsync();
 
-            return isExistUnreadMessage;
+            return unreadMessageCount;
         }
 
         public async Task MarkAllUnreadMessagesOfUserAsRead(MarkAllUnreadMessagesOfUserAsReadInput input)

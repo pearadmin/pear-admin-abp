@@ -81,6 +81,13 @@ namespace PearAdmin.AbpTemplate.Notifications
             return new GetNotificationsOutput(totalCount, unreadCount, notifications);
         }
 
+        public async Task<int> UnreadMessageCount()
+        {
+            var unreadCount = await _userNotificationManager.GetUserNotificationCountAsync(AbpSession.ToUserIdentifier(), UserNotificationState.Unread);
+
+            return unreadCount;
+        }
+
         public async Task SetNotificationAsRead(List<EntityDto<Guid>> inputs)
         {
             foreach (var input in inputs)

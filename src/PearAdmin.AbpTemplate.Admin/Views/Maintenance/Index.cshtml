@@ -75,8 +75,10 @@
 
 @section scripts{
     <script type="text/javascript">
-        layui.use(['jquery', 'layer'], function () {
-            var $ = layui.$;
+        layui.use(['abp', 'layer'], function () {
+            var $ = layui.jquery;
+            var abp = layui.abp;
+            var layer = layui.layer;
 
             //加载日志信息
             function loadLogs() {

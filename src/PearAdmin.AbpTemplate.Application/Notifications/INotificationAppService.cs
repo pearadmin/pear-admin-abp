@@ -20,6 +20,12 @@ namespace PearAdmin.AbpTemplate.Notifications
         Task<GetNotificationsOutput> GetPagedUserNotifications(GetUserNotificationsPagedInput input);
 
         /// <summary>
+        /// 未读消息数量
+        /// </summary>
+        /// <returns></returns>
+        Task<int> UnreadMessageCount();
+
+        /// <summary>
         /// 获取消息配置
         /// </summary>
         /// <returns></returns>

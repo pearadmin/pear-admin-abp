@@ -1,27 +1,27 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.AspNetCore.Mvc.Authorization;
+using Abp.Extensions;
+using Abp.IO.Extensions;
+using Abp.UI;
+using Microsoft.AspNetCore.Mvc;
+using PearAdmin.AbpTemplate.Admin.Helpers;
+using PearAdmin.AbpTemplate.Admin.Models.Common;
 using PearAdmin.AbpTemplate.Admin.Models.Users;
 using PearAdmin.AbpTemplate.Authorization.Users;
-using System.Collections.Generic;
-using PearAdmin.AbpTemplate.Admin.Models.Common;
 using PearAdmin.AbpTemplate.Authorization.Users.Dto;
 using PearAdmin.AbpTemplate.Authorization.Users.Profile;
 using PearAdmin.AbpTemplate.Authorization.Users.Profile.Dto;
+using PearAdmin.AbpTemplate.CommonDto;
+using PearAdmin.AbpTemplate.Net.MimeTypes;
 using PearAdmin.AbpTemplate.Notifications;
 using PearAdmin.AbpTemplate.Notifications.Dto;
-using PearAdmin.AbpTemplate.CommonDto;
-using Abp.UI;
-using System.Linq;
-using Abp.IO.Extensions;
-using System;
-using PearAdmin.AbpTemplate.Storage;
-using PearAdmin.AbpTemplate.Admin.Helpers;
-using System.Drawing.Imaging;
-using Abp.Extensions;
-using System.IO;
-using PearAdmin.AbpTemplate.Net.MimeTypes;
+using PearAdmin.AbpTemplate.TempFileCaches;
 
 namespace PearAdmin.AbpTemplate.Admin.Controllers
 {
@@ -216,7 +216,7 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
 
         protected FileResult GetDefaultProfilePictureInternal()
         {
-            return File(Path.Combine("images", "avatar.png"), MimeTypeNames.ImagePng);
+            return File(Path.Combine("images", "avatar.jpg"), MimeTypeNames.ImagePng);
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
                 fileBytes = stream.GetAllBytes();
             }
 
-            if (!ImageFormatHelper.GetRawImageFormat(fileBytes).IsIn(ImageFormat.Jpeg, ImageFormat.Png, ImageFormat.Gif))
+            if (!ImageFormatExtension.GetRawImageFormat(fileBytes).IsIn(ImageFormat.Jpeg, ImageFormat.Png, ImageFormat.Gif))
             {
                 throw new Exception(L("IncorrectImageFormat"));
             }

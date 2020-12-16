@@ -1,5 +1,7 @@
 ﻿@section styles{
-    <link href="~/css/cropper.css" rel="stylesheet" />
+    @*<link href="~/css/cropper.css" rel="stylesheet" />*@
+    <link href="~/css/views/uploadProfilePicture.css" rel="stylesheet" />
+    <link href="~/libs/pear/css/pear-module/cropper.css" rel="stylesheet" />
     <style type="text/css">
         .text-center {
             text-align: center;
@@ -193,7 +195,9 @@
 
 @section scripts{
     <script type="text/javascript">
-        layui.use(['element'], function () {
+        layui.use(['abp', 'element'], function () {
+            var abp = layui.abp;
+            var $ = layui.jquery;
             var element = layui.element;
 
             window.saveCallback = function (data) {

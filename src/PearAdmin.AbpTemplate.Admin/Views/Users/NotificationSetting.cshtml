@@ -51,10 +51,11 @@
 
 @section scripts{
     <script type="text/javascript">
-        layui.use(['jquery', 'element', 'form'], function () {
-            var $ = layui.$,
-                form = layui.form,
-                element = layui.element;
+        layui.use(['abp', 'element', 'form'], function () {
+            var $ = layui.jquery;
+            var abp = layui.abp;
+            var form = layui.form;
+            var element = layui.element;
 
             form.on('submit(notification_submit)', function (data) {
                 var notifications = [];
