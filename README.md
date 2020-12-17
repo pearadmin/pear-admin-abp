@@ -23,7 +23,7 @@
 </p>
 
 <div align="center">
-<img  width="92%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="https://images.gitee.com/uploads/images/2020/1125/224223_aa8e6116_890387.png" />
+<img  width="92%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="https://images.gitee.com/uploads/images/2020/1217/094633_7aeb79b3_4835367.png" />
 </div>
 
 #### 介绍
