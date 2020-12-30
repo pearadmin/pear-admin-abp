@@ -2,7 +2,7 @@
   <PropertyGroup>
     <AssemblyName>PearAdmin.AbpTemplate.Admin</AssemblyName>
     <OutputType>Exe</OutputType>
-    <PackageId>PearAdmin.AbpTemplate.Web.Mvc</PackageId>
+    <PackageId>PearAdmin.AbpTemplate.Admin</PackageId>
     <UserSecretsId>PearAdmin-AbpTemplate-56C2EF2F-ABD6-4EFC-AAF2-2E81C34E8FB1</UserSecretsId>
     <RootNamespace>PearAdmin.AbpTemplate.Admin</RootNamespace>
     <TargetFramework>netcoreapp3.1</TargetFramework>

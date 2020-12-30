@@ -30,16 +30,10 @@ namespace PearAdmin.AbpTemplate.Web
                 directoryInfo = directoryInfo.Parent;
             }
 
-            var webMvcFolder = Path.Combine(directoryInfo.FullName, "src", "PearAdmin.AbpTemplate.Web.Mvc");
+            var webMvcFolder = Path.Combine(directoryInfo.FullName, "src", "PearAdmin.AbpTemplate.Admin");
             if (Directory.Exists(webMvcFolder))
             {
                 return webMvcFolder;
-            }
-
-            var webHostFolder = Path.Combine(directoryInfo.FullName, "src", "PearAdmin.AbpTemplate.Web.Host");
-            if (Directory.Exists(webHostFolder))
-            {
-                return webHostFolder;
             }
 
             throw new Exception("Could not find root folder of the web project!");
