@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PearAdmin.AbpTemplate.Core\PearAdmin.AbpTemplate.Core.csproj" />
+    <ProjectReference Include="..\..\module\PearAdmin.AbpTemplate.Storage.Minio\PearAdmin.AbpTemplate.Storage.Minio.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EPPlus" Version="5.2.0" />

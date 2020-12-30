@@ -1,8 +1,4 @@
-﻿/*!
- * abpǰ��֪ͨ��
- * date:2020-12-09
- */
-layui.define(['abpcore'], function (exports) {
+﻿layui.define(['abpcore'], function (exports) {
     "use strict";
 
     var abp = layui.abpcore;

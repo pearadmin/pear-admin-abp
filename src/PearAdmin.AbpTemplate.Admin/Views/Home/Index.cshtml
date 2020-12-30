@@ -1,11 +1,15 @@
 ﻿@using PearAdmin.AbpTemplate.Admin.ViewResources
-@using PearAdmin.AbpTemplate.Admin.Views.Shared.Components.RightNavbarLanguageSwitch
 @using PearAdmin.AbpTemplate.Admin.Views.Shared.Components.RightNavbarUserArea
 @using PearAdmin.AbpTemplate.Admin.Views.Shared.Components.SideBarMenu
-@using Abp.Notifications
 @{
     ViewBag.Title = L("HomePage");
     ViewBag.CurrentPageName = PageNames.HomePage;
+}
+
+@section styles{
+    <link rel="stylesheet" href="~/css/load.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+    
 }
 
 <!-- 布局框架 -->
@@ -17,7 +21,6 @@
         </ul>
         <div id="control" class="layui-layout-control"></div>
         <ul class="layui-nav layui-layout-right">
-            @*@await Component.InvokeAsync(typeof(RightNavbarLanguageSwitchViewComponent))*@
             <li class="layui-nav-item layui-hide-xs"><a href="#" class="fullScreen layui-icon layui-icon-screen-full"></a></li>
             <li class="layui-nav-item layui-hide-xs"><a href="https://gitee.com/530521314/PearAdmin.AbpTemplate" class="layui-icon layui-icon-website"></a></li>
             <li class="layui-nav-item layui-hide-xs">
@@ -61,7 +64,6 @@
 </div>
 
 @section scripts{
-    <script src="~/libs/signalr/signalr.js"></script>
     <script type="text/javascript">
         layui.use(['admin', 'layer', 'hash', 'abp', 'abpsignalrclient','abpsignalrchat'], function () {
             var admin = layui.admin;
@@ -142,7 +144,7 @@
 		            }
                 ],
                 other: {
-                    keepLoad: 500, // 主 页 加 载 过 度 时 长 可 为 false
+                    keepLoad: false, // 主 页 加 载 过 度 时 长 可 为 false
                 }
             };
             admin.render(config);

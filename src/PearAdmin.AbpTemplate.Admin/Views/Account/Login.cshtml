@@ -5,7 +5,7 @@
 }
 
 @section styles{
-    <link rel="stylesheet" href="~/css/views/login.css" />
+    <link rel="stylesheet" href="~/css/views/login.css" asp-append-version="true"/>
 }
 
 <form class="layui-form" action="javascript:void(0);">
@@ -42,6 +42,10 @@
             
             abp.multiTenancy.setTenantIdCookie(@ViewBag.TenantId);
             form.render();
+
+            if(window !=top){
+                top.location.href=location.href;
+            }
 
             form.on('submit(LAY-user-login-submit)', function (data) {
                 data.field.rememberMe = data.field.rememberMe == "on";//默认值是on

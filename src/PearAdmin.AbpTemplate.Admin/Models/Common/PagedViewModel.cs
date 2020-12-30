@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace PearAdmin.AbpTemplate.Admin.Models.Common
+﻿namespace PearAdmin.AbpTemplate.Admin.Models.Common
 {
     /// <summary>
     /// 分页请求视图模型

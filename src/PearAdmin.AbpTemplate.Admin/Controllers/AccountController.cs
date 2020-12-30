@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Abp;
 using Abp.AspNetCore.Mvc.Authorization;
 using Abp.Authorization;
@@ -21,13 +19,14 @@ using Abp.Timing;
 using Abp.UI;
 using Abp.Web.Models;
 using Abp.Zero.Configuration;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using PearAdmin.AbpTemplate.Admin.Models.Account;
 using PearAdmin.AbpTemplate.Authorization;
 using PearAdmin.AbpTemplate.Authorization.Users;
 using PearAdmin.AbpTemplate.Identity;
 using PearAdmin.AbpTemplate.MultiTenancy;
 using PearAdmin.AbpTemplate.Sessions;
-using PearAdmin.AbpTemplate.Admin.Models.Account;
-using PearAdmin.AbpTemplate.Admin.Views.Shared.Components.TenantChange;
 
 namespace PearAdmin.AbpTemplate.Admin.Controllers
 {
@@ -138,7 +137,7 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
             await _signInManager.SignInAsync(loginResult.Identity, loginModel.RememberMe);
             await UnitOfWorkManager.Current.SaveChangesAsync();
 
-            return Json(new AjaxResponse { TargetUrl = loginModel.ReturnUrl });
+            return Json(new AjaxResponse { TargetUrl = GetAppHomeUrl() });
         }
 
         public async Task<ActionResult> Logout()
@@ -385,19 +384,6 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
         public string GetAppHomeUrl()
         {
             return Url.Action("Index", "Home");
-        }
-
-        #endregion
-
-        #region Change Tenant
-
-        public async Task<ActionResult> TenantChangeModal()
-        {
-            var loginInfo = await _sessionAppService.GetCurrentLoginInformations();
-            return View("/Views/Shared/Components/TenantChange/_ChangeModal.cshtml", new ChangeModalViewModel
-            {
-                TenancyName = loginInfo.Tenant?.TenancyName
-            });
         }
 
         #endregion

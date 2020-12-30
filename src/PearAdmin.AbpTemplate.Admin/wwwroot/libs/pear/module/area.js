@@ -1,21 +1,21 @@
 ﻿layui.define(['layer', 'form', 'laytpl'], function (exports) {
     "use strict";
 
-    let $ = layui.$
-        , form = layui.form
-        , layarea = {
-            _id: 0
-            , config: {}
-            , set: function (options) {
+    let $ = layui.$,
+        form = layui.form,
+        layarea = {
+            _id: 0,
+            config: {},
+            set: function (options) {
                 let that = this;
                 that.config = $.extend({}, that.config, options);
                 return that;
-            }
-            , on: function (events, callback) {
+            },
+            on: function (events, callback) {
                 return layui.onevent.call(this, 'layarea', events, callback);
             }
-        }
-        , thisArea = function () {
+        },
+        thisArea = function () {
             let that = this;
             return {
                 layarea: function (files) {
@@ -23,8 +23,8 @@
                 }
                 , config: that.config
             }
-        }
-        , Class = function (options) {
+        },
+        Class = function (options) {
             let that = this;
             that.config = $.extend({}, that.config, layarea.config, options);
             that.render();
@@ -3814,7 +3814,6 @@
             820201: '离岛'
         }
     };
-
 
     Class.prototype.config = {
         elem: '',

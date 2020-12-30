@@ -39,7 +39,7 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
             var input = PagedViewModelMapToPagedInputDto<GetPagedAuditLogViewModel, GetPagedAuditLogsInput>(viewModel);
             var pagedAuditLogList = await _auditLogAppService.GetAuditLogList(input);
 
-            return Json(new PagedResultViewModel<AuditLogListDto>(pagedAuditLogList.TotalCount, pagedAuditLogList.Items));
+            return Json(new ResponseParamPagedViewModel<AuditLogListDto>(pagedAuditLogList.TotalCount, pagedAuditLogList.Items));
         }
     }
 }

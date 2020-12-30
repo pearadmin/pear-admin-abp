@@ -86,8 +86,6 @@ namespace PearAdmin.AbpTemplate.Social.Chat
                     .Take(50)
                     .ToListAsync();
 
-            messages.Reverse();
-
             return new ListResultDto<ChatMessageDto>(ObjectMapper.Map<List<ChatMessageDto>>(messages));
         }
 

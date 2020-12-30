@@ -302,9 +302,9 @@
     width: 80px;
     margin-right: 15px;
     border-radius: 3px;
-    height: 25px;
     border: none;
-    background-color: white;
+    background-color: #5FB878;
+    color: white;
     float: right;
 }
 

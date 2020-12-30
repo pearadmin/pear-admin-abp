@@ -24,7 +24,7 @@
             <div class="title"></div>
         </div>
         <div class="pear-social-body-content">
-            <div class="pear-social-body-content-chat" style="overflow:auto;">
+            <div class="pear-social-body-content-chat" id="chatContent" style="overflow:auto;">
                 <ul class="content"></ul>
             </div>
             <div class="pear-social-body-content-input">
@@ -35,7 +35,7 @@
                     <a class="layui-icon layui-icon-time"></a>
                 </div>
                 <textarea id="socalContent"></textarea>
-                <button class="pear-btn pear-social-body-content-input-enter" data-type="send">发 送</button>
+                <button class="pear-btn pear-btn-md pear-social-body-content-input-enter" data-type="send">发 送</button>
             </div>
         </div>
     </div>
@@ -54,11 +54,14 @@
     <li class="{{ d.side==1? 'me':'other' }}">
         <img src="{{ d.userAvatar }}" title="{{ d.userName }}">
         <span>{{ d.message }}</span>
+        <div style="clear:both;">
+            <label style="font-size:smaller;float:right; margin-right:40px;margin-top:2px;">{{ layui.util.toDateString(d.creationTime, "yyyy/MM/dd HH:mm:ss") }}</label>
+        </div>
     </li>
 </script>
 
 @section scripts{
-    <script src="~/libs/signalr/signalr.js"></script>
+    <script src="~/libs/signalr/signalr.js" asp-append-version="true"></script>
     <script type="text/javascript">
         layui.use(['abp','table', 'element', 'laytpl','abpsignalrclient','abpsignalrchat'], function () {
             var $ = layui.$;
@@ -98,17 +101,21 @@
                     type: "Get",
                     abpHandleError: false
                 }).done(function (data) {
-                    if (data.code == 200) {
-                        console.log(data.data);
-                        layui.each(data.data, function (index, item) {
-                            data.data[index].userAvatar = "@Url.Action("GetProfilePictureByUser","Users")" + abp.utils.formatString("?id={0}", data.data[index].side == 1 ? data.data[index].userId : data.data[index].targetUserId);
-                            data.data[index].userName = data.data[index].side == 1 ? data.data[index].userId : data.data[index].targetUserId;
-                            laytpl(messageTemplate.innerHTML).render(data.data[index], function (html) {
-                                $(".pear-social-body-content .content").append(html);
-                            });
-                        });
-                        $(".pear-social-body-content-chat").animate({ "scrollTop": $(".pear-social-body-content-chat")[0].scrollHeight }, 400);
+                    if (data.code != 200) {
+                        return;
                     }
+
+                    layui.each(data.data, function (index, item) {
+                        data.data[index].userAvatar = "@Url.Action("GetProfilePictureByUser","Users")" + abp.utils.formatString("?id={0}", data.data[index].side == 1 ? data.data[index].userId : data.data[index].targetUserId);
+                        data.data[index].userName = data.data[index].side == 1 ? data.data[index].userId : data.data[index].targetUserId;
+                        laytpl(messageTemplate.innerHTML).render(data.data[index], function (html) {
+                            $(".pear-social-body-content .content").prepend(html);
+                        });
+                    });
+
+                    var e = document.getElementById("chatContent");
+                    e.scrollTop = e.scrollHeight;
+                    //$(".pear-social-body-content-chat").animate({ "scrollTop": $(".pear-social-body-content-chat")[0].scrollHeight }, 0);
                 }).fail(function (jqXHR) {
                     layer.msg(jqXHR.message, { icon: 5 });
                 });

@@ -16,7 +16,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using PearAdmin.AbpTemplate.Admin.Configuration;
-using PearAdmin.AbpTemplate.Admin.Resources;
 using PearAdmin.AbpTemplate.Admin.SignalR;
 using PearAdmin.AbpTemplate.Identity;
 
@@ -55,8 +54,6 @@ namespace PearAdmin.AbpTemplate.Admin
             });
 
             IdentityRegistrar.Register(services);
-            
-            services.AddScoped<IWebResourceManager, WebResourceManager>();
 
             services.AddSignalR();
 
