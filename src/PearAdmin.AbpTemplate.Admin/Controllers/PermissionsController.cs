@@ -42,7 +42,7 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
 
             var pagedPermissionList = _permissionAppService.GetPagedPermission(input);
 
-            return Json(new PagedResultViewModel<PermissionDto>(pagedPermissionList.TotalCount, pagedPermissionList.Items));
+            return Json(new ResponseParamPagedViewModel<PermissionDto>(pagedPermissionList.TotalCount, pagedPermissionList.Items));
         }
         #endregion
     }

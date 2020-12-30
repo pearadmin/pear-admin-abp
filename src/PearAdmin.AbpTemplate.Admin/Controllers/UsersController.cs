@@ -70,7 +70,7 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
             var input = PagedViewModelMapToPagedInputDto<GetPagedUserViewModel, GetPagedUserInput>(viewModel);
             var pagedUserList = await _userAppService.GetPagedUser(input);
 
-            return Json(new PagedResultViewModel<UserDto>(pagedUserList.TotalCount, pagedUserList.Items));
+            return Json(new ResponseParamPagedViewModel<UserDto>(pagedUserList.TotalCount, pagedUserList.Items));
         }
 
         /// <summary>

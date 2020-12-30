@@ -15,9 +15,9 @@ namespace PearAdmin.AbpTemplate.Admin.Models.Common
 
         }
 
-        public EntityViewModel(T _Id)
+        public EntityViewModel(T id)
         {
-            Id = Id;
+            Id = id;
         }
 
         public T Id { get; set; }

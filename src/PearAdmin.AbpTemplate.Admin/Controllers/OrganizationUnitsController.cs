@@ -56,7 +56,7 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
 
             var organizationList = await _organizationUnitAppService.GetPagedOrganizationUnit(input);
 
-            return Json(new PagedResultViewModel<OrganizationUnitDto>(organizationList.TotalCount, organizationList.Items));
+            return Json(new ResponseParamPagedViewModel<OrganizationUnitDto>(organizationList.TotalCount, organizationList.Items));
         }
 
         /// <summary>

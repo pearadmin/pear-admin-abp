@@ -54,8 +54,6 @@
     }
 
     pearFrame.prototype.refresh = function (time) {
-
-
         // 刷 新 指 定 的 选 项 卡
         if (time != false) {
 

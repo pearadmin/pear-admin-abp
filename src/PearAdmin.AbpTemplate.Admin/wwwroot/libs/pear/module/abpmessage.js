@@ -1,8 +1,4 @@
-﻿/*!
- * abpǰ�˵�����
- * date:2020-12-09
- */
-layui.define(['jquery', 'abpcore', 'layer'], function (exports) {
+﻿layui.define(['jquery', 'abpcore', 'layer'], function (exports) {
     "use strict";
 
     var $ = layui.jquery;

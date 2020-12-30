@@ -10,7 +10,7 @@ namespace PearAdmin.AbpTemplate.Admin.Models.Notifications
     /// 用户消息分页结果视图模型
     /// </summary>
     [AutoMapFrom(typeof(GetNotificationsOutput))]
-    public class GetNotificationsResultViewModel : PagedResultViewModel<UserNotification>
+    public class GetNotificationsResultViewModel : ResponseParamPagedViewModel<UserNotification>
     {
         public int UnreadCount { get; set; }
 

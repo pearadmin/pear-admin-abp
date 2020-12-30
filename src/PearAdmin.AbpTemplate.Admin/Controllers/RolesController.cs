@@ -41,7 +41,7 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
 
             var pagedRoleList = await _roleAppService.GetPagedRole(input);
 
-            return Json(new PagedResultViewModel<RoleDto>(pagedRoleList.TotalCount, pagedRoleList.Items));
+            return Json(new ResponseParamPagedViewModel<RoleDto>(pagedRoleList.TotalCount, pagedRoleList.Items));
         }
 
         /// <summary>

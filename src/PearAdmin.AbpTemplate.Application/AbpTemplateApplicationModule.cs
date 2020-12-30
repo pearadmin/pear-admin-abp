@@ -9,11 +9,13 @@ using PearAdmin.AbpTemplate.Resource;
 using PearAdmin.AbpTemplate.Social;
 using PearAdmin.AbpTemplate.MultiTenancy;
 using PearAdmin.AbpTemplate.TaskCenter;
+using PearAdmin.AbpTemplate.Storage.Minio;
 
 namespace PearAdmin.AbpTemplate
 {
     [DependsOn(
         typeof(AbpTemplateCoreModule),
+        typeof(AbpTemplateMinioStorageModule),
         typeof(AbpAutoMapperModule))]
     public class AbpTemplateApplicationModule : AbpModule
     {

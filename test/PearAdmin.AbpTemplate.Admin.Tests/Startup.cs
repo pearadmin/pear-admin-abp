@@ -2,11 +2,6 @@
 using Abp.AspNetCore;
 using Abp.AspNetCore.TestBase;
 using Abp.Dependency;
-using PearAdmin.AbpTemplate.Admin.Configuration;
-using PearAdmin.AbpTemplate.EntityFrameworkCore;
-using PearAdmin.AbpTemplate.Identity;
-using PearAdmin.AbpTemplate.Admin.Resources;
-using PearAdmin.AbpTemplate.Admin.ViewResources;
 using Castle.MicroKernel.Registration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PearAdmin.AbpTemplate.Admin.Configuration;
+using PearAdmin.AbpTemplate.EntityFrameworkCore;
+using PearAdmin.AbpTemplate.Identity;
 
 namespace PearAdmin.AbpTemplate.Admin.Tests
 {
@@ -33,8 +31,6 @@ namespace PearAdmin.AbpTemplate.Admin.Tests
             services.AddMvc();
             
             IdentityRegistrar.Register(services);
-            
-            services.AddScoped<IWebResourceManager, WebResourceManager>();
 
             //Configure Abp and Dependency Injection
             return services.AddAbp<AbpTemplateWebTestModule>(options =>

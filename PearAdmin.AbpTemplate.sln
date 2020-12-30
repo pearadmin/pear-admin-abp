@@ -27,17 +27,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PearAdmin.AbpTemplate.Core.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PearAdmin.AbpTemplate.Shared", "tool\PearAdmin.AbpTemplate.Shared\PearAdmin.AbpTemplate.Shared.csproj", "{B02066C3-0275-4DA9-B761-EF78FA7DB2F9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PearAdmin.AbpTemplate.Storage", "module\PearAdmin.AbpTemplate.Storage\PearAdmin.AbpTemplate.Storage.csproj", "{A0DBEC87-8CB7-4B8C-BD60-EE9FFBA759FB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PearAdmin.AbpTemplate.Storage.Minio", "module\PearAdmin.AbpTemplate.Storage.Minio\PearAdmin.AbpTemplate.Storage.Minio.csproj", "{5F21891C-72FC-4814-A2B4-3EE7E86F54C2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PearAdmin.AbpTemplate.Storage.Aliyun", "module\PearAdmin.AbpTemplate.Storage.Aliyun\PearAdmin.AbpTemplate.Storage.Aliyun.csproj", "{E5B76444-3961-42D9-996C-A10921B2EA04}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PearAdmin.AbpTemplate.Gateway", "src\PearAdmin.AbpTemplate.Gateway\PearAdmin.AbpTemplate.Gateway.csproj", "{F17AF2E0-E290-43A6-8695-B653FA6446EE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "module", "module", "{F109D900-1B4F-4BE8-83E9-CAFBD39BA318}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "module", "module", "{A9CEE774-07BE-415D-935C-D42562C045F9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PearAdmin.AbpTemplate.Storage", "module\PearAdmin.AbpTemplate.Storage\PearAdmin.AbpTemplate.Storage.csproj", "{8D82ACD2-379E-46BC-8E31-4496DFC6A455}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PearAdmin.AbpTemplate.Storage.Aliyun", "module\PearAdmin.AbpTemplate.Storage.Aliyun\PearAdmin.AbpTemplate.Storage.Aliyun.csproj", "{CA9E91F9-3A80-4BFA-9767-B6A9B83B0E87}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PearAdmin.AbpTemplate.Storage.Local", "module\PearAdmin.AbpTemplate.Storage.Local\PearAdmin.AbpTemplate.Storage.Local.csproj", "{748101D0-D707-4A82-B8D8-EA986E17F357}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PearAdmin.AbpTemplate.Storage.Minio", "module\PearAdmin.AbpTemplate.Storage.Minio\PearAdmin.AbpTemplate.Storage.Minio.csproj", "{B820EEF5-3BFF-4CDF-9854-DF188895BC2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PearAdmin.AbpTemplate.Storage.Local", "module\PearAdmin.AbpTemplate.Storage.Local\PearAdmin.AbpTemplate.Storage.Local.csproj", "{91E47E05-561D-42C2-AFB8-2F567185E177}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,26 +81,26 @@ Global
 		{B02066C3-0275-4DA9-B761-EF78FA7DB2F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B02066C3-0275-4DA9-B761-EF78FA7DB2F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B02066C3-0275-4DA9-B761-EF78FA7DB2F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0DBEC87-8CB7-4B8C-BD60-EE9FFBA759FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0DBEC87-8CB7-4B8C-BD60-EE9FFBA759FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0DBEC87-8CB7-4B8C-BD60-EE9FFBA759FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0DBEC87-8CB7-4B8C-BD60-EE9FFBA759FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F21891C-72FC-4814-A2B4-3EE7E86F54C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F21891C-72FC-4814-A2B4-3EE7E86F54C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F21891C-72FC-4814-A2B4-3EE7E86F54C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F21891C-72FC-4814-A2B4-3EE7E86F54C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5B76444-3961-42D9-996C-A10921B2EA04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5B76444-3961-42D9-996C-A10921B2EA04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5B76444-3961-42D9-996C-A10921B2EA04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5B76444-3961-42D9-996C-A10921B2EA04}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F17AF2E0-E290-43A6-8695-B653FA6446EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F17AF2E0-E290-43A6-8695-B653FA6446EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F17AF2E0-E290-43A6-8695-B653FA6446EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F17AF2E0-E290-43A6-8695-B653FA6446EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8D82ACD2-379E-46BC-8E31-4496DFC6A455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8D82ACD2-379E-46BC-8E31-4496DFC6A455}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8D82ACD2-379E-46BC-8E31-4496DFC6A455}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8D82ACD2-379E-46BC-8E31-4496DFC6A455}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CA9E91F9-3A80-4BFA-9767-B6A9B83B0E87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CA9E91F9-3A80-4BFA-9767-B6A9B83B0E87}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CA9E91F9-3A80-4BFA-9767-B6A9B83B0E87}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CA9E91F9-3A80-4BFA-9767-B6A9B83B0E87}.Release|Any CPU.Build.0 = Release|Any CPU
-		{748101D0-D707-4A82-B8D8-EA986E17F357}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{748101D0-D707-4A82-B8D8-EA986E17F357}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{748101D0-D707-4A82-B8D8-EA986E17F357}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{748101D0-D707-4A82-B8D8-EA986E17F357}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B820EEF5-3BFF-4CDF-9854-DF188895BC2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B820EEF5-3BFF-4CDF-9854-DF188895BC2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B820EEF5-3BFF-4CDF-9854-DF188895BC2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B820EEF5-3BFF-4CDF-9854-DF188895BC2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91E47E05-561D-42C2-AFB8-2F567185E177}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91E47E05-561D-42C2-AFB8-2F567185E177}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91E47E05-561D-42C2-AFB8-2F567185E177}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91E47E05-561D-42C2-AFB8-2F567185E177}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -115,11 +115,11 @@ Global
 		{CA86CF6F-5D9E-4DAC-9CCB-0F87B519E087} = {F10AA149-2626-486E-85BB-9CD5365F3016}
 		{4A7E8F99-4265-4B66-AB07-B8FAED794DE2} = {F10AA149-2626-486E-85BB-9CD5365F3016}
 		{B02066C3-0275-4DA9-B761-EF78FA7DB2F9} = {0440FD52-239B-40E9-9EBC-34B36F698676}
+		{A0DBEC87-8CB7-4B8C-BD60-EE9FFBA759FB} = {A9CEE774-07BE-415D-935C-D42562C045F9}
+		{5F21891C-72FC-4814-A2B4-3EE7E86F54C2} = {A9CEE774-07BE-415D-935C-D42562C045F9}
+		{E5B76444-3961-42D9-996C-A10921B2EA04} = {A9CEE774-07BE-415D-935C-D42562C045F9}
 		{F17AF2E0-E290-43A6-8695-B653FA6446EE} = {AFAA0841-BD93-466F-B8F4-FB4EEC86F1FC}
-		{8D82ACD2-379E-46BC-8E31-4496DFC6A455} = {F109D900-1B4F-4BE8-83E9-CAFBD39BA318}
-		{CA9E91F9-3A80-4BFA-9767-B6A9B83B0E87} = {F109D900-1B4F-4BE8-83E9-CAFBD39BA318}
-		{748101D0-D707-4A82-B8D8-EA986E17F357} = {F109D900-1B4F-4BE8-83E9-CAFBD39BA318}
-		{B820EEF5-3BFF-4CDF-9854-DF188895BC2A} = {F109D900-1B4F-4BE8-83E9-CAFBD39BA318}
+		{91E47E05-561D-42C2-AFB8-2F567185E177} = {A9CEE774-07BE-415D-935C-D42562C045F9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C6B33810-FA59-48A3-9DC4-F1F0312C57F6}

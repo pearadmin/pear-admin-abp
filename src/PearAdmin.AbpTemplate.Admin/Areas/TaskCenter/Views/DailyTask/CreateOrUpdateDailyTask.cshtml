@@ -38,6 +38,7 @@
             var laydate = layui.laydate;
 
             laydate.render({
+                trigger:'click',
                 elem: '#dateRange',
                 range: true,
                 value: '@string.Format("{0} - {1}",Model.StartTime.ToString("yyyy-MM-dd"),Model.EndTime.ToString("yyyy-MM-dd"))',

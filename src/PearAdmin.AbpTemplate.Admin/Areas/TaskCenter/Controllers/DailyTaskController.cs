@@ -9,6 +9,7 @@ using PearAdmin.AbpTemplate.TaskCenter.DailyTasks.Dto;
 using PearAdmin.AbpTemplate.Admin.Areas.TaskCenter.Models.DailyTasks;
 using PearAdmin.AbpTemplate.Admin.Controllers;
 using PearAdmin.AbpTemplate.Admin.Models.Common;
+using Abp.Web.Models;
 
 namespace PearAdmin.AbpTemplate.Admin.Areas.TaskCenter.Controllers
 {
@@ -43,7 +44,7 @@ namespace PearAdmin.AbpTemplate.Admin.Areas.TaskCenter.Controllers
         {
             var input = PagedViewModelMapToPagedInputDto<GetPagedDailyTaskViewModel, GetPagedDailyTaskInput>(viewModel);
             var pagedDailyTaskList = await _dailyTaskAppService.GetPagedDailyTask(input);
-            return Json(new PagedResultViewModel<DailyTaskDto>(pagedDailyTaskList.TotalCount, pagedDailyTaskList.Items));
+            return Json(new ResponseParamPagedViewModel<DailyTaskDto>(pagedDailyTaskList.TotalCount, pagedDailyTaskList.Items));
         }
 
         /// <summary>

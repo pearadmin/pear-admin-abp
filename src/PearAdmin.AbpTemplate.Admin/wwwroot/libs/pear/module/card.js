@@ -99,4 +99,4 @@
     }
 
     exports(MOD_NAME, new pearCard());
-})
+});

@@ -5,7 +5,7 @@
 
 layui.config({
 	base: rootPath + "module/",
-	version: true
+	version: '20210101'
 }).extend({
 	abp: "abp",
 	abpcore: "abpcore",
@@ -18,6 +18,7 @@ layui.config({
 	admin: "admin",
 	menu: "menu",
 	frame: "frame",
+	fullcalendar: 'fullcalendar',
 	tab: "tab",
 	echarts: "echarts",
 	echartsTheme: "echartsTheme",

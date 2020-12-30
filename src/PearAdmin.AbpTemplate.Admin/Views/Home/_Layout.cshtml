@@ -1,10 +1,8 @@
 ﻿@using Abp.Configuration.Startup
 @using Abp.Web.Mvc.Alerts
 @using Abp.Web.Security.AntiForgery
-@using PearAdmin.AbpTemplate.Admin.Resources
 @inject IAbpAntiForgeryManager AbpAntiForgeryManager
 @inject IMultiTenancyConfig MultiTenancyConfig
-@inject IWebResourceManager WebResourceManager
 @inject IAlertManager AlertManager
 @inject ILanguageManager LanguageManager
 @{
@@ -30,7 +28,6 @@
 
     @await Html.PartialAsync("_Scripts.cshtml")
     @RenderSection("scripts", required: false)
-    @WebResourceManager.RenderScripts()
 </body>
 </html>
 
