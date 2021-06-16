@@ -1,6 +1,6 @@
-﻿using Abp.Domain.Services;
+﻿using System.Threading.Tasks;
+using Abp.Domain.Services;
 using Abp.Notifications;
-using System.Threading.Tasks;
 
 namespace PearAdmin.AbpTemplate.Notifications
 {

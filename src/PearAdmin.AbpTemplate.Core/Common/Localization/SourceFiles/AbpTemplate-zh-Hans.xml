@@ -123,6 +123,8 @@
     <text name="UpdatePassword">修改密码</text>
     <text name="NotificationSetting">消息设置</text>
     <text name="NewTask">新建任务</text>
+
+    <text name="HangfireDashboard">后台任务</text>
   </texts>
 </localizationDictionary>
 

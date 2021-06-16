@@ -10,23 +10,24 @@
     var pageTitle = !string.IsNullOrWhiteSpace(ViewBag.Title) ? ViewBag.Title + " / " : "";
     pageTitle += "AbpTemplate";
 }
+
 <!DOCTYPE html>
 <html lang="@LanguageManager.CurrentLanguage.Name">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-
     <title>@pageTitle</title>
-
-    @await Html.PartialAsync("_Styles.cshtml")
+    <link rel="shortcut icon" href="~/images/favicon.ico">
+    <link rel="stylesheet" href="~/libs/pear/css/pear.css" asp-append-version="true"/>
     @RenderSection("styles", required: false)
 </head>
 <body style="background-image:url(/images/background.svg)">
 
     @RenderBody()
 
-    @await Html.PartialAsync("_Scripts.cshtml")
+    <script src="~/libs/layui/layui.js" asp-append-version="true"></script>
+    <script src="~/libs/pear/pear.js" asp-append-version="true"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

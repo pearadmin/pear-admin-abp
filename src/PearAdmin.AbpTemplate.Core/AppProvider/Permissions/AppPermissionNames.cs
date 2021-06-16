@@ -45,6 +45,8 @@
         public const string Pages_SystemManagement_Maintenance_Logs = "Pages.SystemManagement.Maintenance.Logs";
         public const string Pages_SystemManagement_Maintenance_Logs_DownLoad = "Pages.SystemManagement.Maintenance.Logs.DownLoad";
         public const string Pages_SystemManagement_Maintenance_Logs_Refresh = "Pages.SystemManagement.Maintenance.Logs.Refresh";
+
+        public const string Pages_SystemManagement_HangfireDashboard = "Pages.SystemManagement.HangfireDashboard";
         #endregion
 
         #region ResourceManagement

@@ -1,15 +1,14 @@
-﻿@using PearAdmin.AbpTemplate.Admin.ViewResources
+﻿@using PearAdmin.AbpTemplate.Admin.Views
 @using PearAdmin.AbpTemplate.Admin.Views.Shared.Components.RightNavbarUserArea
 @using PearAdmin.AbpTemplate.Admin.Views.Shared.Components.SideBarMenu
 @{
     ViewBag.Title = L("HomePage");
-    ViewBag.CurrentPageName = PageNames.HomePage;
+    ViewBag.CurrentPageName = AbpTemplatePageName.Home;
 }
 
 @section styles{
     <link rel="stylesheet" href="~/css/load.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
-    
 }
 
 <!-- 布局框架 -->
@@ -83,7 +82,7 @@
                     control: false, // 是 否 开 启 多 系 统 菜 单 true 开启 false 关闭
                     accordion: true,
                     async: false,
-                    select: hash.md5("@Url.Action(!AbpSession.TenantId.HasValue ? "HostConsole": "TenantConsole","WorkSpace")").toUpperCase(), // 默 认 选 中 菜 单 项
+                    select: hash.md5("@Url.Action(!AbpSession.TenantId.HasValue ? "HostConsole": "TenantConsole", "WorkSpace")").toUpperCase(), // 默 认 选 中 菜 单 项
                 },
                 tab: {
                     muiltTab: true, // 是 否 开 启 多 标 签 页 true 开启 false 关闭

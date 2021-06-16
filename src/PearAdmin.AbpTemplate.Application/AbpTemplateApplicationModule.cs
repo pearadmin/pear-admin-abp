@@ -3,13 +3,13 @@ using Abp.Modules;
 using Abp.Reflection.Extensions;
 using PearAdmin.AbpTemplate.Authorization;
 using PearAdmin.AbpTemplate.Monitoring;
+using PearAdmin.AbpTemplate.MultiTenancy;
 using PearAdmin.AbpTemplate.Notifications;
 using PearAdmin.AbpTemplate.Organizations;
 using PearAdmin.AbpTemplate.Resource;
 using PearAdmin.AbpTemplate.Social;
-using PearAdmin.AbpTemplate.MultiTenancy;
-using PearAdmin.AbpTemplate.TaskCenter;
 using PearAdmin.AbpTemplate.Storage.Minio;
+using PearAdmin.AbpTemplate.TaskCenter;
 
 namespace PearAdmin.AbpTemplate
 {

@@ -1,8 +1,8 @@
-﻿@using PearAdmin.AbpTemplate.Admin.ViewResources
+﻿@using PearAdmin.AbpTemplate.Admin.Views
 @using PearAdmin.AbpTemplate.Authorization
 @using PearAdmin.AbpTemplate.TaskCenter.DailyTasks
 @{
-    ViewBag.CurrentPageName = PageNames.DailyTask;
+    ViewBag.CurrentPageName = AbpTemplatePageName.DailyTask;
 }
 @section styles{
     <link href="~/libs/fullcalendar/main.css" rel="stylesheet" asp-append-version="true" />
@@ -157,32 +157,15 @@
 <!--更多操作-->
 <script id="moreTool" type="text/plain">
     [
-    {{#  layui.each(d.triggers, function(index, item){ }}
-    {{# if(item.id == @TaskOperateTrigger.Progress.Id){ }}
-    [{txt: "@TaskOperateTrigger.Progress.Name", event: "@TaskOperateTrigger.Progress.Name.ToLower()"}]
-    {{#  }  }}
-    {{# if(item.id == @TaskOperateTrigger.Resolve.Id){ }}
-    [{txt: "@TaskOperateTrigger.Resolve.Name", event: "@TaskOperateTrigger.Resolve.Name.ToLower()"}]
-    {{#  }  }}
-    {{# if(item.id == @TaskOperateTrigger.Reopen.Id){ }}
-    [{txt: "@TaskOperateTrigger.Reopen.Name", event: "@TaskOperateTrigger.Reopen.Name.ToLower()"}]
-    {{#  }  }}
-    {{# if(item.id == @TaskOperateTrigger.Qualify.Id){ }}
-    [{txt: "@TaskOperateTrigger.Qualify.Name", event: "@TaskOperateTrigger.Qualify.Name.ToLower()"}]
-    {{#  }  }}
-    {{# if(item.id == @TaskOperateTrigger.Pend.Id){ }}
-    [{txt: "@TaskOperateTrigger.Pend.Name", event: "@TaskOperateTrigger.Pend.Name.ToLower()"}]
-    {{#  }  }}
-    {{# if(item.id == @TaskOperateTrigger.Close.Id){ }}
-    [{txt: "@TaskOperateTrigger.Close.Name", event: "@TaskOperateTrigger.Close.Name.ToLower()"}]
-    {{#  }  }}
-    {{#  });  }}
+        {{#  layui.each(d.triggers, function(index, item){ }}
+         [{"txt": "{{item.name}}", "event": "{{item.name}}"}]
+        {{#  });  }}
     ]
 </script>
 
 @section scripts{
-    <script src="~/libs/fullcalendar/main.js" asp-append-version="true" ></script>
-    <script src="~/libs/fullcalendar/zh-cn.js" asp-append-version="true" ></script>
+    <script src="~/libs/fullcalendar/main.js" asp-append-version="true"></script>
+    <script src="~/libs/fullcalendar/zh-cn.js" asp-append-version="true"></script>
     <script type="text/javascript">
         layui.use(['abp', 'form', 'table', 'dropdown', 'element', 'fullcalendar'], function () {
             var $ = layui.$;
@@ -333,32 +316,32 @@
                     window.remove([{ "id": data.id }]);
 		        } else if(obj.event === 'edit'){
 		            window.edit(data);
-		        } else if (obj.event === "@TaskOperateTrigger.Progress.Name.ToLower()") {
+		        } else if (obj.event === "@TaskOperateTrigger.Progress.Name") {
                     window.trigger({
                         "id": data.id,
                         "url": "@Url.Action("ProgressDailyTask", "DailyTask", new { area= "TaskCenter" })"
                     });
-                } else if (obj.event === "@TaskOperateTrigger.Resolve.Name.ToLower()") {
+                } else if (obj.event === "@TaskOperateTrigger.Resolve.Name") {
                     window.trigger({
                         "id": data.id,
                         "url": "@Url.Action("ResolveDailyTask", "DailyTask", new { area= "TaskCenter" })"
                     });
-                } else if (obj.event === "@TaskOperateTrigger.Reopen.Name.ToLower()") {
+                } else if (obj.event === "@TaskOperateTrigger.Reopen.Name") {
                     window.trigger({
                         "id": data.id,
                         "url": "@Url.Action("ReopenDailyTask", "DailyTask", new { area= "TaskCenter" })"
                     });
-                } else if (obj.event === "@TaskOperateTrigger.Qualify.Name.ToLower()") {
+                } else if (obj.event === "@TaskOperateTrigger.Qualify.Name") {
                     window.trigger({
                         "id": data.id,
                         "url": "@Url.Action("QualifyDailyTask", "DailyTask", new { area= "TaskCenter" })"
                     });
-                } else if (obj.event === "@TaskOperateTrigger.Pend.Name.ToLower()") {
+                } else if (obj.event === "@TaskOperateTrigger.Pend.Name") {
                     window.trigger({
                         "id": data.id,
                         "url": "@Url.Action("PendDailyTask", "DailyTask", new { area= "TaskCenter" })"
                     });
-                } else if (obj.event === "@TaskOperateTrigger.Close.Name.ToLower()") {
+                } else if (obj.event === "@TaskOperateTrigger.Close.Name") {
                     window.trigger({
                         "id": data.id,
                         "url": "@Url.Action("CloseDailyTask", "DailyTask", new { area= "TaskCenter" })"

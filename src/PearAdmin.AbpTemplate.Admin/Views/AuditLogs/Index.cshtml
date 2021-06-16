@@ -1,7 +1,7 @@
-﻿@using PearAdmin.AbpTemplate.Admin.ViewResources
+﻿@using PearAdmin.AbpTemplate.Admin.Views
 @using PearAdmin.AbpTemplate.Authorization
 @{
-    ViewBag.CurrentPageName = PageNames.AuditLogs;
+    ViewBag.CurrentPageName = AbpTemplatePageName.AuditLogs;
     var startDate = DateTime.Now.AddDays(-6).ToString("yyyy-MM-dd");
     var endDate = DateTime.Now.AddDays(+1).ToString("yyyy-MM-dd");
 }
