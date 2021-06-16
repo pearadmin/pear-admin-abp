@@ -5,7 +5,7 @@
     <PackageId>PearAdmin.AbpTemplate.Admin</PackageId>
     <UserSecretsId>PearAdmin-AbpTemplate-56C2EF2F-ABD6-4EFC-AAF2-2E81C34E8FB1</UserSecretsId>
     <RootNamespace>PearAdmin.AbpTemplate.Admin</RootNamespace>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
@@ -59,21 +59,20 @@
     <ProjectReference Include="..\PearAdmin.AbpTemplate.Gateway\PearAdmin.AbpTemplate.Gateway.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Abp.AspNetCore" Version="5.9.0" />
-    <PackageReference Include="Abp.AspNetCore.SignalR" Version="5.10.1" />
-    <PackageReference Include="Abp.HangFire.AspNetCore" Version="5.9.0" />
-    <PackageReference Include="Abp.ZeroCore" Version="5.9.0" />
+    <PackageReference Include="Abp.AspNetCore" Version="6.3.0" />
+    <PackageReference Include="Abp.AspNetCore.SignalR" Version="6.3.0" />
+    <PackageReference Include="Abp.HangFire.AspNetCore" Version="6.3.0" />
+    <PackageReference Include="Abp.ZeroCore" Version="6.3.0" />
     <PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
     <PackageReference Include="HangFire.Redis.StackExchange" Version="1.8.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.4">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="PaulMiami.AspNetCore.Mvc.Recaptcha" Version="1.2.2" />
-    <PackageReference Include="Abp.RedisCache" Version="5.9.0" />
-    <PackageReference Include="Abp.Castle.Log4Net" Version="5.9.0" />
+    <PackageReference Include="Abp.RedisCache" Version="6.3.0" />
+    <PackageReference Include="Abp.Castle.Log4Net" Version="6.3.0" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot\libs\layui\layui.all.js">
