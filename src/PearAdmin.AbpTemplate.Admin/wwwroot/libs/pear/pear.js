@@ -1,11 +1,11 @@
-﻿window.rootPath = (function (src) {
+window.rootPath = (function (src) {
 	src = document.scripts[document.scripts.length - 1].src;
 	return src.substring(0, src.lastIndexOf("/") + 1);
 })();
 
 layui.config({
 	base: rootPath + "module/",
-	version: '20210101'
+	version: "3.8.0.Release"
 }).extend({
 	abp: "abp",
 	abpcore: "abpcore",
@@ -25,6 +25,7 @@ layui.config({
 	hash: "hash",
 	select: "select",
 	drawer: "drawer",
+	notice: "notice",
 	social: "social",
 	step: "step",
 	tag: "tag",
@@ -38,8 +39,14 @@ layui.config({
 	topBar: "topBar",
 	button: "button",
 	design: "design",
-	dropdown: "dropdown",
 	card: "card",
 	loading: "loading",
-	cropper: "cropper"
+	cropper: "cropper",
+	convert: "convert",
+	yaml: "yaml",
+	context: "context",
+	theme: "theme",
+	message: "message",
+}).use(['layer', 'theme'], function () {
+	layui.theme.changeTheme(window, false);
 });
