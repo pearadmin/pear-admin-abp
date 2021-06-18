@@ -15,6 +15,12 @@
     <PreserveCompilationReferences>true</PreserveCompilationReferences>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="wwwroot\libs\pear\css\pear-module\**" />
+    <Content Remove="wwwroot\libs\pear\css\pear-module\**" />
+    <EmbeddedResource Remove="wwwroot\libs\pear\css\pear-module\**" />
+    <None Remove="wwwroot\libs\pear\css\pear-module\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="wwwroot\libs\layui\font\iconfont.svg" />
     <None Include="wwwroot\libs\layui\font\iconfont.woff2" />
     <None Include="wwwroot\libs\layui\lay\modules\carousel.js" />
@@ -37,11 +43,6 @@
     <None Include="wwwroot\libs\layui\lay\modules\tree.js" />
     <None Include="wwwroot\libs\layui\lay\modules\upload.js" />
     <None Include="wwwroot\libs\layui\lay\modules\util.js" />
-    <None Include="wwwroot\libs\pear\css\pear-module\dtree\dtree.js" />
-    <None Include="wwwroot\libs\pear\css\pear-module\dtree\font\dtreefont.svg" />
-    <None Include="wwwroot\libs\pear\css\pear-module\icon\iconfont.js" />
-    <None Include="wwwroot\libs\pear\css\pear-module\icon\iconfont.svg" />
-    <None Include="wwwroot\libs\pear\css\pear-module\icon\iconfont.woff2" />
     <None Update="Dockerfile">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

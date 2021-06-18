@@ -1,4 +1,4 @@
-﻿/**
+/**
  *@Name dtree 树形组件
  *@Author 智慧的小西瓜
  *@DOCS http://www.wisdomelon.com/DTreeHelper/

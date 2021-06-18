@@ -7,11 +7,25 @@
 .pear-nav-tree .layui-nav-item>a {
 	height: 56px;
 	line-height: 56px;
+	padding-top: 0px;
+	padding-bottom: 0px;
 }
 
 .pear-nav-tree .layui-nav-item dd a {
 	height: 48px;
 	line-height: 48px;
+}
+
+.pear-nav-tree  .layui-nav-item>a .layui-nav-more {
+	padding: 0px;
+}
+
+.pear-side-scroll::-webkit-scrollbar {
+	width: 0px;
+	height: 0px;
+}
+.pear-side-scroll{
+	width: 230px;
 }
 
 .pear-nav-tree .layui-nav-child {
@@ -101,6 +115,12 @@
 	display: none!important;
 }
 
+.pear-nav-control .layui-nav-child{
+	border: 1px solid whitesmoke;
+	border-radius: 6px;
+	width: 150px;
+}
+
 /** 隐 藏 后 子 级 悬 浮 菜 单 */
 .pear-nav-tree .layui-nav-hover {
 	border-radius: 4px;
@@ -182,7 +202,7 @@
 /** 下 拉 图 标 */
 .pear-nav-tree.arrow .layui-nav-more {
 	font-family: layui-icon !important;
-	font-size: 12px;
+	font-size: 10px;
 	font-style: normal;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -192,7 +212,7 @@
 	line-height: normal;
 	border: none;
 	top: 23px;
-	margin-right: 5px !important;
+	margin-right: 2px !important;
 	margin: 0;
 	padding: 0;
 	display: inline-block;

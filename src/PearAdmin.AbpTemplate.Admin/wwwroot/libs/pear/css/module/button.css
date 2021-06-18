@@ -4,9 +4,6 @@
 	line-height: 38px;
 	white-space: nowrap;
 	cursor: pointer;
-	background-color: #fff;
-	border: 1px solid #dcdfe6;
-	color: #606266;
 	text-align: center;
 	box-sizing: border-box;
 	outline: none;
@@ -15,7 +12,10 @@
 	padding: 0 18px;
 	height: 38px;
 	font-size: 14px;
+	background-color: white;
+	border: 1px solid #dcdfe6;
 	border-radius: 4px;
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
 }
 
 .pear-btn i {
@@ -36,26 +36,22 @@
 .pear-btn-primary {
 	color: #fff !important
 }
-
-.pear-btn[dashed] {
-	border-style: dashed !important;
-}
-
 /** Button 主题 */
 .pear-btn-primary {
 	background-color: #2D8CF0 !important;
+	border: #2D8CF0;
 }
-
 .pear-btn-danger {
-	background-color: #f56c6c !important
+	background-color: #f56c6c !important;
+	border: #f56c6c;
 }
-
 .pear-btn-warming {
-	background-color: #e6a23c !important
+	background-color: #f6ad55 !important;
+	border: #f6ad55;
 }
-
 .pear-btn-success {
-	background-color: #67c23a !important
+	background-color: #5FB878 !important;
+	border: #5FB878;
 }
 
 .pear-btn[round] {
@@ -64,13 +60,13 @@
 
 .pear-btn-primary[plain] {
 	color: #409eff !important;
-	background: #ecf5ff !important;
+	background: #ecf5ff 10% !important;
 	border-color: #b3d8ff !important;
 }
 
 .pear-btn-primary[plain]:hover {
 	color: #fff !important;
-	background-color: #2d8cf0 !important
+	background-color: #2d8cf0!important
 }
 
 .pear-btn-success[plain] {
@@ -116,7 +112,8 @@
 	float: left;
 	position: relative;
 	border-radius: 0px;
-
+	margin-left: 1px;
+	margin-right: 1px;
 }
 
 .pear-btn-md {
@@ -148,17 +145,24 @@
 
 /** Button Size*/
 .pear-btn-sm {
-	height: 30px;
-	line-height: 30px;
+	height: 32px;
+	line-height: 32px;
 	padding: 0 10px;
 	font-size: 12px;
 }
 
 .pear-btn-xs {
-	height: 22px;
-	line-height: 22px;
-	padding: 0 5px;
+	height: 28px;
+	line-height: 28px;
+	padding: 0 8px;
 	font-size: 12px;
+}
+
+.pear-btn-md {
+	height: 34px;
+	line-height: 34px;
+	padding: 0 10px;
+	font-size: 12.5px;
 }
 
 .pear-btn-lg {
