@@ -8,13 +8,13 @@ using Abp.Zero.Configuration;
 using PearAdmin.AbpTemplate.Authorization;
 using PearAdmin.AbpTemplate.Authorization.Roles;
 using PearAdmin.AbpTemplate.Authorization.Users;
-using PearAdmin.AbpTemplate.Social.Chat;
 using PearAdmin.AbpTemplate.Configuration;
 using PearAdmin.AbpTemplate.Features;
-using PearAdmin.AbpTemplate.Social.Friendships;
 using PearAdmin.AbpTemplate.Localization;
 using PearAdmin.AbpTemplate.MultiTenancy;
 using PearAdmin.AbpTemplate.Notifications;
+using PearAdmin.AbpTemplate.Social.Chat;
+using PearAdmin.AbpTemplate.Social.Friendships;
 using PearAdmin.AbpTemplate.Timing;
 
 namespace PearAdmin.AbpTemplate

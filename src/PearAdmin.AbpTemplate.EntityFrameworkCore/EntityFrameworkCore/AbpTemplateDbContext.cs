@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Abp.Zero.EntityFrameworkCore;
+﻿using Abp.Zero.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PearAdmin.AbpTemplate.Authorization.Roles;
 using PearAdmin.AbpTemplate.Authorization.Users;
 using PearAdmin.AbpTemplate.MultiTenancy;

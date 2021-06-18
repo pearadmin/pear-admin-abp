@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
-using Microsoft.Extensions.Configuration;
 using Abp.Extensions;
 using Abp.Reflection.Extensions;
+using Microsoft.Extensions.Configuration;
 
 namespace PearAdmin.AbpTemplate.Configuration
 {

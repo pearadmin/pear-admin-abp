@@ -1,6 +1,9 @@
 ﻿using System.IO;
 using Abp.AspNetCore;
 using Abp.AspNetCore.SignalR;
+using Abp.Configuration.Startup;
+using Abp.Hangfire;
+using Abp.Hangfire.Configuration;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using Abp.Zero.Configuration;
@@ -8,7 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using PearAdmin.AbpTemplate.Admin.Configuration;
-using PearAdmin.AbpTemplate.Admin.ViewResources;
+using PearAdmin.AbpTemplate.Admin.Views;
 using PearAdmin.AbpTemplate.EntityFrameworkCore;
 using PearAdmin.AbpTemplate.Gateway;
 
@@ -19,7 +22,8 @@ namespace PearAdmin.AbpTemplate.Admin
         typeof(AbpTemplateEntityFrameworkModule),
         typeof(AbpTemplateGatewayModule),
         typeof(AbpAspNetCoreModule),
-        typeof(AbpAspNetCoreSignalRModule)
+        typeof(AbpAspNetCoreSignalRModule),
+        typeof(AbpHangfireAspNetCoreModule)
         )]
     public class AbpTemplateAdminModule : AbpModule
     {
@@ -34,15 +38,17 @@ namespace PearAdmin.AbpTemplate.Admin
 
         public override void PreInitialize()
         {
-            Configuration.DefaultNameOrConnectionString = _appConfiguration.GetConnectionString(
-                AbpTemplateCoreConsts.ConnectionStringName
-            );
+            Configuration.DefaultNameOrConnectionString = _appConfiguration.GetConnectionString(AbpTemplateCoreConsts.ConnectionStringName);
 
             // Use database for language management
             Configuration.Modules.Zero().LanguageManagement.EnableDbLocalization();
 
+            // 显示所有错误信息到客户端
+            Configuration.Modules.AbpWebCommon().SendAllExceptionsToClients = false;
 
             Configuration.Navigation.Providers.Add<AbpTemplateNavigationProvider>();
+
+            Configuration.BackgroundJobs.UseHangfire();
         }
 
         public override void Initialize()

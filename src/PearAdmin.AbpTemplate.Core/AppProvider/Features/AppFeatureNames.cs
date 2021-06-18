@@ -6,6 +6,5 @@
         public const string ChatFeature = "App.ChatFeature";
         public const string TenantToTenantChatFeature = "App.TenantToTenantChatFeature";
         public const string TenantToHostChatFeature = "App.TenantToHostChatFeature";
-
     }
 }

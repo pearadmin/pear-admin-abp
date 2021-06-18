@@ -8,10 +8,6 @@ using Microsoft.Extensions.Configuration;
 
 namespace PearAdmin.AbpTemplate.Configuration
 {
-    /// <summary>
-    /// Defines settings for the application.
-    /// See <see cref="AppSettingNames"/> for setting names.
-    /// </summary>
     public class AppSettingProvider : SettingProvider
     {
         private readonly IConfigurationRoot _appConfiguration;
