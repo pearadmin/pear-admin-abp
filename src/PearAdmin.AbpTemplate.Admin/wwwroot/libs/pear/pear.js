@@ -43,6 +43,7 @@ layui.config({
 	loading: "loading",
 	cropper: "cropper",
 	convert: "convert",
+	yaml: "yaml",
 	context: "context",
 	theme: "theme",
 	message: "message",

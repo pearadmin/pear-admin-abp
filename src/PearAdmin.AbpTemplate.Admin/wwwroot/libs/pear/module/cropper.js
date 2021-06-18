@@ -1,6 +1,7 @@
-﻿/*!
+/*!
  * Cropper v3.0.0
  */
+
 layui.define(['jquery'], function (exports) {
     var $ = layui.jquery;
     $ = $ && $.hasOwnProperty('default') ? $['default'] : $;
@@ -714,11 +715,11 @@ layui.define(['jquery'], function (exports) {
                 left: (canvas.width - reversed.width) / 2,
                 top: (canvas.height - reversed.height) / 2
             } : {
-                    width: canvas.width,
-                    height: canvas.height,
-                    left: 0,
-                    top: 0
-                });
+                width: canvas.width,
+                height: canvas.height,
+                left: 0,
+                top: 0
+            });
 
             self.$clone.css({
                 width: image.width,
@@ -1418,7 +1419,7 @@ layui.define(['jquery'], function (exports) {
                     top += range.y;
                     break;
 
-                // Resize crop box
+                    // Resize crop box
                 case ACTION_EAST:
                     if (range.x >= 0 && (right >= maxWidth || aspectRatio && (top <= minTop || bottom >= maxHeight))) {
                         renderable = false;
@@ -1701,19 +1702,19 @@ layui.define(['jquery'], function (exports) {
 
                     break;
 
-                // Move canvas
+                    // Move canvas
                 case 'move':
                     self.move(range.x, range.y);
                     renderable = false;
                     break;
 
-                // Zoom canvas
+                    // Zoom canvas
                 case 'zoom':
                     self.zoom(getMaxZoomRatio(pointers), e.originalEvent);
                     renderable = false;
                     break;
 
-                // Create crop box
+                    // Create crop box
                 case 'crop':
                     if (!range.x || !range.y) {
                         renderable = false;
@@ -1769,7 +1770,7 @@ layui.define(['jquery'], function (exports) {
         }
     };
 
-    function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+    function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length) ; i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
     function getPointersCenter(pointers) {
         var pageX = 0;
@@ -2762,34 +2763,34 @@ layui.define(['jquery'], function (exports) {
                             scaleX = -1;
                             break;
 
-                        // rotate left 180°
+                            // rotate left 180°
                         case 3:
                             rotate = -180;
                             break;
 
-                        // flip vertical
+                            // flip vertical
                         case 4:
                             scaleY = -1;
                             break;
 
-                        // flip vertical + rotate right 90°
+                            // flip vertical + rotate right 90°
                         case 5:
                             rotate = 90;
                             scaleY = -1;
                             break;
 
-                        // rotate right 90°
+                            // rotate right 90°
                         case 6:
                             rotate = 90;
                             break;
 
-                        // flip horizontal + rotate right 90°
+                            // flip horizontal + rotate right 90°
                         case 7:
                             rotate = 90;
                             scaleX = -1;
                             break;
 
-                        // rotate left 90°
+                            // rotate left 90°
                         case 8:
                             rotate = -90;
                             break;

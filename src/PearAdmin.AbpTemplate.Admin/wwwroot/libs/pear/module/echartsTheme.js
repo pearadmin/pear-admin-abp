@@ -1,4 +1,4 @@
-﻿layui.define(function(exports) {
+layui.define(function(exports) {
     exports('echartsTheme',
         {
             "color": [
