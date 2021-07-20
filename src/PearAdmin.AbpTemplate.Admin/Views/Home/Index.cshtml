@@ -64,7 +64,7 @@
 
 @section scripts{
     <script type="text/javascript">
-        layui.use(['admin', 'layer', 'hash', 'abp', 'abpsignalrclient','abpsignalrchat'], function () {
+        layui.use(['admin', 'layer', 'hash', 'abp', 'abpsignalrclient', 'abpsignalrchat'], function () {
             var admin = layui.admin;
             var $ = layui.jquery;
             var layer = layui.layer;
@@ -148,7 +148,7 @@
             };
             admin.render(config);
 
-			window.selectedWindow = function () {
+            window.selectedWindow = function () {
 				return $(".layui-body .layui-tab-content .layui-show")[0].children[0].contentWindow;
             }
 
