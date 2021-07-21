@@ -75,29 +75,29 @@
 
             var config = {
                 logo: {
-                    title: "PearAdmin AbpTemplate", // 网站标题
-                    image: "/images/logo.png" // 网站Logo
+                    title: "PearAdmin AbpTemplate",
+                    image: "/images/logo.png"
                 },
                 menu: {
-                    control: false, // 是 否 开 启 多 系 统 菜 单 true 开启 false 关闭
+                    control: false,
                     accordion: true,
                     async: false,
-                    select: hash.md5("@Url.Action(!AbpSession.TenantId.HasValue ? "HostConsole": "TenantConsole", "WorkSpace")").toUpperCase(), // 默 认 选 中 菜 单 项
+                    select: hash.md5("@Url.Action(AbpSession.TenantId.HasValue ? "TenantConsole" : "HostConsole", "WorkSpace")").toUpperCase(),
                 },
                 tab: {
-                    muiltTab: true, // 是 否 开 启 多 标 签 页 true 开启 false 关闭
+                    muiltTab: true,
                     keepState: true,
                     tabMax: 20,
                     index: {
-                        id: hash.md5("@Url.Action(!AbpSession.TenantId.HasValue ? "HostConsole": "TenantConsole","WorkSpace")").toUpperCase(),
-                        href: '@Url.Action("TenantConsole","WorkSpace")', // 默 认 加 载 主 页
-                        title: "@Html.Raw(L(!AbpSession.TenantId.HasValue ? "HostConsole": "TenantConsole"))"
+                        id: hash.md5("@Url.Action(AbpSession.TenantId.HasValue ? "TenantConsole": "HostConsole", "WorkSpace")").toUpperCase(),
+                        href: '@Url.Action(AbpSession.TenantId.HasValue ? "TenantConsole" : "HostConsole", "WorkSpace")',
+                        title: "@Html.Raw(L(AbpSession.TenantId.HasValue ? "TenantConsole": "HostConsole"))"
                     }
                 },
                 theme: {
                     defaultMenu: "dark-theme", // 默 认 主 题 样 式 dark-theme 默认主题 light-theme 亮主题
-                    allowCustom: true,
-                    defaultColor:3
+                    allowCustom: false,
+                    defaultColor: "3"
                 },
                 colors: [
                     {
@@ -143,7 +143,10 @@
 		            }
                 ],
                 other: {
-                    keepLoad: false, // 主 页 加 载 过 度 时 长 可 为 false
+                    keepLoad: false,
+                },
+                header: {
+                    message: false
                 }
             };
             admin.render(config);
