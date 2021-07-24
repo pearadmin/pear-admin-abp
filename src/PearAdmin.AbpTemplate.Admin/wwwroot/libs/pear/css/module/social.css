@@ -15,8 +15,8 @@
 }
 
 .pear-social {
-    width: 1000px;
-    height: 600px;
+    width: 100%;
+    height: 100%;
     top: 0px;
     left: 0px;
     background-color: whitesmoke;
@@ -278,7 +278,7 @@
     }
 
 .pear-social-body-content-input-tool {
-    border-top: 1px solid #ececec;
+    border-top: 1px solid #dfdbdb;
     height: 40px;
     width: 100%;
     line-height: 40px;
