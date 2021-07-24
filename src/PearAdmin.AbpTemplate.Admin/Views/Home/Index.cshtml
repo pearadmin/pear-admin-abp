@@ -20,6 +20,12 @@
         </ul>
         <div id="control" class="layui-layout-control"></div>
         <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item layui-hide-xs">
+                <a class="social">
+                    <i class="layui-icon layui-icon-dialogue"></i>
+                    <span id="headerMessage"></span>
+                </a>
+            </li>
             <li class="layui-nav-item layui-hide-xs"><a href="#" class="fullScreen layui-icon layui-icon-screen-full"></a></li>
             <li class="layui-nav-item layui-hide-xs"><a href="https://gitee.com/pear-admin/pear-admin-abp" class="layui-icon layui-icon-website"></a></li>
             <li class="layui-nav-item layui-hide-xs">
@@ -52,11 +58,6 @@
     <div class="loader"></div>
 </div>
 
-<!-- 聊天组件 -->
-<div id="social">
-    <div class="pear-social-entrance layui-icon layui-icon-dialogue" pear-id="social"></div>
-</div>
-
 <!-- 移动端 的 收缩适配 -->
 <div class="collaspe pe-collaspe layui-hide-sm">
     <i class="layui-icon layui-icon-shrink-right"></i>
@@ -70,8 +71,7 @@
             var layer = layui.layer;
             var hash = layui.hash;
             var abp = layui.abp;
-            var interval = "";
-            var chatPanelIndex = "";
+            var currMessageIndex = "";
 
             var config = {
                 logo: {
@@ -155,21 +155,6 @@
 				return $(".layui-body .layui-tab-content .layui-show")[0].children[0].contentWindow;
             }
 
-            window.openChatPanel = function () {
-				chatPanelIndex = layer.open({
-                    type: 2,
-                    title: "飞鸽传书",
-                    content: "@Url.Action("Index", "Chat")",
-                    area: ["1000px","643px"],
-                    shade: 0.3,
-                    shadeClose: true,
-                    resize:false,
-                    end:function(){
-                        chatPanelIndex = "";
-                    }
-                });
-            }
-
             function loadUnreadNotificationCount() {
                 abp.ajax({
                     url: "@Url.Action("GetUnreadNotificationCount", "Notifications")",
@@ -191,17 +176,26 @@
                     abpHandleError: false
                 }).done(function (data) {
                     if (data.code == 200 && data.data > 0) {
-                        messageReceived();
+                        messageUnread();
                     }
                 }).fail(function (jqXHR) {
                     layer.msg(jqXHR.message, { icon: 5 });
                 });
             }
 
-            $("body").on("click", ".pear-social-entrance", function () {
-                openChatPanel();
-                clearInterval(interval);
-                interval = "";
+            $(".social").click(function () {
+                currMessageIndex = layer.open({
+                    type: 2,
+                    title: "传音",
+                    content: "@Url.Action("Index", "Chat")",
+                    area: ["1000px","645px"],
+                    shade: 0.3,
+                    shadeClose: true,
+                    resize: true,
+                    end: function () {
+                        currMessageIndex = "";
+                    }
+                });
             });
 
             $(".notice").click(function () {
@@ -215,7 +209,9 @@
             });
 
             abp.event.on('app.chat.messageReceived', function (message) {
-                messageReceived();
+                if (currMessageIndex == "") {
+                    messageUnread();
+                }
             });
 
             abp.event.on('abp.notifications.received', function (userNotification) {
@@ -227,16 +223,8 @@
                 $("#headerNotice").addClass("layui-badge-dot");
             }
 
-            function messageReceived() {
-                if (interval == "" && chatPanelIndex == "") {
-                    interval = window.setInterval(function(){
-                        if ($(".pear-social-entrance").css("display") == "none") {
-                            $(".pear-social-entrance").css("display", "");
-                        } else {
-                            $(".pear-social-entrance").css("display", "none");
-                        }
-                    }, 500);
-                }
+            function messageUnread() {
+                $("#headerMessage").addClass("layui-badge-dot");
             }
 
             var init = function () {
