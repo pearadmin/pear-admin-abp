@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using PearAdmin.AbpTemplate.Configuration;
@@ -14,17 +15,11 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore
     {
         public AbpTemplateDbContext CreateDbContext(string[] args)
         {
-            var currentEnvironment = GetCurrentEnvironment(args);
             var builder = new DbContextOptionsBuilder<AbpTemplateDbContext>();
-            var configuration = AppConfigurations.Get(WebContentDirectoryFinder.CalculateContentRootFolder(), currentEnvironment);
+            var configuration = AppConfigurations.Get(WebContentDirectoryFinder.CalculateContentRootFolder(), Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"), addUserSecrets: true);
             AbpTemplateDbContextConfigurer.Configure(builder, configuration.GetConnectionString(AbpTemplateCoreConsts.ConnectionStringName));
 
             return new AbpTemplateDbContext(builder.Options);
-        }
-
-        public string GetCurrentEnvironment(string[] args)
-        {
-            return AbpTemplateCoreConsts.DefaultCurrentEnviroment;
         }
     }
 }
