@@ -137,7 +137,7 @@
             <i class="layui-icon layui-icon-delete"></i>
         </button>
     }
-    <button class="pear-btn pear-btn-primary pear-btn-sm" id="more{{d.id}}">
+    <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="more" id="more{{d.id}}">
         <i class="layui-icon layui-icon-triangle-d"></i>
     </button>
 </script>
@@ -152,15 +152,6 @@
     <div>
         {{dateTimeConvertString(d.startTime)}} - {{dateTimeConvertString(d.endTime)}}
     </div>
-</script>
-
-<!--更多操作-->
-<script id="moreTool" type="text/plain">
-    [
-        {{#  layui.each(d.triggers, function(index, item){ }}
-         [{"txt": "{{item.name}}", "event": "{{item.name}}"}]
-        {{#  });  }}
-    ]
 </script>
 
 @section scripts{
@@ -214,12 +205,6 @@
                             $("#more" + res.data[i].id).hide();
                             continue;
                         }
-
-                        dropdown.suite("#more" + res.data[i].id, {
-                            align:'left',
-                            data: res.data[i],
-                            templateMenu: "moreTool",
-                        });
                     }
                 }
 		    });
@@ -314,58 +299,74 @@
                 var data = obj.data;
                 if (obj.event === 'remove') {
                     window.remove([{ "id": data.id }]);
-		        } else if(obj.event === 'edit'){
-		            window.edit(data);
-		        } else if (obj.event === "@TaskOperateTrigger.Progress.Name") {
-                    window.trigger({
-                        "id": data.id,
-                        "url": "@Url.Action("ProgressDailyTask", "DailyTask", new { area= "TaskCenter" })"
-                    });
-                } else if (obj.event === "@TaskOperateTrigger.Resolve.Name") {
-                    window.trigger({
-                        "id": data.id,
-                        "url": "@Url.Action("ResolveDailyTask", "DailyTask", new { area= "TaskCenter" })"
-                    });
-                } else if (obj.event === "@TaskOperateTrigger.Reopen.Name") {
-                    window.trigger({
-                        "id": data.id,
-                        "url": "@Url.Action("ReopenDailyTask", "DailyTask", new { area= "TaskCenter" })"
-                    });
-                } else if (obj.event === "@TaskOperateTrigger.Qualify.Name") {
-                    window.trigger({
-                        "id": data.id,
-                        "url": "@Url.Action("QualifyDailyTask", "DailyTask", new { area= "TaskCenter" })"
-                    });
-                } else if (obj.event === "@TaskOperateTrigger.Pend.Name") {
-                    window.trigger({
-                        "id": data.id,
-                        "url": "@Url.Action("PendDailyTask", "DailyTask", new { area= "TaskCenter" })"
-                    });
-                } else if (obj.event === "@TaskOperateTrigger.Close.Name") {
-                    window.trigger({
-                        "id": data.id,
-                        "url": "@Url.Action("CloseDailyTask", "DailyTask", new { area= "TaskCenter" })"
+                } else if (obj.event === 'edit') {
+                    window.edit(data);
+                } else if (obj.event === 'batchRemove') {
+                    let checkData = table.checkStatus(obj.config.id).data;
+                    if (checkData.length === 0) {
+                        parent.layer.msg("未选中数据", {
+                            icon: 3,
+                            time: 1000
+                        });
+                        return false;
+                    }
+                    var ids = checkData.map(function (d) { return { "id": d.id }; });
+                    window.remove(ids);
+                } else if (obj.event === 'more') {
+                    dropdown.render({
+                        elem: '#more' + data.id,
+                        show: true,
+                        data: data.triggers.map(function (d) {
+                            return {
+                                "title": d.name,
+                                "id": d.name
+                            };
+                        }),
+                        click: function (dropData, othis) {
+                            if (dropData.id === "@TaskOperateTrigger.Progress.Name") {
+                                window.trigger({
+                                    "id": data.id,
+                                    "url": "@Url.Action("ProgressDailyTask", "DailyTask", new { area= "TaskCenter" })"
+                                });
+                            } else if (dropData.id === "@TaskOperateTrigger.Resolve.Name") {
+                                window.trigger({
+                                    "id": data.id,
+                                    "url": "@Url.Action("ResolveDailyTask", "DailyTask", new { area= "TaskCenter" })"
+                                });
+                            } else if (dropData.id === "@TaskOperateTrigger.Reopen.Name") {
+                                window.trigger({
+                                    "id": data.id,
+                                    "url": "@Url.Action("ReopenDailyTask", "DailyTask", new { area= "TaskCenter" })"
+                                });
+                            } else if (dropData.id === "@TaskOperateTrigger.Qualify.Name") {
+                                window.trigger({
+                                    "id": data.id,
+                                    "url": "@Url.Action("QualifyDailyTask", "DailyTask", new { area= "TaskCenter" })"
+                                });
+                            } else if (dropData.id === "@TaskOperateTrigger.Pend.Name") {
+                                window.trigger({
+                                    "id": data.id,
+                                    "url": "@Url.Action("PendDailyTask", "DailyTask", new { area= "TaskCenter" })"
+                                });
+                            } else if (dropData.id === "@TaskOperateTrigger.Close.Name") {
+                                window.trigger({
+                                    "id": data.id,
+                                    "url": "@Url.Action("CloseDailyTask", "DailyTask", new { area= "TaskCenter" })"
+                                });
+                            } else {
+                                layer.msg('下拉菜单 id：' + dropData.id);
+                            }
+                        }
                     });
                 }
 		    });
 
 		    table.on('toolbar(dailyTask-table)', function(obj){
-		        if(obj.event === 'add'){
-		            window.add();
-		        } else if(obj.event === 'refresh'){
-		            window.refresh();
-                } else if (obj.event === 'batchRemove') {
-                    let checkData = table.checkStatus(obj.config.id).data;
-				    if (checkData.length === 0) {
-					    parent.layer.msg("未选中数据", {
-						    icon: 3,
-						    time: 1000
-					    });
-					    return false;
-                    }
-                    var ids = checkData.map(function (d) { return { "id": d.id }; });
-                    window.remove(ids);
-		        }
+                if (obj.event === 'add') {
+                    window.add();
+                } else if (obj.event === 'refresh') {
+                    window.refresh();
+                }
 		    });
 
 		    form.on('submit(dailyTask-query)', function(data){

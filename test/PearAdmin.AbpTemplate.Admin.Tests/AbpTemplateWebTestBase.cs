@@ -2,24 +2,18 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using Abp.AspNetCore.TestBase;
 using Abp.Authorization.Users;
-using Abp.Extensions;
-using Abp.Json;
 using Abp.MultiTenancy;
-using Abp.Web.Models;
-using PearAdmin.AbpTemplate.EntityFrameworkCore;
-using PearAdmin.AbpTemplate.Admin.ViewResources;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Shouldly;
+using PearAdmin.AbpTemplate.EntityFrameworkCore;
 using PearAdmin.AbpTemplate.Web;
+using Shouldly;
 
 namespace PearAdmin.AbpTemplate.Admin.Tests
 {

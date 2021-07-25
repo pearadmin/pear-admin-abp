@@ -6,17 +6,25 @@ using PearAdmin.AbpTemplate.Web;
 
 namespace PearAdmin.AbpTemplate.EntityFrameworkCore
 {
-    /* This class is needed to run "dotnet ef ..." commands from command line on development. Not used anywhere else */
+    /// <summary>
+    /// 只在用命令构建迁移脚本时使用
+    /// https://docs.microsoft.com/zh-cn/ef/core/cli/dbcontext-creation?tabs=vs
+    /// </summary>
     public class AbpTemplateDbContextFactory : IDesignTimeDbContextFactory<AbpTemplateDbContext>
     {
         public AbpTemplateDbContext CreateDbContext(string[] args)
         {
+            var currentEnvironment = GetCurrentEnvironment(args);
             var builder = new DbContextOptionsBuilder<AbpTemplateDbContext>();
-            var configuration = AppConfigurations.Get(WebContentDirectoryFinder.CalculateContentRootFolder());
-
+            var configuration = AppConfigurations.Get(WebContentDirectoryFinder.CalculateContentRootFolder(), currentEnvironment);
             AbpTemplateDbContextConfigurer.Configure(builder, configuration.GetConnectionString(AbpTemplateCoreConsts.ConnectionStringName));
 
             return new AbpTemplateDbContext(builder.Options);
+        }
+
+        public string GetCurrentEnvironment(string[] args)
+        {
+            return AbpTemplateCoreConsts.DefaultCurrentEnviroment;
         }
     }
 }

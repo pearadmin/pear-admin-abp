@@ -1,7 +1,7 @@
 layui.define(['laypage', 'form'], function (exports) {
     "use strict";
 
-    var IconPicker = function () {
+    var IconPicker =function () {
         this.v = '1.1';
     }, _MOD = 'iconPicker',
         _this = this,
@@ -60,7 +60,7 @@ layui.define(['laypage', 'form'], function (exports) {
 
                 return a;
             },
-            successHandle: function() {
+            successHandle: function(){
                 var d = {
                     options: opts,
                     data: data,
