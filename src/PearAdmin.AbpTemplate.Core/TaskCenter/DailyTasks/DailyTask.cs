@@ -9,7 +9,6 @@ namespace PearAdmin.AbpTemplate.TaskCenter.DailyTasks
     /// <summary>
     /// 中心_日常任务
     /// </summary>
-    [Table("Center_DailyTask")]
     public partial class DailyTask : FullAuditedAggregateRoot<Guid>
     {
         public const int MaxNameLength = 200;

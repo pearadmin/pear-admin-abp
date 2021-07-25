@@ -16,5 +16,10 @@ namespace PearAdmin.AbpTemplate
         public const string DefaultCurrentEnviroment = "Development";
         public const bool MultiTenancyEnabled = true;
         public const bool AllowTenantsToChangeEmailSettings = false;
+
+        public const string TablePrefix_Resource = "Resource";
+        public const string TablePrefix_TaskCenter = "Center";
+        public const string TablePrefix_Social = "Social";
+        public const string TablePrefix_Common = "Common";
     }
 }

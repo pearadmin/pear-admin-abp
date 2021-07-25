@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PearAdmin.AbpTemplate.Authorization.Roles;
 using PearAdmin.AbpTemplate.Authorization.Users;
+using PearAdmin.AbpTemplate.EntityFrameworkCore.EntityTypeConfigurations;
 using PearAdmin.AbpTemplate.MultiTenancy;
 
 namespace PearAdmin.AbpTemplate.EntityFrameworkCore
@@ -22,26 +23,11 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            #region DailyTask
-            modelBuilder.Entity<TaskCenter.DailyTasks.DailyTask>()
-                .OwnsOne(a => a.TaskState, vo =>
-                {
-                    vo.Property(p => p.Id).HasColumnName("TaskStateType");
-                    vo.Ignore(p => p.Name);
-                });
-
-            modelBuilder.Entity<TaskCenter.DailyTasks.DailyTask>()
-                .OwnsOne(a => a.DateRange, vo =>
-                {
-                    vo.Property(p => p.StartTime)
-                        .HasColumnName("StartTime")
-                        .HasColumnType("datetime(6)");
-
-                    vo.Property(p => p.EndTime)
-                        .HasColumnName("EndTime")
-                        .HasColumnType("datetime(6)");
-                });
-            #endregion
+            new DailyTaskEntityTypeConfiguration().Configure(modelBuilder.Entity<TaskCenter.DailyTasks.DailyTask>());
+            new DataDictionaryItemEntityTypeConfiguration().Configure(modelBuilder.Entity<Resource.DataDictionaries.DataDictionaryItem>());
+            new FriendshipEntityTypeConfiguration().Configure(modelBuilder.Entity<Social.Friendships.Friendship>());
+            new ChatMessageEntityTypeConfiguration().Configure(modelBuilder.Entity<Social.Chat.ChatMessage>());
+            new BinaryObjectEntityTypeConfiguration().Configure(modelBuilder.Entity<BinaryObjects.BinaryObject>());
 
             base.OnModelCreating(modelBuilder);
         }

@@ -1,17 +1,12 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Abp;
 using Abp.Domain.Entities;
 
 namespace PearAdmin.AbpTemplate.BinaryObjects
 {
-    [Table("AppBinaryObjects")]
-    public class BinaryObject : Entity<Guid>, IMayHaveTenant
+    public class BinaryObject : AggregateRoot<Guid>, IMayHaveTenant
     {
         public virtual int? TenantId { get; set; }
-
-        [Required]
         public virtual byte[] Bytes { get; set; }
 
         public BinaryObject()

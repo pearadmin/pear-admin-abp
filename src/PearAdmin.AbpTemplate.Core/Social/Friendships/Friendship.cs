@@ -1,18 +1,15 @@
 ﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Abp;
-using Abp.Authorization.Users;
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using Abp.Timing;
 
 namespace PearAdmin.AbpTemplate.Social.Friendships
 {
-    [Table("AppFriendships")]
-    public class Friendship : Entity<long>, IHasCreationTime, IMayHaveTenant
+    public class Friendship : AggregateRoot<long>, IHasCreationTime, IMayHaveTenant
     {
+        public const int MaxUserNameLength = 256;
+
         public long UserId { get; set; }
 
         public int? TenantId { get; set; }
@@ -21,8 +18,6 @@ namespace PearAdmin.AbpTemplate.Social.Friendships
 
         public int? FriendTenantId { get; set; }
 
-        [Required]
-        [MaxLength(AbpUserBase.MaxUserNameLength)]
         public string FriendUserName { get; set; }
 
         public string FriendTenancyName { get; set; }
