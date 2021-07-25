@@ -2,9 +2,8 @@
 using Abp.AspNetCore.TestBase;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
-using PearAdmin.AbpTemplate.EntityFrameworkCore;
-using PearAdmin.AbpTemplate.Admin.ViewResources;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using PearAdmin.AbpTemplate.EntityFrameworkCore;
 
 namespace PearAdmin.AbpTemplate.Admin.Tests
 {

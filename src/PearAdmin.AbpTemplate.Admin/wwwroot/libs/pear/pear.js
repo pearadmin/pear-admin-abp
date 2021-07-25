@@ -5,20 +5,11 @@ window.rootPath = (function (src) {
 
 layui.config({
 	base: rootPath + "module/",
-	version: "3.8.0.Release"
+	version: "3.8.9"
 }).extend({
-	abp: "abp",
-	abpcore: "abpcore",
-	abpjquery: "abpjquery",
-	abpnotice: "abpnotice",
-	abpmessage: "abpmessage",
-	abpsignalr: "abpsignalr",
-	abpsignalrclient: "abpsignalrclient",
-	abpsignalrchat: "abpsignalrchat",
 	admin: "admin",
 	menu: "menu",
 	frame: "frame",
-	fullcalendar: 'fullcalendar',
 	tab: "tab",
 	echarts: "echarts",
 	echartsTheme: "echartsTheme",
@@ -26,7 +17,6 @@ layui.config({
 	select: "select",
 	drawer: "drawer",
 	notice: "notice",
-	social: "social",
 	step: "step",
 	tag: "tag",
 	popup: "popup",
@@ -45,8 +35,19 @@ layui.config({
 	convert: "convert",
 	yaml: "yaml",
 	context: "context",
+	http: "http",
 	theme: "theme",
 	message: "message",
+	abp: "abp",
+	abpcore: "abpcore",
+	abpjquery: "abpjquery",
+	abpnotice: "abpnotice",
+	abpmessage: "abpmessage",
+	abpsignalr: "abpsignalr",
+	abpsignalrclient: "abpsignalrclient",
+	abpsignalrchat: "abpsignalrchat",
+	fullcalendar: 'fullcalendar',
+	social: "social"
 }).use(['layer', 'theme'], function () {
 	layui.theme.changeTheme(window, false);
 });

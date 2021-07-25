@@ -137,7 +137,7 @@
             <i class="layui-icon layui-icon-delete"></i>
         </button>
     }
-    <button class="pear-btn pear-btn-primary pear-btn-sm" id="more{{d.id}}">
+    <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="more">
         <i class="layui-icon layui-icon-triangle-d"></i>
     </button>
 </script>
@@ -152,15 +152,6 @@
     <div>
         {{dateTimeConvertString(d.startTime)}} - {{dateTimeConvertString(d.endTime)}}
     </div>
-</script>
-
-<!--更多操作-->
-<script id="moreTool" type="text/plain">
-    [
-        {{#  layui.each(d.triggers, function(index, item){ }}
-         [{"txt": "{{item.name}}", "event": "{{item.name}}"}]
-        {{#  });  }}
-    ]
 </script>
 
 @section scripts{
@@ -215,10 +206,19 @@
                             continue;
                         }
 
-                        dropdown.suite("#more" + res.data[i].id, {
-                            align:'left',
-                            data: res.data[i],
-                            templateMenu: "moreTool",
+                        dropdown.render({
+                            elem: "#more" + res.data[i].id,
+                            data: res.data[i].triggers.map(function (d) {
+                                return {
+                                    "title": d.name,
+                                    "id": d.name
+                                };
+                            }),
+                            click: function(data, othis){
+                                var elem = $(this.elem),
+                                    listId = elem.data('id');
+                                layer.msg('得到表格列表的 id：'+ listId +'，下拉菜单 id：'+ data.id);
+                            }
                         });
                     }
                 }
@@ -314,9 +314,9 @@
                 var data = obj.data;
                 if (obj.event === 'remove') {
                     window.remove([{ "id": data.id }]);
-		        } else if(obj.event === 'edit'){
-		            window.edit(data);
-		        } else if (obj.event === "@TaskOperateTrigger.Progress.Name") {
+                } else if (obj.event === 'edit') {
+                    window.edit(data);
+                } else if (obj.event === "@TaskOperateTrigger.Progress.Name") {
                     window.trigger({
                         "id": data.id,
                         "url": "@Url.Action("ProgressDailyTask", "DailyTask", new { area= "TaskCenter" })"
@@ -346,6 +346,34 @@
                         "id": data.id,
                         "url": "@Url.Action("CloseDailyTask", "DailyTask", new { area= "TaskCenter" })"
                     });
+                } else if (obj.event === "@TaskOperateTrigger.Close.Name") {
+                    //dropdown.render({
+                    //    elem: that,
+                    //    show: true,
+                    //    data: [{
+                    //        title: 'item 1'
+                    //        , id: 'aaa'
+                    //    }, {
+                    //        title: 'item 2'
+                    //        , id: 'bbb'
+                    //    }, {
+                    //        title: '删除'
+                    //        , id: 'del'
+                    //    }],
+                    //    click: function (data, othis) {
+                    //        //根据 id 做出不同操作
+                    //        if (data.id === 'del') {
+                    //            layer.confirm('真的删除行么', function (index) {
+                    //                obj.del();
+                    //                layer.close(index);
+                    //            });
+                    //        } else {
+                    //            layer.msg('得到表格下拉菜单 id：' + data.id);
+                    //        }
+                    //    },
+                    //    align: 'right', //右对齐弹出（v2.6.8 新增）
+                    //    style: 'box-shadow: 1px 1px 10px rgb(0 0 0 / 12%);' //设置额外样式
+                    //});
                 }
 		    });
 

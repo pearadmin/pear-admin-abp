@@ -1,10 +1,10 @@
-﻿/**
+/**
  * Copyright (c) Tiny Technologies, Inc. All rights reserved.
  * Licensed under the LGPL or a commercial license.
  * For LGPL see License.txt in the project root for license information.
  * For commercial licenses see https://www.tiny.cloud/
  *
- * Version: 5.0.16 (2019-09-24)
+ * Version: 5.6.2 (2020-12-08)
  */
 (function () {
     'use strict';
@@ -16,7 +16,6 @@
         editor.execCommand('mceInsertContent', false, '<hr />');
       });
     };
-    var Commands = { register: register };
 
     var register$1 = function (editor) {
       editor.ui.registry.addButton('hr', {
@@ -34,12 +33,11 @@
         }
       });
     };
-    var Buttons = { register: register$1 };
 
     function Plugin () {
       global.add('hr', function (editor) {
-        Commands.register(editor);
-        Buttons.register(editor);
+        register(editor);
+        register$1(editor);
       });
     }
 
