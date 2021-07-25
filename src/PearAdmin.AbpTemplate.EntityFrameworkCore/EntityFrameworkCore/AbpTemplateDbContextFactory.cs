@@ -24,10 +24,6 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore
 
         public string GetCurrentEnvironment(string[] args)
         {
-            foreach (var arg in args)
-            {
-                System.Console.WriteLine(arg);
-            }
             return AbpTemplateCoreConsts.DefaultCurrentEnviroment;
         }
     }
