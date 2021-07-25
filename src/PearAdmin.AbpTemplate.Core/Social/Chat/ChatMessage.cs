@@ -1,6 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Abp;
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
@@ -8,8 +6,7 @@ using Abp.Timing;
 
 namespace PearAdmin.AbpTemplate.Social.Chat
 {
-    [Table("AppChatMessages")]
-    public class ChatMessage : Entity<long>, IHasCreationTime, IMayHaveTenant
+    public class ChatMessage : AggregateRoot<long>, IHasCreationTime, IMayHaveTenant
     {
         public const int MaxMessageLength = 4 * 1024; //4KB
 
@@ -21,8 +18,6 @@ namespace PearAdmin.AbpTemplate.Social.Chat
 
         public int? TargetTenantId { get; set; }
 
-        [Required]
-        [StringLength(MaxMessageLength)]
         public string Message { get; set; }
 
         public DateTime CreationTime { get; set; }

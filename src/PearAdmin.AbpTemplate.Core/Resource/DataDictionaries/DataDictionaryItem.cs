@@ -1,6 +1,5 @@
-﻿using Abp.Domain.Entities;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Abp.Domain.Entities;
 
 namespace PearAdmin.AbpTemplate.Resource.DataDictionaries
 {
@@ -8,7 +7,7 @@ namespace PearAdmin.AbpTemplate.Resource.DataDictionaries
     /// 资源_数据字典项
     /// </summary>
     [Table("Resource_DataDictionaryItem")]
-    public class DataDictionaryItem : Entity<int>, IMustHaveTenant
+    public class DataDictionaryItem : AggregateRoot<int>, IMustHaveTenant
     {
         public const int MaxCodeLength = 5;
         public const int MaxNameLength = 30;
@@ -44,13 +43,11 @@ namespace PearAdmin.AbpTemplate.Resource.DataDictionaries
         /// <summary>
         /// 业务代码
         /// </summary>
-        [StringLength(MaxCodeLength)]
         public string Code { get; private set; }
 
         /// <summary>
         /// 类型项名称
         /// </summary>
-        [StringLength(MaxNameLength)]
         public string Name { get; private set; }
 
         /// <summary>
