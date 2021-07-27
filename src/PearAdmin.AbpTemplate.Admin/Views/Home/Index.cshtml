@@ -96,7 +96,7 @@
                 },
                 theme: {
                     defaultMenu: "dark-theme", // 默 认 主 题 样 式 dark-theme 默认主题 light-theme 亮主题
-                    allowCustom: false,
+                    allowCustom: true,
                     defaultColor: "3"
                 },
                 colors: [
@@ -139,7 +139,7 @@
 		            {
 			            icon: "layui-icon layui-icon-fonts-code",
 			            title: "Gitee地址",
-			            href: "https://gitee.com/530521314/PearAdmin.AbpTemplate.git"
+                        href: "https://gitee.com/pear-admin/pear-admin-abp.git"
 		            }
                 ],
                 other: {
@@ -190,6 +190,7 @@
                     content: "@Url.Action("Index", "Chat")",
                     area: ["1000px","645px"],
                     shade: 0.3,
+                    maxmin: true,
                     shadeClose: true,
                     resize: true,
                     end: function () {
