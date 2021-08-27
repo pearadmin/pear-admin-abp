@@ -7,6 +7,7 @@ using Abp.Hangfire;
 using Abp.Json;
 using Hangfire;
 using Hangfire.MemoryStorage;
+using LogDashboard;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -68,6 +69,8 @@ namespace PearAdmin.AbpTemplate.Admin
 #endif
             });
 
+            services.AddLogDashboard();
+
             return services.AddAbp<AbpTemplateAdminModule>(AbpBootstrapperOptionsExtension.GetOptions(Configuration));
         }
 
@@ -100,6 +103,8 @@ namespace PearAdmin.AbpTemplate.Admin
                     new AbpHangfireAuthorizationFilter(AppPermissionNames.Pages_SystemManagement_HangfireDashboard)
                 }
             });
+
+            app.UseLogDashboard();
 
             app.UseEndpoints(endpoints =>
             {
