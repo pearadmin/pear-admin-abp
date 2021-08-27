@@ -40,7 +40,7 @@ namespace PearAdmin.AbpTemplate.Admin
         {
             Configuration.DefaultNameOrConnectionString = _appConfiguration.GetConnectionString(AbpTemplateCoreConsts.ConnectionStringName);
 
-            // Use database for language management
+            // 本地化内容存储到数据库
             Configuration.Modules.Zero().LanguageManagement.EnableDbLocalization();
 
             // 显示所有错误信息到客户端

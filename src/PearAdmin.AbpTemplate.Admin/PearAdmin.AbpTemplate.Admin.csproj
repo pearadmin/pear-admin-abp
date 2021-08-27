@@ -15,6 +15,7 @@
     <PreserveCompilationReferences>true</PreserveCompilationReferences>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\module\PearAdmin.AbpTemplate.NLog\PearAdmin.AbpTemplate.NLog.csproj" />
     <ProjectReference Include="..\PearAdmin.AbpTemplate.Application\PearAdmin.AbpTemplate.Application.csproj" />
     <ProjectReference Include="..\PearAdmin.AbpTemplate.EntityFrameworkCore\PearAdmin.AbpTemplate.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\PearAdmin.AbpTemplate.Gateway\PearAdmin.AbpTemplate.Gateway.csproj" />
@@ -33,6 +34,5 @@
     </PackageReference>
     <PackageReference Include="PaulMiami.AspNetCore.Mvc.Recaptcha" Version="1.2.2" />
     <PackageReference Include="Abp.RedisCache" Version="6.3.0" />
-    <PackageReference Include="Abp.Castle.Log4Net" Version="6.3.0" />
   </ItemGroup>
 </Project>
