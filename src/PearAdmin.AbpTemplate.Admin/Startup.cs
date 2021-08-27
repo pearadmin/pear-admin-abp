@@ -2,11 +2,9 @@
 using Abp.AspNetCore;
 using Abp.AspNetCore.Mvc.Antiforgery;
 using Abp.AspNetCore.SignalR.Hubs;
-using Abp.Castle.Logging.Log4Net;
 using Abp.Dependency;
 using Abp.Hangfire;
 using Abp.Json;
-using Castle.Facilities.Logging;
 using Hangfire;
 using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Builder;
@@ -19,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using PearAdmin.AbpTemplate.Admin.Configuration;
+using PearAdmin.AbpTemplate.Admin.Extensions;
 using PearAdmin.AbpTemplate.Admin.SignalR;
 using PearAdmin.AbpTemplate.Authorization;
 using PearAdmin.AbpTemplate.Identity;
@@ -27,22 +26,20 @@ namespace PearAdmin.AbpTemplate.Admin
 {
     public class Startup
     {
-        private readonly IConfigurationRoot _appConfiguration;
+        private readonly IConfigurationRoot Configuration;
 
         public Startup(IWebHostEnvironment env)
         {
-            _appConfiguration = env.GetAppConfiguration();
+            Configuration = env.GetAppConfiguration();
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews(
-                    options =>
-                    {
-                        options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-                        options.Filters.Add(new AbpAutoValidateAntiforgeryTokenAttribute());
-                    }
-                )
+            services.AddControllersWithViews(options =>
+                {
+                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                    options.Filters.Add(new AbpAutoValidateAntiforgeryTokenAttribute());
+                })
                 .AddRazorRuntimeCompilation()
                 .AddNewtonsoftJson(options =>
                 {
@@ -71,13 +68,7 @@ namespace PearAdmin.AbpTemplate.Admin
 #endif
             });
 
-            // Configure Abp and Dependency Injection
-            return services.AddAbp<AbpTemplateAdminModule>(
-                // Configure Log4Net logging
-                options => options.IocManager.IocContainer.AddFacility<LoggingFacility>(
-                    f => f.UseAbpLog4Net().WithConfig("log4net.config")
-                )
-            );
+            return services.AddAbp<AbpTemplateAdminModule>(AbpBootstrapperOptionsExtension.GetOptions(Configuration));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
