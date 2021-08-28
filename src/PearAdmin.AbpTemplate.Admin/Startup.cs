@@ -79,7 +79,7 @@ namespace PearAdmin.AbpTemplate.Admin
             return services.AddAbp<AbpTemplateAdminModule>(AbpBootstrapperOptionsExtension.GetOptions(Configuration));
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseAbp();
 
