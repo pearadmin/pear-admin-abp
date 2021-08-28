@@ -10,14 +10,15 @@ RUN echo 'Asia/Shanghai' >/etc/timezone
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
+COPY ["module/PearAdmin.AbpTemplate.Storage.Minio/PearAdmin.AbpTemplate.Storage.Minio.csproj", "module/PearAdmin.AbpTemplate.Storage.Minio/"]
+COPY ["module/PearAdmin.AbpTemplate.Storage/PearAdmin.AbpTemplate.Storage.csproj", "module/PearAdmin.AbpTemplate.Storage/"]
+COPY ["module/PearAdmin.AbpTemplate.NLog/PearAdmin.AbpTemplate.NLog.csproj", "module/PearAdmin.AbpTemplate.NLog/"]
 COPY ["src/PearAdmin.AbpTemplate.Admin/PearAdmin.AbpTemplate.Admin.csproj", "src/PearAdmin.AbpTemplate.Admin/"]
 COPY ["src/PearAdmin.AbpTemplate.Gateway/PearAdmin.AbpTemplate.Gateway.csproj", "src/PearAdmin.AbpTemplate.Gateway/"]
 COPY ["src/PearAdmin.AbpTemplate.Application/PearAdmin.AbpTemplate.Application.csproj", "src/PearAdmin.AbpTemplate.Application/"]
-COPY ["module/PearAdmin.AbpTemplate.Storage.Minio/PearAdmin.AbpTemplate.Storage.Minio.csproj", "module/PearAdmin.AbpTemplate.Storage.Minio/"]
-COPY ["module/PearAdmin.AbpTemplate.Storage/PearAdmin.AbpTemplate.Storage.csproj", "module/PearAdmin.AbpTemplate.Storage/"]
 COPY ["src/PearAdmin.AbpTemplate.Core/PearAdmin.AbpTemplate.Core.csproj", "src/PearAdmin.AbpTemplate.Core/"]
-COPY ["tool/PearAdmin.AbpTemplate.Shared/PearAdmin.AbpTemplate.Shared.csproj", "tool/PearAdmin.AbpTemplate.Shared/"]
 COPY ["src/PearAdmin.AbpTemplate.EntityFrameworkCore/PearAdmin.AbpTemplate.EntityFrameworkCore.csproj", "src/PearAdmin.AbpTemplate.EntityFrameworkCore/"]
+COPY ["tool/PearAdmin.AbpTemplate.Shared/PearAdmin.AbpTemplate.Shared.csproj", "tool/PearAdmin.AbpTemplate.Shared/"]
 RUN dotnet restore "src/PearAdmin.AbpTemplate.Admin/PearAdmin.AbpTemplate.Admin.csproj"
 COPY . .
 WORKDIR "/src/src/PearAdmin.AbpTemplate.Admin"
