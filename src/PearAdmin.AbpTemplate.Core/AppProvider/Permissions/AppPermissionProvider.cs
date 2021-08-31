@@ -53,6 +53,7 @@ namespace PearAdmin.AbpTemplate.Authorization
             logs.CreateChildPermission(AppPermissionNames.Pages_SystemManagement_Maintenance_Logs_Refresh, L("RefreshLog"));
 
             systemManagement.CreateChildPermission(AppPermissionNames.Pages_SystemManagement_HangfireDashboard, L("HangfireDashboard"), multiTenancySides: MultiTenancySides.Tenant);
+            systemManagement.CreateChildPermission(AppPermissionNames.Pages_SystemManagement_LogDashboard, L("LogDashboard"), multiTenancySides: MultiTenancySides.Tenant);
             #endregion
 
             #region ResourceManagement

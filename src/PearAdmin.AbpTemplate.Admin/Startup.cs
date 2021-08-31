@@ -8,6 +8,7 @@ using Abp.Json;
 using Hangfire;
 using Hangfire.MemoryStorage;
 using LogDashboard;
+using LogDashboard.Authorization.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -19,6 +20,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using PearAdmin.AbpTemplate.Admin.Configuration;
 using PearAdmin.AbpTemplate.Admin.Extensions;
+using PearAdmin.AbpTemplate.Admin.Extensions.Filters;
 using PearAdmin.AbpTemplate.Admin.SignalR;
 using PearAdmin.AbpTemplate.Authorization;
 using PearAdmin.AbpTemplate.Identity;
@@ -59,22 +61,25 @@ namespace PearAdmin.AbpTemplate.Admin
 
             services.AddSignalR();
 
-            services.AddHangfire(config =>
+            services.AddHangfire(options =>
             {
 #if DEBUG
-                config.UseMemoryStorage();
+                options.UseMemoryStorage();
 #else
-                var redisConnectionString = _appConfiguration.GetConnectionString(AbpTemplateCoreConsts.RedisConnectionStringName);
-                config.UseRedisStorage(redisConnectionString);
+                var redisConnectionString = Configuration.GetConnectionString(AbpTemplateCoreConsts.RedisConnectionStringName);
+                options.UseRedisStorage(redisConnectionString);
 #endif
             });
 
-            services.AddLogDashboard();
+            services.AddLogDashboard(options =>
+            {
+                options.AddAuthorizationFilter(new AbpLogDashboardAuthorizationFilter(AppPermissionNames.Pages_SystemManagement_HangfireDashboard));
+            });
 
             return services.AddAbp<AbpTemplateAdminModule>(AbpBootstrapperOptionsExtension.GetOptions(Configuration));
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseAbp();
 
