@@ -1,11 +1,11 @@
 ﻿using System.Linq;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Abp.Authorization;
 using Abp.Authorization.Roles;
 using Abp.Authorization.Users;
 using Abp.MultiTenancy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using PearAdmin.AbpTemplate.Authorization;
 using PearAdmin.AbpTemplate.Authorization.Roles;
 using PearAdmin.AbpTemplate.Authorization.Users;
@@ -30,7 +30,7 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore.Seed.Tenants
 
         private void CreateRolesAndUsers()
         {
-            // Admin role
+            // 创建租户管理员角色
 
             var adminRole = _context.Roles.IgnoreQueryFilters().FirstOrDefault(r => r.TenantId == _tenantId && r.Name == StaticRoleNames.Tenants.Admin);
             if (adminRole == null)
@@ -39,7 +39,7 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore.Seed.Tenants
                 _context.SaveChanges();
             }
 
-            // Grant all permissions to admin role
+            // 为租户管理员角色赋予所有权限
 
             var grantedPermissions = _context.Permissions.IgnoreQueryFilters()
                 .OfType<RolePermissionSetting>()
@@ -67,7 +67,7 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore.Seed.Tenants
                 _context.SaveChanges();
             }
 
-            // Admin user
+            // 创建租户管理员用户
 
             var adminUser = _context.Users.IgnoreQueryFilters().FirstOrDefault(u => u.TenantId == _tenantId && u.UserName == AbpUserBase.AdminUserName);
             if (adminUser == null)
@@ -80,7 +80,7 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore.Seed.Tenants
                 _context.Users.Add(adminUser);
                 _context.SaveChanges();
 
-                // Assign Admin role to admin user
+                // 为租户管理员用户分配管理员角色
                 _context.UserRoles.Add(new UserRole(_tenantId, adminUser.Id, adminRole.Id));
                 _context.SaveChanges();
             }
