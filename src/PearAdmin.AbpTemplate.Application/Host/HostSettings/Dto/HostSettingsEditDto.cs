@@ -8,11 +8,6 @@ namespace PearAdmin.AbpTemplate.Host.HostSettings.Dto
         public GeneralSettingsEditDto General { get; set; }
 
         [Required]
-        public HostUserManagementSettingsEditDto UserManagement { get; set; }
-
-        [Required]
-        public TenantManagementSettingsEditDto TenantManagement { get; set; }
-
-        public HostOtherSettingsEditDto OtherSettings { get; set; }
+        public HostManagementSettingsEditDto HostManagement { get; set; }
     }
 }
