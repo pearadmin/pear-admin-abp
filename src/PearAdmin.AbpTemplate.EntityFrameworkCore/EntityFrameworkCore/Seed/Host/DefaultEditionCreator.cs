@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using Abp.Application.Editions;
 using Abp.Application.Features;
+using Microsoft.EntityFrameworkCore;
 using PearAdmin.AbpTemplate.Editions;
 
 namespace PearAdmin.AbpTemplate.EntityFrameworkCore.Seed.Host
@@ -22,14 +22,19 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore.Seed.Host
 
         private void CreateEditions()
         {
+            // 初始化默认版本
             var defaultEdition = _context.Editions.IgnoreQueryFilters().FirstOrDefault(e => e.Name == EditionManager.DefaultEditionName);
             if (defaultEdition == null)
             {
-                defaultEdition = new Edition { Name = EditionManager.DefaultEditionName, DisplayName = EditionManager.DefaultEditionName };
+                defaultEdition = new Edition()
+                {
+                    Name = EditionManager.DefaultEditionName,
+                    DisplayName = EditionManager.DefaultEditionName
+                };
                 _context.Editions.Add(defaultEdition);
                 _context.SaveChanges();
 
-                /* Add desired features to the standard edition, if wanted... */
+                // 为当前默认版本添加初始功能
             }
         }
 

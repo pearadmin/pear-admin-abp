@@ -7,31 +7,33 @@ using PearAdmin.AbpTemplate.EntityFrameworkCore.Seed;
 namespace PearAdmin.AbpTemplate.EntityFrameworkCore
 {
     [DependsOn(
-        typeof(AbpTemplateCoreModule), 
+        typeof(AbpTemplateCoreModule),
         typeof(AbpZeroCoreEntityFrameworkCoreModule))]
     public class AbpTemplateEntityFrameworkModule : AbpModule
     {
-        /* Used it tests to skip dbcontext registration, in order to use in-memory database of EF Core */
+        // 集成测试中使用，跳过DbContext注册和基础数据初始化
+        // 集成测试时使用内存数据库
         public bool SkipDbContextRegistration { get; set; }
-
         public bool SkipDbSeed { get; set; }
 
         public override void PreInitialize()
         {
-            if (!SkipDbContextRegistration)
+            if (SkipDbContextRegistration)
             {
-                Configuration.Modules.AbpEfCore().AddDbContext<AbpTemplateDbContext>(options =>
-                {
-                    if (options.ExistingConnection != null)
-                    {
-                        AbpTemplateDbContextConfigurer.Configure(options.DbContextOptions, options.ExistingConnection);
-                    }
-                    else
-                    {
-                        AbpTemplateDbContextConfigurer.Configure(options.DbContextOptions, options.ConnectionString);
-                    }
-                });
+                return;
             }
+
+            Configuration.Modules.AbpEfCore().AddDbContext<AbpTemplateDbContext>(options =>
+            {
+                if (options.ExistingConnection != null)
+                {
+                    AbpTemplateDbContextConfigurer.Configure(options.DbContextOptions, options.ExistingConnection);
+                }
+                else
+                {
+                    AbpTemplateDbContextConfigurer.Configure(options.DbContextOptions, options.ConnectionString);
+                }
+            });
         }
 
         public override void Initialize()
@@ -41,10 +43,12 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore
 
         public override void PostInitialize()
         {
-            if (!SkipDbSeed)
+            if (SkipDbSeed)
             {
-                SeedHelper.SeedHostDb(IocManager);
+                return;
             }
+
+            SeedHelper.SeedHostDb(IocManager);
         }
     }
 }

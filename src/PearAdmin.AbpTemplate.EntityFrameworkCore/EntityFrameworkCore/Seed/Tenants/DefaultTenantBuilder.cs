@@ -22,7 +22,7 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore.Seed.Tenants
 
         private void CreateDefaultTenant()
         {
-            // Default tenant
+            // 创建默认租户(1)
 
             var defaultTenant = _context.Tenants.IgnoreQueryFilters().FirstOrDefault(t => t.TenancyName == AbpTenantBase.DefaultTenantName);
             if (defaultTenant == null)

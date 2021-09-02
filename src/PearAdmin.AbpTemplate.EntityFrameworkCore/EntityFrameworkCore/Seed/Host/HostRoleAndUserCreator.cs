@@ -1,14 +1,14 @@
 ﻿using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using Abp.Authorization;
 using Abp.Authorization.Roles;
 using Abp.Authorization.Users;
 using Abp.MultiTenancy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using PearAdmin.AbpTemplate.Authorization;
 using PearAdmin.AbpTemplate.Authorization.Roles;
 using PearAdmin.AbpTemplate.Authorization.Users;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 
 namespace PearAdmin.AbpTemplate.EntityFrameworkCore.Seed.Host
 {
@@ -28,16 +28,20 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore.Seed.Host
 
         private void CreateHostRoleAndUsers()
         {
-            // Admin role for host
+            // 为宿主创建管理员角色
 
             var adminRoleForHost = _context.Roles.IgnoreQueryFilters().FirstOrDefault(r => r.TenantId == null && r.Name == StaticRoleNames.Host.Admin);
             if (adminRoleForHost == null)
             {
-                adminRoleForHost = _context.Roles.Add(new Role(null, StaticRoleNames.Host.Admin) { IsStatic = true, IsDefault = true }).Entity;
+                adminRoleForHost = _context.Roles.Add(new Role(null, StaticRoleNames.Host.Admin)
+                {
+                    IsStatic = true,
+                    IsDefault = true
+                }).Entity;
                 _context.SaveChanges();
             }
 
-            // Grant all permissions to admin role for host
+            // 为宿主管理员角色分配宿主所有权限
 
             var grantedPermissions = _context.Permissions.IgnoreQueryFilters()
                 .OfType<RolePermissionSetting>()
@@ -47,8 +51,7 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore.Seed.Host
 
             var permissions = PermissionFinder
                 .GetAllPermissions(new AppPermissionProvider())
-                .Where(p => p.MultiTenancySides.HasFlag(MultiTenancySides.Host) &&
-                            !grantedPermissions.Contains(p.Name))
+                .Where(p => p.MultiTenancySides.HasFlag(MultiTenancySides.Host) && !grantedPermissions.Contains(p.Name))
                 .ToList();
 
             if (permissions.Any())
@@ -65,7 +68,7 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore.Seed.Host
                 _context.SaveChanges();
             }
 
-            // Admin user for host
+            // 为宿主创建管理员用户
 
             var adminUserForHost = _context.Users.IgnoreQueryFilters().FirstOrDefault(u => u.TenantId == null && u.UserName == AbpUserBase.AdminUserName);
             if (adminUserForHost == null)
@@ -87,10 +90,8 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore.Seed.Host
                 adminUserForHost = _context.Users.Add(user).Entity;
                 _context.SaveChanges();
 
-                // Assign Admin role to admin user
+                // 为宿主管理员用户分配宿主管理员角色
                 _context.UserRoles.Add(new UserRole(null, adminUserForHost.Id, adminRoleForHost.Id));
-                _context.SaveChanges();
-
                 _context.SaveChanges();
             }
         }
