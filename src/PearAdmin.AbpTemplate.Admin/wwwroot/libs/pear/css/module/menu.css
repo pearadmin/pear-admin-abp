@@ -41,6 +41,26 @@
 	background-color: #5FB878;
 }
 
+.pear-nav-tree .layui-nav-tree > .layui-nav-item > a:before {
+	background-color: #5FB878;
+}
+
+.layui-nav-tree > .layui-nav-item:hover > a:before {
+	bottom: 0;
+}
+
+.layui-nav-tree > .layui-nav-item > a:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 100%;
+	width: 4px;
+	background-color: #009688;
+	-webkit-transition: all .3s ease;
+	transition: all .3s ease;
+}
+
 .pear-nav-tree .toast {
 	font-size: 14px;
 	margin: 5px;
@@ -195,8 +215,11 @@
 }
  
 .light-theme .pear-nav-tree .layui-nav-bar{
-	display: none;
-	
+	display: none;	
+}
+
+.light-theme .pear-nav-tree .layui-nav-tree > .layui-nav-item > a:before {
+	background-color: #5FB878;
 }
 
 /** 下 拉 图 标 */
