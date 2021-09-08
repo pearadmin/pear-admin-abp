@@ -5,8 +5,8 @@ using Abp.Configuration;
 using Abp.Extensions;
 using Abp.Timing;
 using PearAdmin.AbpTemplate.Authorization;
-using PearAdmin.AbpTemplate.Configuration;
 using PearAdmin.AbpTemplate.Host.HostSettings.Dto;
+using PearAdmin.AbpTemplate.Settings;
 using PearAdmin.AbpTemplate.Timing;
 
 namespace PearAdmin.AbpTemplate.Host.HostSettings

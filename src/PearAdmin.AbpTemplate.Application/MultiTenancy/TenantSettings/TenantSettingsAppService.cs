@@ -9,8 +9,8 @@ using Abp.Runtime.Security;
 using Abp.Runtime.Session;
 using Abp.Timing;
 using PearAdmin.AbpTemplate.Authorization;
-using PearAdmin.AbpTemplate.Configuration;
 using PearAdmin.AbpTemplate.MultiTenancy.TenantSetting.Dto;
+using PearAdmin.AbpTemplate.Settings;
 using PearAdmin.AbpTemplate.Timing;
 
 namespace PearAdmin.AbpTemplate.MultiTenancy.TenantSetting

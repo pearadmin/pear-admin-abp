@@ -1,4 +1,4 @@
-﻿namespace PearAdmin.AbpTemplate.AppProvider.Configuration.MailboxTemplates
+﻿namespace PearAdmin.AbpTemplate.AppProvider.Settings.MailboxTemplates
 {
     public class InviteMailboxTemplate
     {

@@ -23,6 +23,7 @@
         <div class="layui-tab layui-tab-brief">
             <ul class="layui-tab-title">
                 <li class="layui-this">公司设置</li>
+                <li class="layui-this">邮箱设置</li>
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
@@ -42,8 +43,25 @@
                     </form>
                 </div>
             </div>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item">
+                    <form class="layui-form" lay-filter="emailSettings" id="emailSettings">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">公司名称</label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" name="companyName" autocomplete="off" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">公司地址</label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" name="companyAddress" autocomplete="off" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
 </div>
 
 @section scripts{
@@ -79,6 +97,7 @@
                 saveAllSettings: function () {
                     var field = {
                         companySettings: $("#companySettings").serializeObject(),
+                        email: $("#emailSettings").serializeObject()
                     };
 
                     var waitIndex = parent.layer.load(2);

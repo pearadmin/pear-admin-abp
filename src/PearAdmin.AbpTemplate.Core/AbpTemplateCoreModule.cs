@@ -13,6 +13,7 @@ using PearAdmin.AbpTemplate.Features;
 using PearAdmin.AbpTemplate.Localization;
 using PearAdmin.AbpTemplate.MultiTenancy;
 using PearAdmin.AbpTemplate.Notifications;
+using PearAdmin.AbpTemplate.Settings;
 using PearAdmin.AbpTemplate.Social.Chat;
 using PearAdmin.AbpTemplate.Social.Friendships;
 using PearAdmin.AbpTemplate.Timing;

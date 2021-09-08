@@ -1,4 +1,4 @@
-﻿namespace PearAdmin.AbpTemplate.Configuration
+﻿namespace PearAdmin.AbpTemplate.Settings
 {
     /// <summary>
     /// 基础配置定义

@@ -4,6 +4,7 @@ using Abp.AspNetCore.SignalR;
 using Abp.Configuration.Startup;
 using Abp.Hangfire;
 using Abp.Hangfire.Configuration;
+using Abp.MailKit;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using Abp.Zero.Configuration;
@@ -23,7 +24,8 @@ namespace PearAdmin.AbpTemplate.Admin
         typeof(AbpTemplateGatewayModule),
         typeof(AbpAspNetCoreModule),
         typeof(AbpAspNetCoreSignalRModule),
-        typeof(AbpHangfireAspNetCoreModule)
+        typeof(AbpHangfireAspNetCoreModule),
+        typeof(AbpMailKitModule)
         )]
     public class AbpTemplateAdminModule : AbpModule
     {

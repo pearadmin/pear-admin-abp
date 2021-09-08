@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using Abp.Configuration;
 using Microsoft.EntityFrameworkCore;
-using PearAdmin.AbpTemplate.AppProvider.Configuration.MailboxTemplates;
-using PearAdmin.AbpTemplate.Configuration;
+using PearAdmin.AbpTemplate.AppProvider.Settings.MailboxTemplates;
+using PearAdmin.AbpTemplate.Settings;
 
 namespace PearAdmin.AbpTemplate.EntityFrameworkCore.Seed.Common
 {

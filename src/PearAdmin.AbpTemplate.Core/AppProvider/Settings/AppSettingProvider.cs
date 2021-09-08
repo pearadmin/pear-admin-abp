@@ -3,11 +3,11 @@ using System.Linq;
 using Abp.Configuration;
 using Abp.Localization;
 using Abp.Net.Mail;
-using Abp.Zero.Configuration;
 using Microsoft.Extensions.Configuration;
-using PearAdmin.AbpTemplate.AppProvider.Configuration.MailboxTemplates;
+using PearAdmin.AbpTemplate.AppProvider.Settings.MailboxTemplates;
+using PearAdmin.AbpTemplate.Configuration;
 
-namespace PearAdmin.AbpTemplate.Configuration
+namespace PearAdmin.AbpTemplate.Settings
 {
     public class AppSettingProvider : SettingProvider
     {
