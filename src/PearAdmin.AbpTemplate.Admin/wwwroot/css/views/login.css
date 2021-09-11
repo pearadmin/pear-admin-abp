@@ -1,7 +1,32 @@
+.user-login {
+    position: relative;
+    left: 0;
+    top: 0;
+    padding: 110px 0;
+}
+
+    .user-login .layui-row {
+        height: 600px;
+    }
+
+        .user-login .layui-row .layui-col-md7 {
+            height: 100%;
+        }
+
+            .user-login .layui-row .layui-col-md7 img {
+                border-radius: 5px;
+                max-height: 100%;
+            }
+
+    .user-login .layui-col-md5 {
+        height: 100%;
+        border-radius: 5px;
+        background-color: #ffffff;
+    }
+
 .layui-form {
     width: 320px !important;
-    margin: auto !important;
-    margin-top: 160px !important;
+    margin: 20% auto !important;
 }
 
     .layui-form button {
@@ -66,22 +91,3 @@
     height: 60px !important;
     line-height: 60px !important;
 }
-
-.user-login {
-    position: relative;
-    left: 0;
-    top: 0;
-    padding: 110px 0;
-    min-height: 100%;
-}
-
-    .user-login .layui-col-md7 img {
-        border-radius: 5px;
-        height: 655px;
-    }
-
-    .user-login .layui-col-md5 {
-        border-radius: 5px;
-        background-color: #ffffff;
-        padding-bottom: 100px;
-    }
