@@ -6,7 +6,7 @@
 }
 
     .user-login .layui-row {
-        height: 600px;
+        height: 650px;
     }
 
         .user-login .layui-row .layui-col-md7 {
@@ -90,4 +90,58 @@
     color: gray !important;
     height: 60px !important;
     line-height: 60px !important;
+}
+
+@media screen and (min-width: 1200px) {
+    .user-login {
+        position: relative;
+        left: 0;
+        top: 0;
+        padding: 80px 0;
+    }
+
+        .user-login .layui-row {
+            height: 570px !important;
+        }
+
+    .layui-form {
+        width: 320px !important;
+        margin: 15% auto !important;
+    }
+}
+
+@media screen and (min-width: 1366px) {
+    .user-login {
+        position: relative;
+        left: 0;
+        top: 0;
+        padding: 90px 0;
+    }
+
+        .user-login .layui-row {
+            height: 600px !important;
+        }
+
+    .layui-form {
+        width: 320px !important;
+        margin: 15% auto !important;
+    }
+}
+
+@media screen and (min-width:1500px) {
+    .user-login {
+        position: relative;
+        left: 0;
+        top: 0;
+        padding: 110px 0;
+    }
+
+        .user-login .layui-row {
+            height: 650px !important;
+        }
+
+    .layui-form {
+        width: 320px !important;
+        margin: 20% auto !important;
+    }
 }
