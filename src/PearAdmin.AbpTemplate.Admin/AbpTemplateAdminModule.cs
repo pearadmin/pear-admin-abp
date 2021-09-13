@@ -13,7 +13,9 @@ using Microsoft.Extensions.Configuration;
 using PearAdmin.AbpTemplate.Admin.Configuration;
 using PearAdmin.AbpTemplate.Admin.Views;
 using PearAdmin.AbpTemplate.EntityFrameworkCore;
+using PearAdmin.AbpTemplate.ExternalAuth;
 using PearAdmin.AbpTemplate.Gateway;
+using PearAdmin.AbpTemplate.MiniProgram;
 
 namespace PearAdmin.AbpTemplate.Admin
 {
@@ -23,7 +25,8 @@ namespace PearAdmin.AbpTemplate.Admin
         typeof(AbpTemplateGatewayModule),
         typeof(AbpAspNetCoreModule),
         typeof(AbpAspNetCoreSignalRModule),
-        typeof(AbpHangfireAspNetCoreModule)
+        typeof(AbpHangfireAspNetCoreModule),
+        typeof(AbpTemplateMiniProgramModule)
         )]
     public class AbpTemplateAdminModule : AbpModule
     {
@@ -61,6 +64,23 @@ namespace PearAdmin.AbpTemplate.Admin
             SetAppFolders();
             IocManager.Resolve<ApplicationPartManager>()
                 .AddApplicationPartsIfNotAddedBefore(typeof(AbpTemplateAdminModule).Assembly);
+
+            ConfigureExternalAuthProviders();
+        }
+
+        private void ConfigureExternalAuthProviders()
+        {
+            var externalAuthConfiguration = IocManager.Resolve<ExternalAuthConfiguration>();
+
+            if (bool.Parse(_appConfiguration["Authentication:WeChatMiniProgram:IsEnabled"]))
+            {
+                externalAuthConfiguration.Providers.Add(
+                        new MiniProgramExternalLoginInfoProvider(
+                            _appConfiguration["Authentication:WeChatMiniProgram:AppId"],
+                            _appConfiguration["Authentication:WeChatMiniProgram:AppSecret"]
+                        )
+                    );
+            }
         }
 
         public override void Shutdown()

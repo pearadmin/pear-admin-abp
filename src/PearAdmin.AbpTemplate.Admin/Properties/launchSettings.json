@@ -1,4 +1,4 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -17,6 +17,7 @@
     },
     "PearAdmin.AbpTemplate.Admin": {
       "commandName": "Project",
+      "commandLineArgs": "--urls http://192.168.1.8:5000",
       "launchBrowser": true,
       "launchUrl": "http://localhost:5000",
       "environmentVariables": {
