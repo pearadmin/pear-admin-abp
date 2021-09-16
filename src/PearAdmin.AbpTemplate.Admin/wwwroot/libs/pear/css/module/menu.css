@@ -93,7 +93,15 @@
 	display: none;
 }
 
+.pear-nav-tree .layui-nav-item a .layui-badge-dot {
+	float: right;
+	right: 13px;
+}
 
+.pear-nav-tree .layui-nav-item a .layui-badge {
+	float: right;
+	right: 10px;
+}
 
 /** 实 现 菜 单 隐 藏 */
 .pear-nav-mini {
@@ -128,9 +136,11 @@
 .pear-nav-control.pc .layui-this * {
 	background-color: whitesmoke;
 }
+
 .pear-nav-control.pc *{
 	color: darkslategray!important;
 }
+
 .pear-nav-control.pc .layui-nav-bar{
 	display: none!important;
 }
@@ -215,12 +225,12 @@
 }
  
 .light-theme .pear-nav-tree .layui-nav-bar{
-	display: none;	
+	display: none;
 }
 
-.light-theme .pear-nav-tree .layui-nav-tree > .layui-nav-item > a:before {
-	background-color: #5FB878;
-}
+	.light-theme .pear-nav-tree .layui-nav-tree > .layui-nav-item > a:before {
+		background-color: #5FB878;
+	}
 
 /** 下 拉 图 标 */
 .pear-nav-tree.arrow .layui-nav-more {

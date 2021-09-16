@@ -14,6 +14,10 @@
 <!-- 布局框架 -->
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
+        <div class="layui-logo">
+            <img class="logo" src="" />
+            <span class="title"></span>
+        </div>
         <ul class="layui-nav layui-layout-left">
             <li class="collaspe layui-nav-item"><a href="#" class="layui-icon layui-icon-shrink-right"></a></li>
             <li class="refresh layui-nav-item"><a href="#" class="layui-icon layui-icon-refresh-1" loading=600></a></li>
@@ -35,7 +39,7 @@
                 </a>
             </li>
             @await Component.InvokeAsync(typeof(RightNavbarUserAreaViewComponent))
-            <li class="setting layui-nav-item"><a href="#" class="layui-icon layui-icon-more-vertical"></a></li>
+            <li class="layui-nav-item setting"><a href="#" class="layui-icon layui-icon-more-vertical"></a></li>
         </ul>
     </div>
     <div class="layui-side layui-bg-black">
@@ -48,19 +52,18 @@
     <div class="layui-body">
         <div id="content"></div>
     </div>
+
+    <!-- 遮盖层 -->
+    <div class="pear-cover"></div>
+    <!-- 加载动画-->
+    <div class="loader-main">
+        <div class="loader"></div>
+    </div>
 </div>
 
-<!-- 移动端 遮盖层 -->
-<div class="pear-cover"></div>
-
-<!-- 初始加载 动画-->
-<div class="loader-main">
-    <div class="loader"></div>
-</div>
-
-<!-- 移动端 的 收缩适配 -->
-<div class="collaspe pe-collaspe layui-hide-sm">
-    <i class="layui-icon layui-icon-shrink-right"></i>
+<!-- 移动端收缩适配 -->
+<div class="pear-collasped-pe collaspe">
+    <a href="#" class="layui-icon layui-icon-shrink-right"></a>
 </div>
 
 @section scripts{
@@ -75,19 +78,21 @@
 
             var config = {
                 logo: {
-                    title: "PearAdmin AbpTemplate",
+                    title: "PearAdmin Abp",
                     image: "/images/logo.png"
                 },
                 menu: {
                     control: false,
                     accordion: true,
+                    collaspe: false,
                     async: false,
-                    select: hash.md5("@Url.Action(AbpSession.TenantId.HasValue ? "TenantConsole" : "HostConsole", "WorkSpace")").toUpperCase(),
+                    select: hash.md5("@Url.Action(AbpSession.TenantId.HasValue ? "TenantConsole" : "HostConsole", "WorkSpace")").toUpperCase()
                 },
                 tab: {
-                    muiltTab: true,
+                    enable: true,
                     keepState: true,
-                    tabMax: 20,
+                    session: false,
+                    max: 20,
                     index: {
                         id: hash.md5("@Url.Action(AbpSession.TenantId.HasValue ? "TenantConsole": "HostConsole", "WorkSpace")").toUpperCase(),
                         href: '@Url.Action(AbpSession.TenantId.HasValue ? "TenantConsole" : "HostConsole", "WorkSpace")',
@@ -95,34 +100,42 @@
                     }
                 },
                 theme: {
-                    defaultMenu: "dark-theme", // 默 认 主 题 样 式 dark-theme 默认主题 light-theme 亮主题
+                    defaultColor: "3",
+                    defaultMenu: "dark-theme",
+                    defaultHeader: "light-theme",
                     allowCustom: true,
-                    defaultColor: "3"
+                    banner: false
                 },
                 colors: [
                     {
 			            id: "1",
-			            color: "#FF5722"
+                        color: "#2d8cf0",
+                        second: "#ecf5ff"
 		            },
 		            {
 			            id: "2",
-			            color: "#5FB878"
+                        color: "#36b368",
+                        second: "#f0f9eb"
 		            },
 		            {
 			            id: "3",
-			            color: "#1E9FFF"
+                        color: "#f6ad55",
+                        second: "#fdf6ec"
                     },
                     {
 			            id: "4",
-			            color: "#FFB800"
+                        color: "#f56c6c",
+                        second: "#fef0f0"
                     },
                     {
 			            id: "5",
-			            color: "darkgray"
+                        color: "3963bc",
+                        second: "#ecf5ff"
                     },
                     {
 			            id: "6",
-			            color: "#f7cfea"
+                        color: "#f7cfea",
+                        second: "#ecf5ff"
 		            }
                 ],
                 links: [
@@ -144,6 +157,7 @@
                 ],
                 other: {
                     keepLoad: false,
+                    autoHead: false
                 },
                 header: {
                     message: false

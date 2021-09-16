@@ -7,6 +7,9 @@
 
     .user-login .layui-row {
         height: 650px;
+        -moz-box-shadow: 2px 2px 10px #909090;
+        -webkit-box-shadow: 2px 2px 10px #909090;
+        box-shadow: 2px 2px 10px #909090;
     }
 
         .user-login .layui-row .layui-col-md7 {
