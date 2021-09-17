@@ -171,28 +171,39 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
         [UnitOfWork]
         public async Task<JsonResult> ExternalLogin([FromBody] ExternalAuthenticateModel model)
         {
-            var externalUser = await GetExternalUserInfo(model);
-            var loginResult = await _logInManager.LoginAsync(new UserLoginInfo(model.AuthProvider, externalUser.ProviderKey, model.AuthProvider), GetTenancyNameOrNull());
-            switch (loginResult.Result)
+            using (AbpSession.Use(AbpTemplateApplicationConsts.DefaultTenantId, null))
             {
-                case AbpLoginResultType.Success:
-                    {
-                        await _signInManager.SignInAsync(loginResult.Identity, true);
-                        await UnitOfWorkManager.Current.SaveChangesAsync();
-                        return Json(new AjaxResponse { TargetUrl = model.ReturnUrl });
-                    }
-                case AbpLoginResultType.UnknownExternalLogin:
-                    {
-                        var user = await _userRegistrationManager.RegisterAsync(
-                            externalUser.Name,
-                            externalUser.Surname,
-                            externalUser.EmailAddress,
-                            externalUser.EmailAddress.ToMd5(),
-                            Authorization.Users.User.CreateRandomPassword(),
-                            true
-                        );
+                var externalUser = await GetExternalUserInfo(model);
+                var loginResult = await _logInManager.LoginAsync(new UserLoginInfo(model.AuthProvider, externalUser.ProviderKey, model.AuthProvider), GetTenancyNameOrNull());
+                switch (loginResult.Result)
+                {
+                    case AbpLoginResultType.Success:
+                        {
+                            await _signInManager.SignInAsync(loginResult.Identity, true);
+                            await UnitOfWorkManager.Current.SaveChangesAsync();
+                            return Json(new AjaxResponse { TargetUrl = model.ReturnUrl });
+                        }
+                    case AbpLoginResultType.UnknownExternalLogin:
+                        {
+                            User user = null;
+                            try
+                            {
 
-                        user.Logins = new List<UserLogin>
+                                user = await _userRegistrationManager.RegisterAsync(
+                                    externalUser.Name,
+                                    externalUser.Surname,
+                                    externalUser.EmailAddress,
+                                    externalUser.EmailAddress.ToMd5(),
+                                    Authorization.Users.User.CreateRandomPassword(),
+                                    true
+                                );
+                            }
+                            catch (Exception ex)
+                            {
+                                throw;
+                            }
+
+                            user.Logins = new List<UserLogin>
                         {
                             new UserLogin
                             {
@@ -202,28 +213,29 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
                             }
                         };
 
-                        await CurrentUnitOfWork.SaveChangesAsync();
+                            await CurrentUnitOfWork.SaveChangesAsync();
 
-                        // 为新用户执行登录
-                        var tryLoginResult = await _logInManager.LoginAsync(new UserLoginInfo(model.AuthProvider, model.ProviderKey, model.AuthProvider), GetTenancyNameOrNull());
+                            // 为新用户执行登录
+                            var tryLoginResult = await _logInManager.LoginAsync(new UserLoginInfo(model.AuthProvider, model.ProviderKey, model.AuthProvider), GetTenancyNameOrNull());
 
-                        if (tryLoginResult.Result == AbpLoginResultType.Success)
-                        {
-                            await _signInManager.SignInAsync(loginResult.Identity, false);
+                            if (tryLoginResult.Result == AbpLoginResultType.Success)
+                            {
+                                await _signInManager.SignInAsync(loginResult.Identity, false);
+
+                                return Json(new AjaxResponse { TargetUrl = model.ReturnUrl });
+                            }
 
                             return Json(new AjaxResponse { TargetUrl = model.ReturnUrl });
                         }
-
-                        return Json(new AjaxResponse { TargetUrl = model.ReturnUrl });
-                    }
-                default:
-                    {
-                        throw _abpLoginResultTypeHelper.CreateExceptionForFailedLoginAttempt(
-                            loginResult.Result,
-                            model.ProviderKey,
-                            GetTenancyNameOrNull()
-                        );
-                    }
+                    default:
+                        {
+                            throw _abpLoginResultTypeHelper.CreateExceptionForFailedLoginAttempt(
+                                loginResult.Result,
+                                model.ProviderKey,
+                                GetTenancyNameOrNull()
+                            );
+                        }
+                }
             }
         }
 

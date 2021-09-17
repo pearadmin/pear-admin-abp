@@ -9,6 +9,7 @@
     <PackageReference Include="Abp" Version="6.3.0" />
     <PackageReference Include="SKIT.FlurlHttpClient.Wechat" Version="1.1.0" />
     <PackageReference Include="SKIT.FlurlHttpClient.Wechat.Api" Version="1.7.0" />
+    <PackageReference Include="Snowflake.Core" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>

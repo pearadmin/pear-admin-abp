@@ -1,11 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Abp.Runtime.Caching;
 using Castle.Core.Logging;
 using PearAdmin.AbpTemplate.ExternalAuth;
 using PearAdmin.AbpTemplate.MiniProgram.Enums;
 using SKIT.FlurlHttpClient.Wechat.Api;
 using SKIT.FlurlHttpClient.Wechat.Api.Models;
+using Snowflake.Core;
 
 namespace PearAdmin.AbpTemplate.MiniProgram
 {
@@ -14,7 +14,7 @@ namespace PearAdmin.AbpTemplate.MiniProgram
         public const string ProviderName = "WeChatMiniProgram";
         private WechatApiClient _weChatApiClient;
         private readonly ILogger _logger;
-        private readonly ICacheManager _cacheManager; 
+        private readonly ICacheManager _cacheManager;
 
         public MiniProgramAuthProviderApi(ILogger logger,
             ICacheManager cacheManager)
@@ -36,17 +36,24 @@ namespace PearAdmin.AbpTemplate.MiniProgram
         public async override Task<ExternalAuthUserInfo> GetUserInfo(string accessCode)
         {
             var miniProgramSessionKey = await GetWeChatUserOpenId(accessCode);
-            var miniProgramUserInfo = await GetWeChatUserInfo(miniProgramSessionKey);
+            var randomId = GenerateRandomId();
             var externalAuthUserInfo = new ExternalAuthUserInfo
             {
-                EmailAddress = miniProgramUserInfo.OpenId + $"@{ProviderName}.com",//邮箱唯一性
-                Surname = miniProgramUserInfo.Nickname,
-                Name = miniProgramUserInfo.Nickname,
-                ProviderKey = miniProgramUserInfo.OpenId,
+                EmailAddress = randomId + $"@{ProviderName}.com",//邮箱唯一性
+                Surname = randomId.ToString(),
+                Name = randomId.ToString(),
+                ProviderKey = miniProgramSessionKey.OpenId,
                 Provider = ProviderName,
             };
 
             return externalAuthUserInfo;
+        }
+
+        private long GenerateRandomId()
+        {
+            var idWorker = new IdWorker(1, 1);
+            var id = idWorker.NextId();
+            return id;
         }
 
         private async Task<MiniProgramSessionKey> GetWeChatUserOpenId(string code)
@@ -67,33 +74,6 @@ namespace PearAdmin.AbpTemplate.MiniProgram
             }
 
             return null;
-        }
-
-        private async Task<MiniProgramUserInfo> GetWeChatUserInfo(MiniProgramSessionKey miniProgramSessionKey)
-        {
-            //var cgibinTokenResponse = await _weChatApiClient.ExecuteCgibinTokenAsync(new CgibinTokenRequest());
-
-            var cgibinUserInfoResponse = await _weChatApiClient.ExecuteCgibinUserInfoAsync(new CgibinUserInfoRequest()
-            {
-                AccessToken = "49_lEGICP1a2U7giCcBjf5X6Wmkr-zyrN9NKtV7ca6VSn8z7jXf5GEc2T4J0wOGRadVGbeZYsDIHM7Wjo1rubJs6DQ9IczjLYXKefT3DEXEA2UUTrRfy_jLNX1FjbwttfaG5LBubDncG-TwvSXqBYTdAAAURM",//cgibinTokenResponse.AccessToken,
-                OpenId = miniProgramSessionKey.OpenId
-            });
-            if (!cgibinUserInfoResponse.IsSuccessful())
-            {
-                throw new Exception($"ErrorCode:{cgibinUserInfoResponse.ErrorCode}.Message:{cgibinUserInfoResponse.ErrorMessage}");
-            }
-
-            return new MiniProgramUserInfo()
-            {
-                Nickname = cgibinUserInfoResponse.Nickname,
-                OpenId = cgibinUserInfoResponse.OpenId,
-                Sex = cgibinUserInfoResponse.Sex,
-                HeadImageUrl = cgibinUserInfoResponse.HeadImageUrl,
-                Country = cgibinUserInfoResponse.Country,
-                Province = cgibinUserInfoResponse.Province,
-                City = cgibinUserInfoResponse.City,
-                UnionId = cgibinUserInfoResponse.UnionId
-            };
         }
     }
 }
