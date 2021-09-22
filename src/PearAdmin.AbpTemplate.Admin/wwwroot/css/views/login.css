@@ -1,18 +1,21 @@
 .user-login {
-    position: relative;
-    left: 0;
-    top: 0;
-    padding: 110px 0;
+    margin: -250px auto 0 !important;
+    position: absolute !important;
+    top: 40% !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
 }
 
     .user-login .layui-row {
         height: 650px;
         -moz-box-shadow: 2px 2px 10px #909090;
         -webkit-box-shadow: 2px 2px 10px #909090;
-        box-shadow: 2px 2px 10px #909090;
+        box-shadow: 2px 2px 15px #909090;
     }
 
         .user-login .layui-row .layui-col-md7 {
+            overflow: hidden;
             height: 100%;
         }
 
@@ -25,6 +28,21 @@
         height: 100%;
         border-radius: 5px;
         background-color: #ffffff;
+    }
+
+.user-login-copyright {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #8c92a4;
+}
+
+    .user-login-copyright a {
+        margin-left: 5px;
+        color: #8c92a4;
     }
 
 .layui-form {
@@ -93,58 +111,4 @@
     color: gray !important;
     height: 60px !important;
     line-height: 60px !important;
-}
-
-@media screen and (min-width: 1200px) {
-    .user-login {
-        position: relative;
-        left: 0;
-        top: 0;
-        padding: 80px 0;
-    }
-
-        .user-login .layui-row {
-            height: 570px !important;
-        }
-
-    .layui-form {
-        width: 320px !important;
-        margin: 15% auto !important;
-    }
-}
-
-@media screen and (min-width: 1366px) {
-    .user-login {
-        position: relative;
-        left: 0;
-        top: 0;
-        padding: 90px 0;
-    }
-
-        .user-login .layui-row {
-            height: 600px !important;
-        }
-
-    .layui-form {
-        width: 320px !important;
-        margin: 15% auto !important;
-    }
-}
-
-@media screen and (min-width:1500px) {
-    .user-login {
-        position: relative;
-        left: 0;
-        top: 0;
-        padding: 110px 0;
-    }
-
-        .user-login .layui-row {
-            height: 650px !important;
-        }
-
-    .layui-form {
-        width: 320px !important;
-        margin: 20% auto !important;
-    }
 }
