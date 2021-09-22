@@ -30,7 +30,7 @@
         background-color: #ffffff;
     }
 
-.user-login-copyright {
+.user-login-foot {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -40,7 +40,7 @@
     color: #8c92a4;
 }
 
-    .user-login-copyright a {
+    .user-login-foot a {
         margin-left: 5px;
         color: #8c92a4;
     }
