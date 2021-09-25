@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Abp.Authorization;
 using Abp.Authorization.Users;
@@ -185,43 +184,30 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
                         }
                     case AbpLoginResultType.UnknownExternalLogin:
                         {
-                            User user = null;
-                            try
-                            {
-
-                                user = await _userRegistrationManager.RegisterAsync(
-                                    externalUser.Name,
-                                    externalUser.Surname,
-                                    externalUser.EmailAddress,
-                                    externalUser.EmailAddress.ToMd5(),
-                                    Authorization.Users.User.CreateRandomPassword(),
-                                    true
-                                );
-                            }
-                            catch (Exception ex)
-                            {
-                                throw;
-                            }
-
+                            var user = await _userRegistrationManager.RegisterAsync(
+                                externalUser.Name,
+                                externalUser.Surname,
+                                externalUser.EmailAddress,
+                                externalUser.EmailAddress.ToMd5(),
+                                Authorization.Users.User.CreateRandomPassword(),
+                                true
+                            );
                             user.Logins = new List<UserLogin>
-                        {
-                            new UserLogin
                             {
-                                LoginProvider = externalUser.Provider,
-                                ProviderKey = externalUser.ProviderKey,
-                                TenantId = user.TenantId
-                            }
-                        };
-
+                                new UserLogin
+                                {
+                                    LoginProvider = externalUser.Provider,
+                                    ProviderKey = externalUser.ProviderKey,
+                                    TenantId = user.TenantId
+                                }
+                            };
                             await CurrentUnitOfWork.SaveChangesAsync();
 
-                            // 为新用户执行登录
                             var tryLoginResult = await _logInManager.LoginAsync(new UserLoginInfo(model.AuthProvider, model.ProviderKey, model.AuthProvider), GetTenancyNameOrNull());
 
                             if (tryLoginResult.Result == AbpLoginResultType.Success)
                             {
                                 await _signInManager.SignInAsync(loginResult.Identity, false);
-
                                 return Json(new AjaxResponse { TargetUrl = model.ReturnUrl });
                             }
 

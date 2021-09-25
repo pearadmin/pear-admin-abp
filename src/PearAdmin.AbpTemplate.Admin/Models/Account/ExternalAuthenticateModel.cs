@@ -6,6 +6,5 @@
         public string ProviderKey { get; set; }
         public string ProviderAccessCode { get; set; }
         public string ReturnUrl { get; set; }
-        public bool SingleSignIn { get; set; }
     }
 }

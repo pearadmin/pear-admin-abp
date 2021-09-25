@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Abp.Runtime.Caching;
+using Abp.UI;
 using Castle.Core.Logging;
 using PearAdmin.AbpTemplate.ExternalAuth;
 using PearAdmin.AbpTemplate.MiniProgram.Enums;
@@ -72,8 +73,17 @@ namespace PearAdmin.AbpTemplate.MiniProgram
                     UnionId = response.UnionId
                 };
             }
+            if (response.ErrorCode == (int)RequestErrorCodeEnum.CodeError)
+            {
+                throw new UserFriendlyException("There was an error calling the mini program api code");
+            }
 
-            return null;
+            if (response.ErrorCode == (int)RequestErrorCodeEnum.Busy)
+            {
+                throw new UserFriendlyException("The wechat mini program api is busy");
+            }
+
+            throw new UserFriendlyException("The request for authentication failed");
         }
     }
 }
