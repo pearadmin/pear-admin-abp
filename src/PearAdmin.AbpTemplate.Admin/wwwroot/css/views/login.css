@@ -112,3 +112,22 @@
     height: 60px !important;
     line-height: 60px !important;
 }
+
+.external-login {
+    margin-top: 50px;
+    text-align: center;
+}
+
+    .external-login .wx-logo {
+        width: 40px;
+    }
+
+@media screen and (max-width: 1500px) {
+    .user-login .layui-row {
+        height: 580px !important;
+    }
+
+    .layui-form {
+        margin: 15% auto !important;
+    }
+}
