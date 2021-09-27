@@ -39,9 +39,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PearAdmin.AbpTemplate.Stora
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PearAdmin.AbpTemplate.NLog", "module\PearAdmin.AbpTemplate.NLog\PearAdmin.AbpTemplate.NLog.csproj", "{9AFB01E8-783F-472E-90D6-F2A8AD6120FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PearAdmin.AbpTemplate.MiniProgram", "module\PearAdmin.AbpTemplate.MiniProgram\PearAdmin.AbpTemplate.MiniProgram.csproj", "{A285A2DC-3435-48A4-B005-D47710AA351D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PearAdmin.AbpTemplate.MiniProgram", "module\PearAdmin.AbpTemplate.MiniProgram\PearAdmin.AbpTemplate.MiniProgram.csproj", "{A285A2DC-3435-48A4-B005-D47710AA351D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PearAdmin.AbpTemplate.ExternalAuth", "module\PearAdmin.AbpTemplate.ExternalAuth\PearAdmin.AbpTemplate.ExternalAuth.csproj", "{B55DAA71-4958-485D-8888-E185C2104931}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PearAdmin.AbpTemplate.ExternalAuth", "module\PearAdmin.AbpTemplate.ExternalAuth\PearAdmin.AbpTemplate.ExternalAuth.csproj", "{B55DAA71-4958-485D-8888-E185C2104931}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
