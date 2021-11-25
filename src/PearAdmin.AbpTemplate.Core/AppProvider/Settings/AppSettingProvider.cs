@@ -68,7 +68,7 @@ namespace PearAdmin.AbpTemplate.Settings
                     scopes: SettingScopes.Tenant),
                 new SettingDefinition(AppSettingNames.TenantManagement.InviteMailboxTemplate,
                     GetFromAppSettingNames(AppSettingNames.TenantManagement.InviteMailboxTemplate,
-                    InviteMailboxTemplate.DefaultTemplate()),
+                    InviteMailboxTemplate.DefaultTemplate),
                     scopes: SettingScopes.Tenant),
                 new SettingDefinition(AppSettingNames.Email.UseHostDefaultEmailSettings,
                     GetFromAppSettingNames(AppSettingNames.Email.UseHostDefaultEmailSettings,
