@@ -9,7 +9,7 @@
 
 .top-panel-number {
     line-height: 60px;
-    font-size: 30px;
+    font-size: 29px;
     border-right: 1px solid #eceff9;
 }
 
@@ -61,16 +61,6 @@
         position: absolute;
     }
 
-.list .list-item {
-    height: 32px;
-    line-height: 32px;
-    color: gray;
-    padding: 5px;
-    padding-left: 15px;
-    border-radius: 4px;
-    margin-top: 5.2px;
-}
-
 .custom-tab .layui-tab-title {
     border-bottom-width: 0px;
     border-bottom-style: none;
@@ -80,20 +70,30 @@
         margin-left: 10px;
     }
 
-.list .list-item:hover {
-    background-color: whitesmoke;
+.list .list-item {
+    height: 31.8px;
+    line-height: 31.8px;
+    color: gray;
+    padding: 5px;
+    padding-left: 15px;
+    border-radius: 4px;
+    margin-top: 5.2px;
 }
 
-.list .list-item .title {
-    font-size: 13px;
-    width: 100%;
-}
+    .list .list-item:hover {
+        background-color: whitesmoke;
+    }
 
-.list .list-item .footer {
-    position: absolute;
-    right: 30px;
-    font-size: 12px;
-}
+    .list .list-item .title {
+        font-size: 13px;
+        width: 100%;
+    }
+
+    .list .list-item .footer {
+        position: absolute;
+        right: 30px;
+        font-size: 12px;
+    }
 
 .top-panel-tips i {
     font-size: 33px;
@@ -115,7 +115,6 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background-color: #009688;
             margin-right: 15px;
         }
 

@@ -1,29 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Abp;
-using Abp.AspNetCore.Mvc.Authorization;
 using Abp.Authorization;
 using Abp.Authorization.Users;
-using Abp.Configuration;
 using Abp.Configuration.Startup;
 using Abp.Domain.Uow;
 using Abp.Extensions;
 using Abp.MultiTenancy;
 using Abp.Notifications;
-using Abp.Threading;
-using Abp.Timing;
-using Abp.UI;
 using Abp.Web.Models;
-using Abp.Zero.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PearAdmin.AbpTemplate.Admin.Models.Account;
 using PearAdmin.AbpTemplate.Authorization;
 using PearAdmin.AbpTemplate.Authorization.Users;
+using PearAdmin.AbpTemplate.ExternalAuth;
 using PearAdmin.AbpTemplate.Identity;
 using PearAdmin.AbpTemplate.MultiTenancy;
 using PearAdmin.AbpTemplate.Sessions;
@@ -43,6 +34,7 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
         private readonly ISessionAppService _sessionAppService;
         private readonly ITenantCache _tenantCache;
         private readonly INotificationPublisher _notificationPublisher;
+        private readonly IExternalAuthManager _externalAuthManager;
 
         public AccountController(
             UserManager userManager,
@@ -55,7 +47,8 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
             UserRegistrationManager userRegistrationManager,
             ISessionAppService sessionAppService,
             ITenantCache tenantCache,
-            INotificationPublisher notificationPublisher)
+            INotificationPublisher notificationPublisher,
+            IExternalAuthManager externalAuthManager)
         {
             _userManager = userManager;
             _multiTenancyConfig = multiTenancyConfig;
@@ -68,6 +61,7 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
             _sessionAppService = sessionAppService;
             _tenantCache = tenantCache;
             _notificationPublisher = notificationPublisher;
+            _externalAuthManager = externalAuthManager;
         }
 
         #region Login / Logout
@@ -79,7 +73,7 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
         /// <param name="returnUrl"></param>
         /// <param name="successMessage"></param>
         /// <returns></returns>
-        public ActionResult HostLogin(string userNameOrEmailAddress = "", string returnUrl = "", string successMessage = "")
+        public ActionResult HostLogin(string returnUrl)
         {
             if (string.IsNullOrWhiteSpace(returnUrl))
             {
@@ -104,7 +98,7 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
         /// <param name="returnUrl"></param>
         /// <param name="successMessage"></param>
         /// <returns></returns>
-        public ActionResult Login(string userNameOrEmailAddress = "", string returnUrl = "", string successMessage = "")
+        public ActionResult Login(string returnUrl)
         {
             if (string.IsNullOrWhiteSpace(returnUrl))
             {
@@ -124,7 +118,7 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
 
         [HttpPost]
         [UnitOfWork]
-        public virtual async Task<JsonResult> Login([FromBody]LoginViewModel loginModel)
+        public virtual async Task<JsonResult> Login([FromBody] LoginViewModel loginModel)
         {
             loginModel.ReturnUrl = NormalizeReturnUrl(loginModel.ReturnUrl);
             if (!string.IsNullOrWhiteSpace(loginModel.ReturnUrlHash))
@@ -159,24 +153,6 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
             }
         }
 
-        #endregion
-
-        #region Register
-
-        public ActionResult Register()
-        {
-            return RegisterView(new RegisterViewModel());
-        }
-
-        private ActionResult RegisterView(RegisterViewModel model)
-        {
-            ViewBag.IsMultiTenancyEnabled = _multiTenancyConfig.IsEnabled;
-
-            ViewBag.TencentId = AbpTemplateApplicationConsts.DefaultTenantId;
-
-            return View("Register", model);
-        }
-
         private bool IsSelfRegistrationEnabled()
         {
             if (!AbpSession.TenantId.HasValue)
@@ -186,209 +162,82 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
 
             return true;
         }
-
-        [HttpPost]
-        [UnitOfWork]
-        public async Task<ActionResult> Register(RegisterViewModel model)
-        {
-            try
-            {
-                ExternalLoginInfo externalLoginInfo = null;
-                if (model.IsExternalLogin)
-                {
-                    externalLoginInfo = await _signInManager.GetExternalLoginInfoAsync();
-                    if (externalLoginInfo == null)
-                    {
-                        throw new Exception("Can not external login!");
-                    }
-
-                    model.UserName = model.EmailAddress;
-                    model.Password = Authorization.Users.User.CreateRandomPassword();
-                }
-                else
-                {
-                    if (model.UserName.IsNullOrEmpty() || model.Password.IsNullOrEmpty())
-                    {
-                        throw new UserFriendlyException(L("FormIsNotValidMessage"));
-                    }
-                }
-
-                var user = await _userRegistrationManager.RegisterAsync(
-                    model.Name,
-                    model.Surname,
-                    model.EmailAddress,
-                    model.UserName,
-                    model.Password,
-                    true // Assumed email address is always confirmed. Change this if you want to implement email confirmation.
-                );
-
-                // Getting tenant-specific settings
-                var isEmailConfirmationRequiredForLogin = await SettingManager.GetSettingValueAsync<bool>(AbpZeroSettingNames.UserManagement.IsEmailConfirmationRequiredForLogin);
-
-                if (model.IsExternalLogin)
-                {
-                    Debug.Assert(externalLoginInfo != null);
-
-                    if (string.Equals(externalLoginInfo.Principal.FindFirstValue(ClaimTypes.Email), model.EmailAddress, StringComparison.OrdinalIgnoreCase))
-                    {
-                        user.IsEmailConfirmed = true;
-                    }
-
-                    user.Logins = new List<UserLogin>
-                    {
-                        new UserLogin
-                        {
-                            LoginProvider = externalLoginInfo.LoginProvider,
-                            ProviderKey = externalLoginInfo.ProviderKey,
-                            TenantId = user.TenantId
-                        }
-                    };
-                }
-
-                await _unitOfWorkManager.Current.SaveChangesAsync();
-
-                Debug.Assert(user.TenantId != null);
-
-                var tenant = await _tenantManager.GetByIdAsync(user.TenantId.Value);
-
-                // Directly login if possible
-                if (user.IsActive && (user.IsEmailConfirmed || !isEmailConfirmationRequiredForLogin))
-                {
-                    AbpLoginResult<Tenant, User> loginResult;
-                    if (externalLoginInfo != null)
-                    {
-                        loginResult = await _logInManager.LoginAsync(externalLoginInfo, tenant.TenancyName);
-                    }
-                    else
-                    {
-                        loginResult = await GetLoginResultAsync(user.UserName, model.Password, tenant.TenancyName);
-                    }
-
-                    if (loginResult.Result == AbpLoginResultType.Success)
-                    {
-                        await _signInManager.SignInAsync(loginResult.Identity, false);
-                        return Redirect(GetAppHomeUrl());
-                    }
-
-                    Logger.Warn("New registered user could not be login. This should not be normally. login result: " + loginResult.Result);
-                }
-
-                return View("RegisterResult", new RegisterResultViewModel
-                {
-                    TenancyName = tenant.TenancyName,
-                    NameAndSurname = user.Name + " " + user.Surname,
-                    UserName = user.UserName,
-                    EmailAddress = user.EmailAddress,
-                    IsEmailConfirmed = user.IsEmailConfirmed,
-                    IsActive = user.IsActive,
-                    IsEmailConfirmationRequiredForLogin = isEmailConfirmationRequiredForLogin
-                });
-            }
-            catch (UserFriendlyException ex)
-            {
-                ViewBag.ErrorMessage = ex.Message;
-
-                return View("Register", model);
-            }
-        }
-
         #endregion
 
         #region External Login
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ExternalLogin(string provider, string returnUrl)
+        [UnitOfWork]
+        public async Task<JsonResult> ExternalLogin([FromBody] ExternalAuthenticateModel model)
         {
-            var redirectUrl = Url.Action(
-                "ExternalLoginCallback",
-                "Account",
-                new
+            using (AbpSession.Use(AbpTemplateApplicationConsts.DefaultTenantId, null))
+            {
+                var externalUser = await GetExternalUserInfo(model);
+                var loginResult = await _logInManager.LoginAsync(new UserLoginInfo(model.AuthProvider, externalUser.ProviderKey, model.AuthProvider), GetTenancyNameOrNull());
+                switch (loginResult.Result)
                 {
-                    ReturnUrl = returnUrl
-                });
+                    case AbpLoginResultType.Success:
+                        {
+                            await _signInManager.SignInAsync(loginResult.Identity, true);
+                            await UnitOfWorkManager.Current.SaveChangesAsync();
+                            return Json(new AjaxResponse { TargetUrl = model.ReturnUrl });
+                        }
+                    case AbpLoginResultType.UnknownExternalLogin:
+                        {
+                            var user = await _userRegistrationManager.RegisterAsync(
+                                externalUser.Name,
+                                externalUser.Surname,
+                                externalUser.EmailAddress,
+                                externalUser.EmailAddress.ToMd5(),
+                                Authorization.Users.User.CreateRandomPassword(),
+                                true
+                            );
+                            user.Logins = new List<UserLogin>
+                            {
+                                new UserLogin
+                                {
+                                    LoginProvider = externalUser.Provider,
+                                    ProviderKey = externalUser.ProviderKey,
+                                    TenantId = user.TenantId
+                                }
+                            };
+                            await CurrentUnitOfWork.SaveChangesAsync();
 
-            return Challenge(
-                // TODO: ...?
-                // new Microsoft.AspNetCore.Http.Authentication.AuthenticationProperties
-                // {
-                //     Items = { { "LoginProvider", provider } },
-                //     RedirectUri = redirectUrl
-                // },
-                provider
-            );
+                            var tryLoginResult = await _logInManager.LoginAsync(new UserLoginInfo(model.AuthProvider, model.ProviderKey, model.AuthProvider), GetTenancyNameOrNull());
+
+                            if (tryLoginResult.Result == AbpLoginResultType.Success)
+                            {
+                                await _signInManager.SignInAsync(loginResult.Identity, false);
+                                return Json(new AjaxResponse { TargetUrl = model.ReturnUrl });
+                            }
+
+                            return Json(new AjaxResponse { TargetUrl = model.ReturnUrl });
+                        }
+                    default:
+                        {
+                            throw _abpLoginResultTypeHelper.CreateExceptionForFailedLoginAttempt(
+                                loginResult.Result,
+                                model.ProviderKey,
+                                GetTenancyNameOrNull()
+                            );
+                        }
+                }
+            }
         }
 
-        [UnitOfWork]
-        public virtual async Task<ActionResult> ExternalLoginCallback(string returnUrl, string remoteError = null)
+        private async Task<ExternalAuthUserInfo> GetExternalUserInfo(ExternalAuthenticateModel model)
         {
-            returnUrl = NormalizeReturnUrl(returnUrl);
-
-            if (remoteError != null)
-            {
-                Logger.Error("Remote Error in ExternalLoginCallback: " + remoteError);
-                throw new UserFriendlyException(L("CouldNotCompleteLoginOperation"));
-            }
-
-            var externalLoginInfo = await _signInManager.GetExternalLoginInfoAsync();
-            if (externalLoginInfo == null)
-            {
-                Logger.Warn("Could not get information from external login.");
-                return RedirectToAction(nameof(Login));
-            }
-
-            await _signInManager.SignOutAsync();
-
-            var tenancyName = GetTenancyNameOrNull();
-
-            var loginResult = await _logInManager.LoginAsync(externalLoginInfo, tenancyName);
-
-            switch (loginResult.Result)
-            {
-                case AbpLoginResultType.Success:
-                    await _signInManager.SignInAsync(loginResult.Identity, false);
-                    return Redirect(returnUrl);
-                default:
-                    throw _abpLoginResultTypeHelper.CreateExceptionForFailedLoginAttempt(
-                        loginResult.Result,
-                        externalLoginInfo.Principal.FindFirstValue(ClaimTypes.Email) ?? externalLoginInfo.ProviderKey,
-                        tenancyName
-                    );
-            }
+            var userInfo = await _externalAuthManager.GetUserInfo(model.AuthProvider, model.ProviderAccessCode);
+            return userInfo;
         }
-
-        [UnitOfWork]
-        protected virtual async Task<List<Tenant>> FindPossibleTenantsOfUserAsync(UserLoginInfo login)
-        {
-            List<User> allUsers;
-            using (_unitOfWorkManager.Current.DisableFilter(AbpDataFilters.MayHaveTenant))
-            {
-                allUsers = await _userManager.FindAllAsync(login);
-            }
-
-            return allUsers
-                .Where(u => u.TenantId != null)
-                .Select(u => AsyncHelper.RunSync(() => _tenantManager.FindByIdAsync(u.TenantId.Value)))
-                .ToList();
-        }
-
         #endregion
 
-        #region Helpers
-
-        public ActionResult RedirectToAppHome()
-        {
-            return RedirectToAction("Index", "Home");
-        }
+        #region Common
 
         public string GetAppHomeUrl()
         {
             return Url.Action("Index", "Home");
         }
-
-        #endregion
-
-        #region Common
 
         private string GetTenancyNameOrNull()
         {
@@ -418,37 +267,6 @@ namespace PearAdmin.AbpTemplate.Admin.Controllers
             }
 
             return defaultValueBuilder();
-        }
-
-        #endregion
-
-        #region Etc
-
-        /// <summary>
-        /// This is a demo code to demonstrate sending notification to default tenant admin and host admin uers.
-        /// Don't use this code in production !!!
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        [AbpMvcAuthorize]
-        public async Task<ActionResult> TestNotification(string message = "")
-        {
-            if (message.IsNullOrEmpty())
-            {
-                message = "This is a test notification, created at " + Clock.Now;
-            }
-
-            var defaultTenantAdmin = new UserIdentifier(1, 2);
-            var hostAdmin = new UserIdentifier(null, 1);
-
-            await _notificationPublisher.PublishAsync(
-                    "App.SimpleMessage",
-                    new MessageNotificationData(message),
-                    severity: NotificationSeverity.Info,
-                    userIds: new[] { defaultTenantAdmin, hostAdmin }
-                 );
-
-            return Content("Sent notification: " + message);
         }
 
         #endregion

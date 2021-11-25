@@ -15,6 +15,7 @@
     <PreserveCompilationReferences>true</PreserveCompilationReferences>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\module\PearAdmin.AbpTemplate.MiniProgram\PearAdmin.AbpTemplate.MiniProgram.csproj" />
     <ProjectReference Include="..\..\module\PearAdmin.AbpTemplate.NLog\PearAdmin.AbpTemplate.NLog.csproj" />
     <ProjectReference Include="..\PearAdmin.AbpTemplate.Application\PearAdmin.AbpTemplate.Application.csproj" />
     <ProjectReference Include="..\PearAdmin.AbpTemplate.EntityFrameworkCore\PearAdmin.AbpTemplate.EntityFrameworkCore.csproj" />

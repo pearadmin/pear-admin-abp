@@ -1,7 +1,53 @@
+.user-login {
+    margin: -250px auto 0 !important;
+    position: absolute !important;
+    top: 40% !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+}
+
+    .user-login .layui-row {
+        height: 650px;
+        -moz-box-shadow: 2px 2px 10px #909090;
+        -webkit-box-shadow: 2px 2px 10px #909090;
+        box-shadow: 2px 2px 15px #909090;
+    }
+
+        .user-login .layui-row .layui-col-md7 {
+            overflow: hidden;
+            height: 100%;
+        }
+
+            .user-login .layui-row .layui-col-md7 img {
+                border-radius: 5px;
+                max-height: 100%;
+            }
+
+    .user-login .layui-col-md5 {
+        height: 100%;
+        border-radius: 5px;
+        background-color: #ffffff;
+    }
+
+.user-login-foot {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #8c92a4;
+}
+
+    .user-login-foot a {
+        margin-left: 5px;
+        color: #8c92a4;
+    }
+
 .layui-form {
     width: 320px !important;
-    margin: auto !important;
-    margin-top: 160px !important;
+    margin: 20% auto !important;
 }
 
     .layui-form button {
@@ -65,4 +111,23 @@
     color: gray !important;
     height: 60px !important;
     line-height: 60px !important;
+}
+
+.external-login {
+    margin-top: 50px;
+    text-align: center;
+}
+
+    .external-login .wx-logo {
+        width: 40px;
+    }
+
+@media screen and (max-width: 1500px) {
+    .user-login .layui-row {
+        height: 580px !important;
+    }
+
+    .layui-form {
+        margin: 15% auto !important;
+    }
 }
