@@ -15,15 +15,15 @@ namespace PearAdmin.AbpTemplate.Admin
         {
             return WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                //.ConfigureLogging((hostingContext, logging) =>
-                //{
-                //    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"))
-                //        .AddDebug()
-                //        .AddEventSourceLogger()
-                //        .AddFilter("System", LogLevel.Debug)
-                //        .AddFilter("Microsoft.EntityFrameworkCore.*", LogLevel.Warning)
-                //        .AddFilter("Microsoft.AspNetCore.*", LogLevel.Error);
-                //})
+                .ConfigureLogging((hostingContext, logging) =>
+                {
+                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"))
+                        .AddDebug()
+                        .AddEventSourceLogger()
+                        .AddFilter("System", LogLevel.Debug)
+                        .AddFilter("Microsoft.EntityFrameworkCore.*", LogLevel.Warning)
+                        .AddFilter("Microsoft.AspNetCore.*", LogLevel.Error);
+                })
                 .Build();
         }
     }
