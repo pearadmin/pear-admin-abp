@@ -1,17 +1,17 @@
 ﻿using System.Linq;
 using Abp.Configuration;
-using Abp.Localization;
-using Abp.Net.Mail;
 using Microsoft.EntityFrameworkCore;
+using PearAdmin.AbpTemplate.AppProvider.Settings.MailboxTemplates;
+using PearAdmin.AbpTemplate.Settings;
 
 namespace PearAdmin.AbpTemplate.EntityFrameworkCore.Seed.Common
 {
-    public class DefaultSettingsCreator
+    public class TenantSettingsCreator
     {
         private readonly AbpTemplateDbContext _context;
         private readonly int? _tenantId;
 
-        public DefaultSettingsCreator(AbpTemplateDbContext context, int? tenantId = null)
+        public TenantSettingsCreator(AbpTemplateDbContext context, int? tenantId = null)
         {
             _context = context;
             _tenantId = tenantId;
@@ -24,12 +24,8 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore.Seed.Common
 
         private void CreateDefaultSetting()
         {
-            // 邮箱设置
-            AddSettingIfNotExists(EmailSettingNames.DefaultFromAddress, "admin@mydomain.com", _tenantId);
-            AddSettingIfNotExists(EmailSettingNames.DefaultFromDisplayName, "mydomain.com mailer", _tenantId);
-
-            // 语言设置
-            AddSettingIfNotExists(LocalizationSettingNames.DefaultLanguage, "zh-Hans", _tenantId);
+            // 邀请模板设置
+            AddSettingIfNotExists(AppSettingNames.TenantManagement.InviteMailboxTemplate, InviteMailboxTemplate.DefaultTemplate, _tenantId);
         }
 
         private void AddSettingIfNotExists(string name, string value, int? tenantId = null)

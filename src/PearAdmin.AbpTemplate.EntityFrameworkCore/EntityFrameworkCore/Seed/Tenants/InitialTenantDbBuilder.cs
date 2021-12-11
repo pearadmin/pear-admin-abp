@@ -26,6 +26,7 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore.Seed.Tenants
             new TenantRoleAndUserBuilder(_context, MultiTenancyConsts.DefaultTenantId).Create();
             new DefaultLanguagesCreator(_context, MultiTenancyConsts.DefaultTenantId).Create();
             new DefaultSettingsCreator(_context, MultiTenancyConsts.DefaultTenantId).Create();
+            new TenantSettingsCreator(_context, MultiTenancyConsts.DefaultTenantId).Create();
         }
     }
 }

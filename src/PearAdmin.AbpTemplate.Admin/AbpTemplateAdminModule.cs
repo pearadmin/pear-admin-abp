@@ -4,6 +4,7 @@ using Abp.AspNetCore.SignalR;
 using Abp.Configuration.Startup;
 using Abp.Hangfire;
 using Abp.Hangfire.Configuration;
+using Abp.MailKit;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using Abp.Zero.Configuration;
@@ -26,21 +27,26 @@ namespace PearAdmin.AbpTemplate.Admin
         typeof(AbpAspNetCoreModule),
         typeof(AbpAspNetCoreSignalRModule),
         typeof(AbpHangfireAspNetCoreModule),
-        typeof(AbpTemplateMiniProgramModule)
+        typeof(AbpTemplateMiniProgramModule),
+        typeof(AbpMailKitModule)
         )]
     public class AbpTemplateAdminModule : AbpModule
     {
         private readonly IWebHostEnvironment _env;
         private readonly IConfigurationRoot _appConfiguration;
 
-        public AbpTemplateAdminModule(IWebHostEnvironment env)
+        public AbpTemplateAdminModule(
+            IWebHostEnvironment env,
+            AbpTemplateEntityFrameworkModule abpProjectNameEntityFrameworkModule)
         {
             _env = env;
             _appConfiguration = env.GetAppConfiguration();
+            abpProjectNameEntityFrameworkModule.SkipDbSeed = true;
         }
 
         public override void PreInitialize()
         {
+            // 链接字符串设置
             Configuration.DefaultNameOrConnectionString = _appConfiguration.GetConnectionString(AbpTemplateCoreConsts.ConnectionStringName);
 
             // 本地化内容存储到数据库
@@ -49,8 +55,10 @@ namespace PearAdmin.AbpTemplate.Admin
             // 显示所有错误信息到客户端
             Configuration.Modules.AbpWebCommon().SendAllExceptionsToClients = false;
 
+            // 菜单栏设置
             Configuration.Navigation.Providers.Add<AbpTemplateNavigationProvider>();
 
+            // 后台任务使用Hangfire
             Configuration.BackgroundJobs.UseHangfire();
         }
 
@@ -66,6 +74,13 @@ namespace PearAdmin.AbpTemplate.Admin
                 .AddApplicationPartsIfNotAddedBefore(typeof(AbpTemplateAdminModule).Assembly);
 
             ConfigureExternalAuthProviders();
+        }
+
+        private void SetAppFolders()
+        {
+            var appFolders = IocManager.Resolve<AppFolders>();
+
+            appFolders.WebLogsFolder = Path.Combine(_env.ContentRootPath, $"App_Data{Path.DirectorySeparatorChar}Logs");
         }
 
         private void ConfigureExternalAuthProviders()
@@ -86,13 +101,6 @@ namespace PearAdmin.AbpTemplate.Admin
         public override void Shutdown()
         {
             base.Shutdown();
-        }
-
-        private void SetAppFolders()
-        {
-            var appFolders = IocManager.Resolve<AppFolders>();
-
-            appFolders.WebLogsFolder = Path.Combine(_env.ContentRootPath, $"App_Data{Path.DirectorySeparatorChar}Logs");
         }
     }
 }

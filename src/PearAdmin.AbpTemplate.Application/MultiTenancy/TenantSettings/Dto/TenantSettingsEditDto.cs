@@ -2,17 +2,9 @@
 {
     public class TenantSettingsEditDto
     {
-        //public GeneralSettingsEditDto General { get; set; }
+        public GeneralSettingsEditDto General { get; set; }
 
-        //[Required]
-        //public TenantUserManagementSettingsEditDto UserManagement { get; set; }
-
-        //public TenantEmailSettingsEditDto Email { get; set; }
-
-        //[Required]
-        //public SecuritySettingsEditDto Security { get; set; }
-
-        //public TenantOtherSettingsEditDto OtherSettings { get; set; }
+        public TenantEmailSettingsEditDto Email { get; set; }
 
         public CompanySettingsEditDto CompanySettings { get; set; }
 
