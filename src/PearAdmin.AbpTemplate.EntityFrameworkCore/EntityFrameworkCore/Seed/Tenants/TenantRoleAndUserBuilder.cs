@@ -49,8 +49,7 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore.Seed.Tenants
 
             var permissions = PermissionFinder
                 .GetAllPermissions(new AppPermissionProvider())
-                .Where(p => p.MultiTenancySides.HasFlag(MultiTenancySides.Tenant) &&
-                            !grantedPermissions.Contains(p.Name))
+                .Where(p => p.MultiTenancySides.HasFlag(MultiTenancySides.Tenant) && !grantedPermissions.Contains(p.Name))
                 .ToList();
 
             if (permissions.Any())

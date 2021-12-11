@@ -25,7 +25,7 @@ namespace PearAdmin.AbpTemplate.EntityFrameworkCore.Seed.Common
         private void CreateDefaultSetting()
         {
             // 邀请模板设置
-            AddSettingIfNotExists(AppSettingNames.TenantManagement.InviteMailboxTemplate, InviteMailboxTemplate.DefaultTemplate(), _tenantId);
+            AddSettingIfNotExists(AppSettingNames.TenantManagement.InviteMailboxTemplate, InviteMailboxTemplate.DefaultTemplate, _tenantId);
         }
 
         private void AddSettingIfNotExists(string name, string value, int? tenantId = null)
